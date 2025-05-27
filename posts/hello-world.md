@@ -1,7 +1,7 @@
 ---
 title: Hello World
-date: 2025-05-26
+date: 2025-05-27
 layout: post.njk
 ---
 
-Welcome to my new site. More coming soon.
+This is the first post on the new Ross Breadmore site.
