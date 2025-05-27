@@ -1,15 +1,15 @@
 const { DateTime } = require("luxon");
 
-module.exports = function(eleventyConfig) {
-  // Add collection for blog posts
-  eleventyConfig.addCollection("posts", function(collectionApi) {
+module.exports = function (eleventyConfig) {
+  eleventyConfig.addCollection("posts", function (collectionApi) {
     return collectionApi.getFilteredByGlob("./posts/*.md").reverse();
   });
 
-  // Add date filter
   eleventyConfig.addFilter("date", (dateObj, format = "MMMM d, yyyy") => {
     return DateTime.fromJSDate(dateObj).toFormat(format);
   });
+
+  eleventyConfig.addPassthroughCopy("styles.css"); // ✅ REQUIRED
 
   return {
     dir: {
