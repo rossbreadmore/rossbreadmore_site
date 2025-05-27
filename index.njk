@@ -1,0 +1,18 @@
+---
+title: Welcome
+layout: post.njk
+---
+
+<h1>Ross Breadmore</h1>
+
+<p>A collection of things I'm making and doing and thinking:</p>
+
+<ul>
+  {% for post in collections.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.data.title }}</a> — {{ post.date | date: "%B %d, %Y" }}
+    </li>
+  {% endfor %}
+</ul>
+
+<p>Follow me on <a href="{{ social.twitter }}">Twitter</a> and <a href="{{ social.github }}">GitHub</a></p>
