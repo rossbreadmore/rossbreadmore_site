@@ -1,9 +1,8 @@
 ---
-title: Welcome
+title: Ross Breadmore
 layout: post.njk
 ---
-
-Ross Breadmore’s site.  
+ 
 A collection of things I'm making and doing and thinking:
 
 <ul>
