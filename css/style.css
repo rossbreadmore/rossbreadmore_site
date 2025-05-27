@@ -1,0 +1,114 @@
+/* Reset + Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cal Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #fff;
+  color: #111;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+
+/* Header with Giant Text */
+.giant-title {
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 3rem;
+  text-align: left;
+  max-width: 90%;
+}
+
+.offset {
+  display: inline-block;
+  transform: translateX(20%);
+  color: #000000;
+}
+
+/* Blog section */
+.blog {
+  margin-bottom: 4rem;
+}
+
+.blog h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.blog article {
+  margin-bottom: 2rem;
+  padding-left: 2rem;
+  border-left: 3px solid #000;
+}
+
+.blog h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.blog a {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border 0.2s ease;
+}
+
+.blog a:hover {
+  border-bottom: 1px solid #000;
+}
+
+/* About section */
+.about h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.about p {
+  max-width: 600px;
+  text-align: justify;
+  font-size: 1.1rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  font-size: 0.875rem;
+  margin-top: 5rem;
+  color: #666;
+}
+
+footer a {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #aaa;
+}
+
+footer a:hover {
+  border-bottom: 1px solid #000;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}
