@@ -5,8 +5,10 @@ layout: post.njk
  
 A collection of things I'm making and doing and thinking:
 
+{% raw %}
 <ul>
-{% for post in collections.posts %}
-  <li><a href="{{ post.url }}">{{ post.data.title }}</a> — {{ post.date | date: "%B %d, %Y" }}</li>
-{% endfor %}
+  {% for post in collections.posts %}
+    <li><a href="{{ post.url }}">{{ post.data.title }}</a> — {{ post.date | date: "%B %d, %Y" }}</li>
+  {% endfor %}
 </ul>
+{% endraw %}

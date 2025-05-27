@@ -1,11 +1,12 @@
 {
   "name": "rossbreadmore_site",
   "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "build": "eleventy",
-    "start": "eleventy --serve"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "@11ty/eleventy": "^2.0.0"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
