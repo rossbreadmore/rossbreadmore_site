@@ -7,4 +7,4 @@ layout: post.njk
 
 testing testing testing 123
 
-![Zoe's Party](/images/Le%20Roboto%20Vintage%20Poster%20Design.jpg )
+![Roboto](/images/Leroboto.jpg )
