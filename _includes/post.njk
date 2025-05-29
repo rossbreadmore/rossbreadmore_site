@@ -8,14 +8,16 @@
   <body>
 
 <body>
-  <header>
-    <h1><a href="/">Ross Breadmore</a></h1>
-  </header>
+
 
   <main>
     <article>
       <h2 class="post-title">{{ title }}</h2>
-      <p class="post-date">{{ date | date("MMMM d, yyyy") }}</p>
+  
+{% if date %}
+  <p class="post-date">{{ date | date("MMMM d, yyyy") }}</p>
+{% endif %}
+
       <div class="post-content">
         {{ content | safe }}
       </div>
