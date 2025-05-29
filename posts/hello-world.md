@@ -7,4 +7,4 @@ layout: post.njk
 
 testing testing testing 123
 
-![Roboto](/images/Leroboto.jpg )
+![Roboto](/images/Leroboto.jpg)
