@@ -126,22 +126,3 @@ footer {
   text-align: center;
 }
 
-.site-logo {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: clamp(3rem, 10vw, 6rem);
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-  margin: 2rem 0;
-  text-align: center;
-}
-
-.site-logo h1 {
-  margin: 0;
-  padding: 0;
-}
-
-.logo-highlight {
-  color: #0070f3; /* or any highlight color you like */
-}
