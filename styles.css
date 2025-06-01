@@ -28,6 +28,15 @@ h3 {
   font-size: 1.6rem;
 }
 
+.hero-title {
+  font-size: 5rem;        /* Make it very large */
+  font-weight: 700;       /* Bold */
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+
 a {
   color: #1a73e8;
   text-decoration: none;
@@ -39,7 +48,7 @@ a:hover {
 }
 
 footer {
-  text-align: center;
+  text-align: left;
   margin-top: 4rem;
   font-size: 0.9rem;
   color: #777;
@@ -87,4 +96,17 @@ figcaption {
   font-size: 0.9rem;
   color: #666;
   margin-top: 0.5rem;
+}
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-sub {
+    font-size: 1.2rem;
+  }
 }
