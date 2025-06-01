@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+<body>
+
+
+  <main>
+    <article>
+      <h2 class="post-title">{{ title }}</h2>
+  
+{% if date %}
+  <p class="post-date">{{ date | date("MMMM d, yyyy") }}</p>
+{% endif %}
+
+      <div class="post-content">
+        {{ content | safe }}
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <p>© Ross Breadmore · <a href="{{ social.linkedin }}">LinkedIn</a> · <a href="{{ social.github }}">GitHub</a></p>
+  </footer>
+</body>
+</html>
