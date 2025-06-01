@@ -3,6 +3,7 @@ title: "Experiments with AI"
 date: 2025-05-28
 layout: post.njk
 ---
+![AI infographic](/images/info.jpg)
 
 I’m capturing what I’m currently doing with AI as I’ll find it interesting in several years - I assume this will all sound quite twee looking back. I’ve been consciously trying to use AI more, partly as I find it fascinating, and partly driven by paranoia that I’ll get left behind. 
 
