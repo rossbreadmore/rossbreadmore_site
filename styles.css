@@ -28,9 +28,10 @@ h3 {
   font-size: 1.6rem;
 }
 
+
 .hero-title {
-  font-size: 5rem;        /* Make it very large */
-  font-weight: 700;       /* Bold */
+  font-size: 6rem !important;
+    font-weight: 700;       /* Bold */
   margin-top: 0;
   margin-bottom: 1rem;
   line-height: 1.2;
