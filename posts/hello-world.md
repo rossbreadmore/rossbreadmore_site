@@ -7,4 +7,6 @@ layout: post.njk
 
 testing testing testing 123
 
+Here's a cool robot i made in chatGPT based on an old lino cut I'd created...
+
 ![Roboto](/images/Leroboto.jpg)
