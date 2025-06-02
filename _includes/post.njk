@@ -23,13 +23,7 @@
       <div class="post-content">
         {{ content | safe }}
       </div>
-      {% if tags %}
-  <p class="post-tags">Tags: 
-    {% for tag in tags %}
-      <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>{% if not loop.last %}, {% endif %}
-    {% endfor %}
-  </p>
-{% endif %}
+
 
     </article>
   </main>
