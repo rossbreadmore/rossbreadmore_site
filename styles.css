@@ -1,10 +1,11 @@
 body {
   font-family: 'Inter', sans-serif;
   margin: 2rem auto;
+  max-width: 700px;
   line-height: 1.6;
-  background: #fff;
-  color: #111;
   padding: 0 1rem;
+  color: #333;
+  background-color: #fff;
 }
 
 h1, h2, h3 {
@@ -28,23 +29,22 @@ h3 {
 }
 
 
-.hero-title {
-  font-size: 6rem !important;
-    font-weight: 700;       /* Bold */
+h1.hero-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 6rem;
+  font-weight: 700;
   margin-top: 0;
-  margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 
 a {
-  color: #1a73e8;
+  color: #0077cc;
   text-decoration: none;
-  border-bottom: 1px solid rgba(26, 115, 232, 0.3);
 }
 
 a:hover {
-  border-bottom: 1px solid #1a73e8;
+  text-decoration: underline;
 }
 
 
@@ -106,14 +106,15 @@ figcaption {
   }
 }
 ul {
-  padding-left: 1.2rem;
+  list-style-type: none;
+  padding-left: 0;
 }
 
 footer {
+  margin-top: 4rem;
   font-size: 0.875rem;
-  padding-top: 2rem;
+  color: #777;
   text-align: left;
-  
 }
 .site-logo {
   font-family: 'Space Grotesk', sans-serif;
