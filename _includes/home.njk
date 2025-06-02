@@ -3,22 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   </head>
   <body>
+
     <main>
       {{ content | safe }}
     </main>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<footer>
-  <p>© Ross Breadmore · 
-    <a href="{{ social.linkedin }}">LinkedIn</a> · 
-    <a href="{{ social.github }}">GitHub</a>
-  </p>
-</footer>
+    <footer>
+      <p>© Ross Breadmore · 
+        <a href="{{ social.linkedin }}">LinkedIn</a> · 
+        <a href="{{ social.github }}">GitHub</a>
+      </p>
+    </footer>
   </body>
 </html>
-
