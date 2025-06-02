@@ -8,15 +8,15 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("date", (dateObj, format = "MMMM d, yyyy") => {
     return DateTime.fromJSDate(dateObj).toFormat(format);
   });
-{
-  eleventyConfig.addPassthroughCopy("styles.css"); // ✅ REQUIRED
+
+  eleventyConfig.addPassthroughCopy("styles.css");
   eleventyConfig.addPassthroughCopy("images");
-};
 
   return {
     dir: {
       input: ".",
       includes: "_includes",
+      data: "_data",       // ✅ this is implied but included for clarity
       output: "_site"
     }
   };

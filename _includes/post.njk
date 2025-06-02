@@ -27,9 +27,9 @@
   </main>
 
 <footer>
-  <p>© Ross Breadmore · 
-    <a href="{{ https://www.linkedin.com/in/rossbreadmore/ }}">LinkedIn</a> · 
-    <a href="{{ social.github }}">GitHub</a>
+  <p>© Ross Breadmore
+    {% if social.linkedin %} · <a href="{{ social.linkedin }}">LinkedIn</a>{% endif %}
+    {% if social.github %} · <a href="{{ social.github }}">GitHub</a>{% endif %}
   </p>
 </footer>
 </body>
