@@ -1,98 +1,20 @@
-# Ross Breadmore Site Guide
-
-This guide helps you manage your Eleventy-powered personal site.
-
+---
+title: Frequently Asked Questions
+layout: post.njk
 ---
 
-## ✅ 1. Create New Posts
+## FAQ
 
-### Option 1: Manual via Terminal
-1. Open terminal and navigate to your posts folder:
-   ```bash
-   cd ~/Desktop/rossbreadmore_site/posts
-   ```
+**Q: Who are you?**  
+A: I'm Ross Breadmore — design director working in finance and an amateur film maker, writer and coder (thanks to a lot of AI help).
 
-2. Create a new markdown file:
-   ```bash
-   touch my-new-post.md
-   ```
+**Q: What's this site?**  
+A: I wanted a my own online space for a few reasons:
+- Experience has taught me that 3rd party platforms come and go.
+- AI has enabled me to create / code my own site and it's good for me to see how repos, text editors etc work. 
+- 10 years from now I'd love to look back and see how naive and basic some of this will seem. 
 
-3. Open the file and add front matter + content:
-   ```markdown
-   ---
-   title: "My New Post"
-   date: 2025-05-28
-   layout: post.njk
-   ---
+**Q: What is this site not?**  
+A: This site is not affiliated to my day job, nor is it designed to be professional or finished. It will contain typos, broken links and weird opinions. It's also not a commercial venture (although I'm hoping it could lead to some interesting ideas I might want to develop). 
 
-   Here’s the content of my new blog post. Markdown makes writing easy!
-   ```
-
----
-
-## 🚀 2. Push Changes Live Using Terminal
-
-From your root project folder:
-
-```bash
-cd ~/Desktop/rossbreadmore_site
-git add .
-git commit -m "Add new post"
-git push
-```
-
-This pushes changes to GitHub and triggers a Netlify deploy (if connected).
-
----
-
-## 🖼️ 3. Insert Images
-
-1. Save images to:
-   ```
-   /rossbreadmore_site/images/
-   ```
-
-2. Reference them in markdown like:
-   ```markdown
-   ![Alt text](../images/filename.jpg)
-   ```
-
----
-
-## ⚙️ 4. Automate New Post Creation
-
-You can create a script called `new-post.js` (or use `npm run new-post`) to generate posts with a title and current date.
-
-Add this in your `package.json`:
-```json
-"scripts": {
-  "new-post": "node new-post.js"
-}
-```
-
-And create a `new-post.js` file with logic to prompt for title, create file, and add template.
-
----
-
-## 🧠 5. Notion Integration (Manual Workflow)
-
-- Use Notion to draft posts.
-- Export the draft as Markdown.
-- Paste it into a new `.md` file in `/posts/`.
-- Push to GitHub as normal.
-
-For automation (optional):
-- Use Notion’s API + GitHub Action to sync content.
-
----
-
-## 🌟 Optional Improvements
-
-- Lazy load images: `loading="lazy"` in `<img>` tags
-- Image compression via TinyPNG or ImageMagick
-- Use Eleventy plugins for responsive images
-- Custom 404 page
-
----
-
-Enjoy!
+<!-- Add more Q&A below -->
