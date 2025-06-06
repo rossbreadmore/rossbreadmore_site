@@ -9,6 +9,7 @@ I'm Ross Breadmore — design director working in finance (see LinkedIn link bel
 **What's this site?**   
 I wanted a my own online space for a few reasons:
 
+
 - Experience has taught me that 3rd party platforms come and go and so I wanted my own thing that won't suddenly become paywalled or obselete.
 - AI has enabled me to create / code my own site and it's good for me to see how repos, text editors etc work. 
 - 10 years from now I'd love to look back and see how naive and basic some of this will seem. 

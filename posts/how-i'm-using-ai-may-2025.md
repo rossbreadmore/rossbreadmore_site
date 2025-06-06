@@ -13,6 +13,7 @@ Professionally AI and machine learning are major features of nearly all the buil
 
 **Image generation** - this is probably the most natural and exciting at the moment, as it’s an extension of my illustration skillset. As somebody who always struggled with maintaining a single style, it’s very rewarding to have random ideas and then see what ChatGPT can create. I’ve used it for the following:
 
+
 - Birthday cards / images for friends and family - having fun with a variety of formats including old VHS. 
 - Work related diagramming. 
 - Riffing on illustration work I’ve done myself - this robot was a variant of a screen print I’d done last year. 
