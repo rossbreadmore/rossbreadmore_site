@@ -20,17 +20,17 @@ This was used in some team training to articulate what service design is - it to
 
 This one was used in a presentation to pitch some ideas - I love pushing retro imagery into a work situation, and look forward to doing more of this.
 
-![Future](/images/itcamefromfuture.jpg)
+![Future](/images/itcamefromfuture.png)
 
 **Random**  
 This street party invite shows one of my favourite parts of the ChatGPT image generation dance - type. This was an early draft and you can see where the copy is broken, but also kind of beautiful. I eventually fixed this using Figma which was a good early test of an AI to human workflow. 
 
-![Party invite](/images/streetpart.jpg)
+![Party invite](/images/streetpart.png)
 
 
 I'd cycled into work on my brompton and listening to a James Brown mix on soundcloud - all the prompt I needed. 
 
-![Party invite](/images/jdbrompton.jpg)
+![James Brown](/images/jbbrompton.jpg)
 
 
 **Conclusion**  
