@@ -131,11 +131,13 @@ footer {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 80px;
-  opacity: 0.9;
+  width: 100px;         /* make it larger */
+  height: auto;
   z-index: 1000;
-  transition: transform 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 50%;
 }
+
 
 .ai-sticker:hover {
   transform: scale(1.1);
