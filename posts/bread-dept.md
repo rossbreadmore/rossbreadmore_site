@@ -7,29 +7,26 @@ layout: post.njk
 I love working within large and complex companies, but increasingly I'm fascinated by what my own thing could be. I've been bouncing ideas around with ChatGPT and thought I'd share, as this will be a long journey and it'll be good to look back...
 
 **Welcome to The Bread Dept.**
-*You are now part of a quiet uprising.*
-We bake ideas, not decks. We proof systems, not slogans.
-And we never deliver anything fully baked — that’s the point.
+
+*You are now part of a quiet uprising.*. 
+We bake ideas, not decks. We proof systems, not slogans.  
+And we never deliver anything fully baked — that’s the point.  
 - We work with clients to fake the future just well enough that it breaks the present open.
 - Our tools are fiction. Our output is culture. Our medium is collaboration.
 
 ![BreadDept](/images/breaddept.jpg)
 
 **House Rules (Selected Slices)**
-- 🥖 Half-baked is honest
-We don’t overcook ideas. If it’s too polished, we’ve probably killed something.
-
-- 🍞 Serve warm
-Share early. Share often. Friction is flavor.
-
-- 🥐 All crumb, no crust
-We break silos, not bread. Everyone’s input gets folded in.
-
-- 🧈 Butter both sides
-Design fiction is strategy. Culture is process. Everything overlaps.
-
-- 🫓 Flat, not hierarchical
-We work like it’s already 2033 — async, autonomous, and radically transparent.
+- **🥖 Half-baked is honest**  
+    We don’t overcook ideas. If it’s too polished, we’ve probably killed something.
+- **🍞 Serve warm**  
+    Share early. Share often. Friction is flavor.
+- **🥐 All crumb, no crust**  
+    We break silos, not bread. Everyone’s input gets folded in.
+- **🧈 Butter both sides**  
+    Design fiction is strategy. Culture is process. Everything overlaps.
+- **🫓 Flat, not hierarchical**  
+    We work like it’s already 2033 — async, autonomous, and radically transparent.
 
 **A Typical Project (Unfolded)**
 🌀 Step 1: Create Fictional Clarity.
