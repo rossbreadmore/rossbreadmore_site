@@ -4,7 +4,9 @@ date: 2025-07-15
 layout: post.njk
 ---
 
-1. **Welcome to The Bread Dept.**
+I love working within large and complex companies, but increasingly I'm fascinated by what my own thing could be. I've been bouncing ideas around with ChatGPT and thought I'd share, as this will be a long journey and it'll be good to look back...
+
+**Welcome to The Bread Dept.**
 You are now part of a quiet uprising.
 We bake ideas, not decks. We proof systems, not slogans.
 And we never deliver anything fully baked — that’s the point.
@@ -13,7 +15,7 @@ And we never deliver anything fully baked — that’s the point.
 
 ![BreadDept](/images/breaddept.jpg)
 
-2. **House Rules (Selected Slices)**
+**House Rules (Selected Slices)**
 - 🥖 Half-baked is honest
 We don’t overcook ideas. If it’s too polished, we’ve probably killed something.
 
@@ -29,7 +31,7 @@ Design fiction is strategy. Culture is process. Everything overlaps.
 - 🫓 Flat, not hierarchical
 We work like it’s already 2033 — async, autonomous, and radically transparent.
 
-3. **A Typical Project (Unfolded)**
+**A Typical Project (Unfolded)**
 🌀 Step 1: Create Fictional Clarity
 We make provocative artifacts: memos from 2032, posters from impossible futures, screenshots from sideways timelines. These are mirrors — distorted just enough to be revealing.
 
@@ -45,7 +47,7 @@ Then we help them start doing it.
 
 🧠 By the end, the client has not just seen the future, they’ve practiced a better present.
 
-4. **Bread Dept. Archetypes**
+**Bread Dept. Archetypes**
 We don’t have job titles. We have types of yeast:
 - The Starter – loves ambiguity, always begins
 - The Kneader – brings structure and tension
@@ -55,7 +57,7 @@ We don’t have job titles. We have types of yeast:
 You might be one. You might be all four.
 Just don't try to be the toaster.
 
-5. **The Unofficial FAQ**
+**The Unofficial FAQ**
 Q: Are we consultants, artists, or saboteurs?
 A: Yes.
 
