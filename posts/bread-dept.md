@@ -58,6 +58,7 @@ Then we help them start doing it.
 
 
 **Bread Dept. Archetypes**
+
 We don’t have job titles. We have types of yeast:
 - The Starter – loves ambiguity, always begins
 - The Kneader – brings structure and tension
@@ -72,6 +73,7 @@ Just don't try to be the toaster.
 
 
 **The Unofficial FAQ**
+
 Q: Are we consultants, artists, or saboteurs?
 A: Yes.
 
@@ -86,6 +88,7 @@ A: You just invented a new future.
 
 
 **THE BREAD DEPT.**
+
 **We’re not predicting the future.**
 **We’re letting you borrow it — just long enough to make today worth reworking.**
 
