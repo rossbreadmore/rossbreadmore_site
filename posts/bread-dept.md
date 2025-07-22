@@ -10,11 +10,12 @@ I love working within large and complex companies, but increasingly I'm fascinat
 
 **Welcome to The Bread Dept.**
 
-*You are now part of a quiet uprising.*. 
+*You are now part of a quiet uprising.*
 We bake ideas, not decks. We proof systems, not slogans.  
 And we never deliver anything fully baked — that’s the point.  
-- We work with clients to fake the future just well enough that it breaks the present open.
-- Our tools are fiction. Our output is culture. Our medium is collaboration.
+
+We work with clients to fake the future just well enough that it breaks the present open.
+**Our tools are fiction. Our output is culture. Our medium is collaboration.**
 
 ![BreadDept](/images/breaddept.jpg)
 
@@ -34,6 +35,7 @@ And we never deliver anything fully baked — that’s the point.
 
 
 **A Typical Project (Unfolded)**
+
 🌀 Step 1: Create Fictional Clarity.
 
 We make provocative artifacts: memos from 2032, posters from impossible futures, screenshots from sideways timelines. These are mirrors — distorted just enough to be revealing.
