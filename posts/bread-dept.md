@@ -9,6 +9,7 @@ I love working within large and complex companies, but increasingly I'm fascinat
 ***
 
 **Welcome to The Bread Dept.**
+===============
 
 *You are now part of a quiet uprising.*
 We bake ideas, not decks. We proof systems, not slogans.  
@@ -35,6 +36,7 @@ We work with clients to fake the future just well enough that it breaks the pres
 
 
 **A Typical Project (Unfolded)**
+---------------
 
 🌀 Step 1: Create Fictional Clarity.
 
@@ -58,6 +60,7 @@ Then we help them start doing it.
 
 
 **Bread Dept. Archetypes**
+---------------
 
 We don’t have job titles. We have types of yeast:
 - The Starter – loves ambiguity, always begins
@@ -73,6 +76,7 @@ Just don't try to be the toaster.
 
 
 **The Unofficial FAQ**
+---------------
 
 Q: Are we consultants, artists, or saboteurs?
 A: Yes.
@@ -88,6 +92,7 @@ A: You just invented a new future.
 
 
 **THE BREAD DEPT.**
+---------------
 
 **We’re not predicting the future.**
 **We’re letting you borrow it — just long enough to make today worth reworking.**
