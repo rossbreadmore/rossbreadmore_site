@@ -5,24 +5,39 @@
   <title>{{ title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="site-wrapper">
 
-  <main>
-    {{ content | safe }}
-  </main>
+    <header class="site-header">
+      <a href="/" class="site-logo">Ross Breadmore</a>
+      <nav>
+        <a href="/faq/">FAQ</a>
+        <a href="https://www.linkedin.com/in/rossbreadmore/" target="_blank">LinkedIn</a>
+        <a href="https://rossbreadmore.medium.com/" target="_blank">Medium</a>
+        <a href="https://github.com/rossbreadmore" target="_blank">GitHub</a>
+      </nav>
+    </header>
 
-  <footer>
-<p>© Ross Breadmore · 
-    <a href="/faq/">FAQ</a> ·
-    <a href="https://www.linkedin.com/in/rossbreadmore/" target="_blank">LinkedIn</a> · 
-    <a href="https://rossbreadmore.medium.com/" target="_blank">Medium</a> · 
-    <a href="https://github.com/rossbreadmore" target="_blank">GitHub</a>
-    </p>
-  </footer>
-<script>
+    <main>
+      {{ content | safe }}
+    </main>
+
+    <footer>
+      <p>© Ross Breadmore</p>
+      <div class="footer-links">
+        <a href="/faq/">FAQ</a>
+        <a href="https://www.linkedin.com/in/rossbreadmore/" target="_blank">LinkedIn</a>
+        <a href="https://rossbreadmore.medium.com/" target="_blank">Medium</a>
+        <a href="https://github.com/rossbreadmore" target="_blank">GitHub</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="fntLPsOQI6VXRRpMpa9t5";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-</script>
+  </script>
 </body>
 </html>
