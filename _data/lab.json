@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Storytelling at work",
+    "status": "active",
+    "description": "A piece on what narrative in corporate settings actually requires — and why most attempts fail. Draft exists, needs a better opening.",
+    "slug": ""
+  },
+  {
+    "title": "Artwork page",
+    "status": "active",
+    "description": "Bringing illustration work from @artbreadmore onto the site. Figuring out how existing work sits alongside the writing.",
+    "slug": ""
+  },
+  {
+    "title": "Video essay",
+    "status": "exploring",
+    "description": "Longer-form video with a proper argument, not just documentation. Format and topic still fuzzy.",
+    "slug": ""
+  },
+  {
+    "title": "Building in Africa vs building in London",
+    "status": "exploring",
+    "description": "The product design differences between 4G Capital and JPMorgan are significant and underwritten about. Not sure if this is a post or a talk.",
+    "slug": ""
+  },
+  {
+    "title": "I've never had a plan. That's the plan.",
+    "status": "shipped",
+    "description": "On the unconventional career path — from illustration at Falmouth to executive director at a global investment bank.",
+    "slug": "/posts/ive-never-had-a-plan/"
+  }
+]

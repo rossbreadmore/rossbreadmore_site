@@ -25,15 +25,32 @@ The site uses a bold brutalist aesthetic. Respect these rules in every change:
 _includes/
   home.njk        # layout for homepage and standalone pages
   post.njk        # layout for blog posts
-_data/            # global data files
+_data/
+  lab.json        # lab experiments data — edit this to add/update lab entries
 posts/            # blog post markdown files
 work/
   index.njk       # /work page
+lab/
+  index.njk       # /lab page — renders from _data/lab.json
+videos/
+  index.njk       # /videos page
 FAQ/
   index.md        # /faq page
 index.njk         # homepage
 styles.css        # all styles — single file, no preprocessor
 ```
+
+## Lab data structure
+Each entry in `_data/lab.json` takes this shape:
+```json
+{
+  "title": "Experiment title",
+  "status": "active | exploring | stalled | shipped",
+  "description": "One or two sentences on where this is at.",
+  "slug": "/posts/the-post-slug/"  // optional — leave "" if no post yet
+}
+```
+Status chips are colour-coded: active = acid yellow, exploring = black, stalled = grey outline, shipped = black outline.
 
 ## Development rules
 1. **Always run `npm run build` and confirm zero errors before committing.**

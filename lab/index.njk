@@ -1,0 +1,25 @@
+---
+title: Lab — Ross Breadmore
+layout: home.njk
+---
+
+<div class="page-intro">
+  <h2 class="page-intro-title">Lab</h2>
+  <p class="page-intro-sub">Working in the open. Ideas in various states — active, exploring, stalled, shipped.</p>
+</div>
+
+<ol class="lab-list">
+  {% for item in lab %}
+  <li class="lab-item">
+    <div class="lab-item-header">
+      <span class="lab-status lab-status--{{ item.status }}">{{ item.status }}</span>
+    </div>
+    {% if item.slug %}
+      <h3 class="lab-title"><a href="{{ item.slug }}">{{ item.title }}</a></h3>
+    {% else %}
+      <h3 class="lab-title">{{ item.title }}</h3>
+    {% endif %}
+    <p class="lab-description">{{ item.description }}</p>
+  </li>
+  {% endfor %}
+</ol>
