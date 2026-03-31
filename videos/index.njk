@@ -1,0 +1,85 @@
+---
+title: Videos — Ross Breadmore
+layout: home.njk
+---
+
+<div class="page-intro">
+  <h2 class="page-intro-title">Videos</h2>
+  <p class="page-intro-sub">Making things, documenting things, figuring out video as a creative tool.</p>
+</div>
+
+<ol class="video-list">
+
+  <li class="video-item">
+    <div class="video-item-header">
+      <span class="work-index">01</span>
+      <span class="work-dates">Storytelling</span>
+    </div>
+    <h3 class="video-title">Storytelling at Work</h3>
+    <p class="video-description">An early example of using video to tell a story in a professional context. A format I've kept coming back to.</p>
+    <div class="video-thumb" data-id="8NpBcWmOKXI">
+      <img src="https://img.youtube.com/vi/8NpBcWmOKXI/maxresdefault.jpg" alt="Storytelling at Work" loading="lazy">
+      <button class="video-play" aria-label="Play video">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </li>
+
+  <li class="video-item">
+    <div class="video-item-header">
+      <span class="work-index">02</span>
+      <span class="work-dates">Documentary</span>
+    </div>
+    <h3 class="video-title">GoPro Diaries</h3>
+    <p class="video-description">Having fun documenting life on the go. Shot entirely on a GoPro — lo-fi, kinetic, honest.</p>
+    <div class="video-thumb" data-id="5i5Pu0O4Ky0">
+      <img src="https://img.youtube.com/vi/5i5Pu0O4Ky0/maxresdefault.jpg" alt="GoPro Diaries" loading="lazy">
+      <button class="video-play" aria-label="Play video">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </li>
+
+  <li class="video-item">
+    <div class="video-item-header">
+      <span class="work-index">03</span>
+      <span class="work-dates">Creative</span>
+    </div>
+    <h3 class="video-title">Video as a Creative Tool</h3>
+    <p class="video-description">Exploring what video can do as a medium — not just documentation, but expression.</p>
+    <div class="video-thumb" data-id="bVk_12CYpUA">
+      <img src="https://img.youtube.com/vi/bVk_12CYpUA/maxresdefault.jpg" alt="Video as a Creative Tool" loading="lazy">
+      <button class="video-play" aria-label="Play video">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </li>
+
+  <li class="video-item">
+    <div class="video-item-header">
+      <span class="work-index">04</span>
+      <span class="work-dates">First cut</span>
+    </div>
+    <h3 class="video-title">iMovie Era</h3>
+    <p class="video-description">The first creative video I made. Playing with early iMovie, figuring out what was possible. Everyone starts somewhere.</p>
+    <div class="video-thumb" data-id="S3hsJmwIibw">
+      <img src="https://img.youtube.com/vi/S3hsJmwIibw/maxresdefault.jpg" alt="iMovie Era" loading="lazy">
+      <button class="video-play" aria-label="Play video">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </li>
+
+</ol>
+
+<script>
+  document.querySelectorAll('.video-thumb').forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      var id = thumb.dataset.id;
+      var embed = document.createElement('div');
+      embed.className = 'video-embed';
+      embed.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1" allowfullscreen allow="autoplay; encrypted-media" title="Video player"></iframe>';
+      thumb.replaceWith(embed);
+    });
+  });
+</script>
