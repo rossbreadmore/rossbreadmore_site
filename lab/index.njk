@@ -5,21 +5,44 @@ layout: home.njk
 
 <div class="page-intro">
   <h2 class="page-intro-title">Lab</h2>
-  <p class="page-intro-sub">Working in the open. Ideas in various states — active, exploring, stalled, shipped.</p>
+  <p class="page-intro-sub">Working in the open. Things I'm thinking about, making, or avoiding.</p>
 </div>
 
-<ol class="lab-list">
+<ul class="lab-list">
   {% for item in lab %}
-  <li class="lab-item">
-    <div class="lab-item-header">
-      <span class="lab-status lab-status--{{ item.status }}">{{ item.status }}</span>
-    </div>
-    {% if item.slug %}
-      <h3 class="lab-title"><a href="{{ item.slug }}">{{ item.title }}</a></h3>
-    {% else %}
-      <h3 class="lab-title">{{ item.title }}</h3>
-    {% endif %}
-    <p class="lab-description">{{ item.description }}</p>
+  <li class="lab-item" data-id="{{ item.title | slug }}">
+    <label class="lab-label">
+      <input type="checkbox" class="lab-checkbox" data-id="{{ item.title | slug }}">
+      <span class="lab-box"></span>
+      <span class="lab-content">
+        <span class="lab-title">
+          {% if item.slug %}<a href="{{ item.slug }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
+          <span class="lab-status lab-status--{{ item.status }}">{{ item.status }}</span>
+        </span>
+        <span class="lab-description">{{ item.description }}</span>
+      </span>
+    </label>
   </li>
   {% endfor %}
-</ol>
+</ul>
+
+<script>
+  var STORAGE_KEY = 'lab-checked';
+  var checked = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  document.querySelectorAll('.lab-checkbox').forEach(function(cb) {
+    var id = cb.dataset.id;
+    var item = cb.closest('.lab-item');
+
+    if (checked[id]) {
+      cb.checked = true;
+      item.classList.add('is-checked');
+    }
+
+    cb.addEventListener('change', function() {
+      checked[id] = cb.checked;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+      item.classList.toggle('is-checked', cb.checked);
+    });
+  });
+</script>
