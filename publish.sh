@@ -7,7 +7,7 @@ npm run build
 
 echo "Committing..."
 git add .
-git commit -m "Publish update $(date '+%Y-%m-%d %H:%M')"
+git diff --cached --quiet && echo "Nothing new to commit." || git commit -m "Publish update $(date '+%Y-%m-%d %H:%M')"
 
 echo "Pushing to GitHub..."
 git push origin main
