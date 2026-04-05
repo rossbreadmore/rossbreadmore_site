@@ -30,16 +30,9 @@
       },
       {
         "number": "04",
-        "skill": "Telling stories and building energy",
-        "company": "Bold Rocket",
-        "detail": "How to turn an idea into a narrative that moves people. Energy, conviction, and knowing how to read a room. The work that doesn't get told doesn't get done — and telling it well is a craft worth taking seriously.",
-        "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"/></svg>"
-      },
-      {
-        "number": "05",
         "skill": "Doing the hard work to make it simple",
         "company": "Lloyds Banking Group",
-        "detail": "Five years inside one of the UK's biggest institutions taught me that simplicity is hard. It requires patience, institutional knowledge, and the courage to cut. The simple version is almost always the harder version to make — but it's the one that works.",
+        "detail": "Five years inside one of the UK's biggest institutions taught me that simplicity is hard — and that telling the story of why it matters is just as important as achieving it. The work that doesn't get told doesn't get done. Simplicity requires patience, institutional knowledge, and the courage to cut. But it also requires a narrative that brings people with you.",
         "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"3\" y1=\"7\" x2=\"21\" y2=\"7\"/><line x1=\"6\" y1=\"12\" x2=\"18\" y2=\"12\"/><line x1=\"9\" y1=\"17\" x2=\"15\" y2=\"17\"/></svg>"
       }
     ]
@@ -48,14 +41,14 @@
     "word": "MORE",
     "items": [
       {
-        "number": "06",
+        "number": "05",
         "skill": "Productive Tension",
         "company": "4G Capital",
         "detail": "Good product leadership isn't comfortable. It requires holding the tension between what the business wants and what users need — and not letting either side win too easily. Working in East Africa sharpened this further: the stakes were real, the constraints were real, and the easy answer was rarely the right one.",
         "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"12\" x2=\"3\" y2=\"12\"/><polyline points=\"6 9 3 12 6 15\"/><line x1=\"12\" y1=\"12\" x2=\"21\" y2=\"12\"/><polyline points=\"18 9 21 12 18 15\"/></svg>"
       },
       {
-        "number": "07",
+        "number": "06",
         "skill": "Disruption with Purpose",
         "company": "JPMorgan Chase",
         "detail": "Bringing all of the above into one of the world's largest financial institutions. The goal isn't to break things — it's to change them from the inside, in ways that actually stick. Twenty years of unconventional moves, finally making sense.",
