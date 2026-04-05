@@ -7,142 +7,21 @@ layout: home.njk
 
   <div class="timeline">
 
-    <div class="timeline-item" data-side="right">
-      <div class="timeline-node"><span>01</span></div>
+    {% for item in timeline %}
+    <div class="timeline-item" data-side="{{ item.side }}">
+      <div class="timeline-node"><span>{{ item.number }}</span></div>
       <div class="timeline-body">
         <button class="timeline-trigger">
-          <span class="skill-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-              <path d="m15 5 4 4"/>
-            </svg>
-          </span>
-          <span class="skill-name">Everything starts with drawing</span>
-          <span class="skill-company">Falmouth University</span>
+          <span class="skill-icon">{{ item.icon | safe }}</span>
+          <span class="skill-name">{{ item.skill }}</span>
+          <span class="skill-company">{{ item.company }}</span>
         </button>
         <div class="timeline-detail">
-          <p>A degree in illustration taught me more than any business school could. Learning to see problems, to make abstract ideas concrete, and to answer a brief with something unexpected — that instinct has never left me. It's just applied to systems and organisations now, rather than paper.</p>
+          <p>{{ item.detail }}</p>
         </div>
       </div>
     </div>
-
-    <div class="timeline-item" data-side="left">
-      <div class="timeline-node"><span>02</span></div>
-      <div class="timeline-body">
-        <button class="timeline-trigger">
-          <span class="skill-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-              <line x1="12" y1="12" x2="12" y2="3"/>
-              <line x1="12" y1="12" x2="3.5" y2="18"/>
-              <line x1="12" y1="12" x2="20.5" y2="18"/>
-            </svg>
-          </span>
-          <span class="skill-name">Open by default</span>
-          <span class="skill-company">NixonMcInnes</span>
-        </button>
-        <div class="timeline-detail">
-          <p>A small agency with a big philosophy. I learned that transparency isn't a risk — it's a strategy. Sharing work early, inviting critique, building in public. Everything I do now starts with that same open hand.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="timeline-item" data-side="right">
-      <div class="timeline-node"><span>03</span></div>
-      <div class="timeline-body">
-        <button class="timeline-trigger">
-          <span class="skill-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-              <line x1="4" y1="4" x2="20" y2="20"/>
-              <line x1="20" y1="4" x2="4" y2="20"/>
-            </svg>
-          </span>
-          <span class="skill-name">Design × Engineering</span>
-          <span class="skill-company">We Are Friday</span>
-        </button>
-        <div class="timeline-detail">
-          <p>Embedded in engineering teams before "cross-functional" became a buzzword. I learned that the best products come from designers and engineers working side by side, not throwing specs over a wall. Agile isn't a process — it's a posture.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="timeline-item" data-side="left">
-      <div class="timeline-node"><span>04</span></div>
-      <div class="timeline-body">
-        <button class="timeline-trigger">
-          <span class="skill-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-          </span>
-          <span class="skill-name">Telling stories and building energy</span>
-          <span class="skill-company">Bold Rocket</span>
-        </button>
-        <div class="timeline-detail">
-          <p>How to turn an idea into a narrative that moves people. Energy, conviction, and knowing how to read a room. The work that doesn't get told doesn't get done — and telling it well is a craft worth taking seriously.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="timeline-item" data-side="right">
-      <div class="timeline-node"><span>05</span></div>
-      <div class="timeline-body">
-        <button class="timeline-trigger">
-          <span class="skill-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-              <line x1="3" y1="7" x2="21" y2="7"/>
-              <line x1="6" y1="12" x2="18" y2="12"/>
-              <line x1="9" y1="17" x2="15" y2="17"/>
-            </svg>
-          </span>
-          <span class="skill-name">Doing the hard work to make it simple</span>
-          <span class="skill-company">Lloyds Banking Group</span>
-        </button>
-        <div class="timeline-detail">
-          <p>Five years inside one of the UK's biggest institutions taught me that simplicity is hard. It requires patience, institutional knowledge, and the courage to cut. The simple version is almost always the harder version to make — but it's the one that works.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="timeline-item" data-side="left">
-      <div class="timeline-node"><span>06</span></div>
-      <div class="timeline-body">
-        <button class="timeline-trigger">
-          <span class="skill-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="12" x2="3" y2="12"/>
-              <polyline points="6 9 3 12 6 15"/>
-              <line x1="12" y1="12" x2="21" y2="12"/>
-              <polyline points="18 9 21 12 18 15"/>
-            </svg>
-          </span>
-          <span class="skill-name">Productive Tension</span>
-          <span class="skill-company">4G Capital</span>
-        </button>
-        <div class="timeline-detail">
-          <p>Good product leadership isn't comfortable. It requires holding the tension between what the business wants and what users need — and not letting either side win too easily. Working in East Africa sharpened this further: the stakes were real, the constraints were real, and the easy answer was rarely the right one.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="timeline-item" data-side="right">
-      <div class="timeline-node"><span>07</span></div>
-      <div class="timeline-body">
-        <button class="timeline-trigger">
-          <span class="skill-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="3" x2="12" y2="21"/>
-              <line x1="2" y1="12" x2="22" y2="12"/>
-              <polyline points="17 7 22 12 17 17"/>
-            </svg>
-          </span>
-          <span class="skill-name">Disruption with Purpose</span>
-          <span class="skill-company">JPMorgan Chase</span>
-        </button>
-        <div class="timeline-detail">
-          <p>Bringing all of the above into one of the world's largest financial institutions. The goal isn't to break things — it's to change them from the inside, in ways that actually stick. Twenty years of unconventional moves, finally making sense.</p>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
 
   </div>
 

@@ -1,0 +1,58 @@
+[
+  {
+    "number": "01",
+    "side": "right",
+    "skill": "Everything starts with drawing",
+    "company": "Falmouth University",
+    "detail": "A degree in illustration taught me more than any business school could. Learning to see problems, to make abstract ideas concrete, and to answer a brief with something unexpected — that instinct has never left me. It's just applied to systems and organisations now, rather than paper.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z\"/><path d=\"m15 5 4 4\"/></svg>"
+  },
+  {
+    "number": "02",
+    "side": "left",
+    "skill": "Open by default",
+    "company": "NixonMcInnes",
+    "detail": "A small agency with a big philosophy. I learned that transparency isn't a risk — it's a strategy. Sharing work early, inviting critique, building in public. Everything I do now starts with that same open hand.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"12\" y1=\"12\" x2=\"12\" y2=\"3\"/><line x1=\"12\" y1=\"12\" x2=\"3.5\" y2=\"18\"/><line x1=\"12\" y1=\"12\" x2=\"20.5\" y2=\"18\"/></svg>"
+  },
+  {
+    "number": "03",
+    "side": "right",
+    "skill": "Design × Engineering",
+    "company": "We Are Friday",
+    "detail": "Embedded in engineering teams before \"cross-functional\" became a buzzword. I learned that the best products come from designers and engineers working side by side, not throwing specs over a wall. Agile isn't a process — it's a posture.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"4\" y1=\"4\" x2=\"20\" y2=\"20\"/><line x1=\"20\" y1=\"4\" x2=\"4\" y2=\"20\"/></svg>"
+  },
+  {
+    "number": "04",
+    "side": "left",
+    "skill": "Telling stories and building energy",
+    "company": "Bold Rocket",
+    "detail": "How to turn an idea into a narrative that moves people. Energy, conviction, and knowing how to read a room. The work that doesn't get told doesn't get done — and telling it well is a craft worth taking seriously.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"/></svg>"
+  },
+  {
+    "number": "05",
+    "side": "right",
+    "skill": "Doing the hard work to make it simple",
+    "company": "Lloyds Banking Group",
+    "detail": "Five years inside one of the UK's biggest institutions taught me that simplicity is hard. It requires patience, institutional knowledge, and the courage to cut. The simple version is almost always the harder version to make — but it's the one that works.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"3\" y1=\"7\" x2=\"21\" y2=\"7\"/><line x1=\"6\" y1=\"12\" x2=\"18\" y2=\"12\"/><line x1=\"9\" y1=\"17\" x2=\"15\" y2=\"17\"/></svg>"
+  },
+  {
+    "number": "06",
+    "side": "left",
+    "skill": "Productive Tension",
+    "company": "4G Capital",
+    "detail": "Good product leadership isn't comfortable. It requires holding the tension between what the business wants and what users need — and not letting either side win too easily. Working in East Africa sharpened this further: the stakes were real, the constraints were real, and the easy answer was rarely the right one.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"12\" x2=\"3\" y2=\"12\"/><polyline points=\"6 9 3 12 6 15\"/><line x1=\"12\" y1=\"12\" x2=\"21\" y2=\"12\"/><polyline points=\"18 9 21 12 18 15\"/></svg>"
+  },
+  {
+    "number": "07",
+    "side": "right",
+    "skill": "Disruption with Purpose",
+    "company": "JPMorgan Chase",
+    "detail": "Bringing all of the above into one of the world's largest financial institutions. The goal isn't to break things — it's to change them from the inside, in ways that actually stick. Twenty years of unconventional moves, finally making sense.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"3\" x2=\"12\" y2=\"21\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><polyline points=\"17 7 22 12 17 17\"/></svg>"
+  }
+]
