@@ -3,28 +3,27 @@ title: Ross Breadmore
 layout: home.njk
 ---
 
-<section class="intro-timeline">
-
-  <div class="timeline">
-
-    {% for item in timeline %}
-    <div class="timeline-item" data-side="{{ item.side }}">
-      <div class="timeline-node"><span>{{ item.number }}</span></div>
-      <div class="timeline-body">
-        <button class="timeline-trigger">
-          <span class="skill-icon">{{ item.icon | safe }}</span>
-          <span class="skill-name">{{ item.skill }}</span>
-          <span class="skill-company">{{ item.company }}</span>
+<section class="name-scaffold">
+  {% for group in timeline %}
+  <div class="name-section">
+    <div class="name-word">{{ group.word }}</div>
+    <div class="name-items">
+      {% for item in group.items %}
+      <div class="name-item">
+        <button class="name-trigger">
+          <span class="ni-num">{{ item.number }}</span>
+          <span class="ni-icon">{{ item.icon | safe }}</span>
+          <span class="ni-skill">{{ item.skill }}</span>
+          <span class="ni-company">{{ item.company }}</span>
         </button>
-        <div class="timeline-detail">
+        <div class="ni-detail">
           <p>{{ item.detail }}</p>
         </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-
   </div>
-
+  {% endfor %}
 </section>
 
 <ul class="post-list">
@@ -39,10 +38,10 @@ layout: home.njk
 </ul>
 
 <script>
-  var items = document.querySelectorAll('.timeline-item');
+  var items = document.querySelectorAll('.name-item');
 
   items.forEach(function(item) {
-    var trigger = item.querySelector('.timeline-trigger');
+    var trigger = item.querySelector('.name-trigger');
 
     trigger.addEventListener('click', function() {
       var isOpen = item.classList.contains('is-open');
