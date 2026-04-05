@@ -102,44 +102,44 @@ nav a:hover {
   text-decoration: none;
 }
 
-/* --- Hero --- */
-.hero {
-  padding: 4rem 0 3.5rem;
+/* --- Intro + timeline unified --- */
+.intro-timeline {
   border-bottom: var(--border-heavy);
+  padding-bottom: 3rem;
 }
 
-.hero-title {
+.intro-head {
+  padding: 3rem 0 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 3.5rem;
+}
+
+.intro-name {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(4.5rem, 14vw, 9.5rem);
+  font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 700;
-  letter-spacing: -4px;
-  line-height: 0.88;
+  letter-spacing: -1.5px;
+  line-height: 1;
   text-transform: uppercase;
   color: var(--white);
-  margin-bottom: 2rem;
+  margin: 0;
 }
 
-.hero-sub {
-  font-size: 1rem;
-  color: var(--grey);
-  max-width: 380px;
-  line-height: 1.6;
-}
-
-/* --- Skills / timeline --- */
-.skills {
-  border-bottom: var(--border-heavy);
-  padding-bottom: 2rem;
-}
-
-.skills-label {
+.intro-tag {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: var(--grey);
-  padding: 2rem 0 3rem;
+  margin: 0;
+  max-width: 320px;
+  text-align: right;
+  line-height: 1.6;
 }
 
 /* Timeline spine */
@@ -843,9 +843,14 @@ footer p {
     display: none;
   }
 }
-  .hero-title {
-    font-size: clamp(3.5rem, 16vw, 5rem);
-    letter-spacing: -2.5px;
+  .intro-head {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .intro-tag {
+    text-align: left;
   }
 
   .post-title {

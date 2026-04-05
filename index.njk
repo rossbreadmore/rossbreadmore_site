@@ -3,13 +3,12 @@ title: Ross Breadmore
 layout: home.njk
 ---
 
-<div class="hero">
-  <h1 class="hero-title">Ross<br>Bread<br>More</h1>
-  <p class="hero-sub">Design and product leader. Executive Director of UX at JPMorgan Chase. Former CPO at 4G Capital. Builder of teams, products, and better institutions.</p>
-</div>
+<section class="intro-timeline">
 
-<section class="skills">
-  <p class="skills-label">20 years · 7 lessons</p>
+  <div class="intro-head">
+    <h1 class="intro-name">Ross Breadmore</h1>
+    <p class="intro-tag">Design &amp; product leader — twenty years, seven lessons</p>
+  </div>
 
   <div class="timeline">
 
@@ -105,6 +104,7 @@ layout: home.njk
     </div>
 
   </div>
+
 </section>
 
 <ul class="post-list">
@@ -123,12 +123,10 @@ layout: home.njk
 
   items.forEach(function(item) {
     var trigger = item.querySelector('.timeline-trigger');
-    var detail = item.querySelector('.timeline-detail');
 
     trigger.addEventListener('click', function() {
       var isOpen = item.classList.contains('is-open');
 
-      // Close all
       items.forEach(function(i) {
         i.classList.remove('is-open', 'is-dimmed');
       });
