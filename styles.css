@@ -126,10 +126,10 @@ nav a:hover {
   line-height: 1.6;
 }
 
-/* --- Skills / career section --- */
+/* --- Skills / timeline --- */
 .skills {
   border-bottom: var(--border-heavy);
-  margin-bottom: 0;
+  padding-bottom: 2rem;
 }
 
 .skills-label {
@@ -139,107 +139,170 @@ nav a:hover {
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--grey);
-  padding: 2rem 0 1rem;
+  padding: 2rem 0 3rem;
 }
 
-.skill-item {
-  border-top: var(--border-light);
+/* Timeline spine */
+.timeline {
+  position: relative;
+  padding-bottom: 1rem;
 }
 
-.skill-item[open] {
-  border-top: 2px solid var(--accent);
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #2a2a2a 4%, #2a2a2a 96%, transparent);
+  transform: translateX(-50%);
 }
 
-.skill-summary {
+/* Timeline items */
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 2.5rem 1fr;
+  gap: 0 2rem;
+  margin-bottom: 3.5rem;
+  align-items: start;
+}
+
+/* Node */
+.timeline-node {
+  grid-column: 2;
+  grid-row: 1;
+  position: relative;
+  z-index: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--black);
+  border: 2px solid #333;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1.5rem 0;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
+  justify-content: center;
+  transition: border-color 0.08s ease, background 0.08s ease;
 }
 
-.skill-summary::-webkit-details-marker {
-  display: none;
-}
-
-.skill-summary::marker {
-  display: none;
-}
-
-.skill-num {
+.timeline-node span {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--black);
-  background: var(--accent);
-  padding: 0.15rem 0.4rem;
-  flex-shrink: 0;
-  align-self: flex-start;
-  margin-top: 0.35rem;
+  letter-spacing: 1px;
+  color: var(--grey);
+  transition: color 0.08s ease;
 }
 
-.skill-body {
-  flex: 1;
+.timeline-item.is-open .timeline-node {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.timeline-item.is-open .timeline-node span {
+  color: var(--black);
+}
+
+/* Content body — right side by default */
+.timeline-body {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+/* Left-side items flip the body to column 1 */
+.timeline-item[data-side="left"] .timeline-body {
+  grid-column: 1;
+  text-align: right;
+}
+
+/* Connecting horizontal line */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 1.25rem;
+  height: 1px;
+  background: #2a2a2a;
+  width: 2rem;
+  transition: background 0.08s ease;
+}
+
+.timeline-item[data-side="right"]::after {
+  left: calc(50% + 1.25rem);
+}
+
+.timeline-item[data-side="left"]::after {
+  right: calc(50% + 1.25rem);
+}
+
+.timeline-item.is-open::after {
+  background: var(--accent);
+}
+
+/* Trigger button */
+.timeline-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.3rem;
+  text-align: inherit;
+  width: 100%;
 }
 
 .skill-name {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1.25rem, 3.5vw, 2rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
   font-weight: 700;
-  letter-spacing: -0.75px;
+  letter-spacing: -0.5px;
   text-transform: uppercase;
   color: var(--white);
   line-height: 1.1;
+  display: block;
   transition: color 0.08s ease;
 }
 
-.skill-item[open] .skill-name {
+.timeline-trigger:hover .skill-name,
+.timeline-item.is-open .skill-name {
   color: var(--accent);
 }
 
 .skill-company {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--grey);
+  display: block;
 }
 
-.skill-toggle {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: var(--grey);
-  flex-shrink: 0;
-  line-height: 1;
-  width: 1.5rem;
-  text-align: center;
+/* Expanded detail */
+.timeline-detail {
+  display: none;
+  padding-top: 1rem;
+  max-width: 320px;
 }
 
-.skill-toggle::before {
-  content: '+';
+.timeline-item[data-side="left"] .timeline-detail {
+  margin-left: auto;
 }
 
-.skill-item[open] .skill-toggle::before {
-  content: '×';
+.timeline-item.is-open .timeline-detail {
+  display: block;
 }
 
-.skill-detail {
-  padding: 0 0 2rem 3rem;
-  max-width: 600px;
-}
-
-.skill-detail p {
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: #aaa;
+.timeline-detail p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #888;
   margin: 0;
+}
+
+/* Dimmed state */
+.timeline-item.is-dimmed {
+  opacity: 0.3;
 }
 
 /* --- Post list --- */
@@ -750,6 +813,36 @@ footer p {
 
 /* --- Responsive --- */
 @media (max-width: 600px) {
+  /* Timeline: spine moves left, all content right */
+  .timeline::before {
+    left: 1.25rem;
+  }
+
+  .timeline-item {
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-node {
+    grid-column: 1;
+  }
+
+  .timeline-body,
+  .timeline-item[data-side="left"] .timeline-body {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .timeline-item[data-side="left"] .timeline-detail {
+    margin-left: 0;
+  }
+
+  .timeline-item[data-side="right"]::after,
+  .timeline-item[data-side="left"]::after {
+    display: none;
+  }
+}
   .hero-title {
     font-size: clamp(3.5rem, 16vw, 5rem);
     letter-spacing: -2.5px;
