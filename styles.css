@@ -755,8 +755,15 @@ footer p {
     width: 100%;
   }
 
+  .name-trigger {
+    flex-wrap: wrap;
+  }
+
   .ni-company {
-    display: none;
+    display: block;
+    width: 100%;
+    padding-left: calc(1.5rem + 0.95rem + 0.65rem * 2);
+    padding-top: 0.1rem;
   }
 }
   .post-title {
