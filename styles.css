@@ -108,43 +108,10 @@ nav a:hover {
   padding-bottom: 3rem;
 }
 
-.intro-head {
-  padding: 3rem 0 0;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 3.5rem;
-}
-
-.intro-name {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(2rem, 5vw, 3.25rem);
-  font-weight: 700;
-  letter-spacing: -1.5px;
-  line-height: 1;
-  text-transform: uppercase;
-  color: var(--white);
-  margin: 0;
-}
-
-.intro-tag {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--grey);
-  margin: 0;
-  max-width: 320px;
-  text-align: right;
-  line-height: 1.6;
-}
-
 /* Timeline spine */
 .timeline {
   position: relative;
+  padding-top: 3rem;
   padding-bottom: 1rem;
 }
 
@@ -246,9 +213,30 @@ nav a:hover {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.35rem;
   text-align: inherit;
   width: 100%;
+}
+
+/* Icon */
+.skill-icon {
+  display: block;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-bottom: 0.35rem;
+  color: #444;
+  transition: color 0.08s ease;
+  flex-shrink: 0;
+}
+
+.skill-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.timeline-trigger:hover .skill-icon,
+.timeline-item.is-open .skill-icon {
+  color: var(--accent);
 }
 
 .skill-name {
@@ -843,16 +831,6 @@ footer p {
     display: none;
   }
 }
-  .intro-head {
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .intro-tag {
-    text-align: left;
-  }
-
   .post-title {
     letter-spacing: -1.5px;
   }
