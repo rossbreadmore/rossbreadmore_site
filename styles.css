@@ -55,18 +55,19 @@ main {
 }
 
 .site-logo {
-  font-family: 'Caveat', cursive;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 1.4rem;
-  color: var(--white);
-  -webkit-text-stroke: 1px var(--white);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--white);
   text-decoration: none;
-  letter-spacing: 0.5px;
+  transition: -webkit-text-stroke-color 0.08s ease;
 }
 
 .site-logo:hover {
-  color: var(--accent);
-  -webkit-text-stroke: 1px var(--accent);
+  -webkit-text-stroke-color: var(--accent);
   text-decoration: none;
 }
 
@@ -76,23 +77,22 @@ nav {
   align-items: center;
 }
 
-/* Hand-drawn style nav links */
+/* Hand-drawn style nav links — hollow outlined block caps */
 .nav-drawn {
-  font-family: 'Caveat', cursive;
-  font-size: 1.3rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: transparent;
   -webkit-text-stroke: 1.5px var(--white);
-  paint-order: stroke fill;
   text-decoration: none;
-  letter-spacing: 0.5px;
   line-height: 1;
-  transition: -webkit-text-stroke 0.08s ease, color 0.08s ease;
+  transition: -webkit-text-stroke-color 0.08s ease;
 }
 
 .nav-drawn:hover {
-  -webkit-text-stroke: 1.5px var(--accent);
-  color: var(--black);
+  -webkit-text-stroke-color: var(--accent);
 }
 
 /* Plain text nav links (LinkedIn etc) */
@@ -125,6 +125,18 @@ nav {
   width: clamp(260px, 55%, 480px);
   height: auto;
   margin: 0;
+}
+
+.recipe-hero-fallback {
+  display: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(5rem, 23vw, 14rem);
+  font-weight: 700;
+  letter-spacing: -8px;
+  line-height: 0.85;
+  text-transform: uppercase;
+  color: #E8E3DC;
+  user-select: none;
 }
 
 .recipe-label {
