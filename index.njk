@@ -4,10 +4,11 @@ layout: home.njk
 ---
 
 <section class="name-scaffold">
-  {% for item in timeline %}
+  {% for group in timeline %}
   <div class="name-section">
-    <div class="name-word">{{ item.letter }}</div>
+    <div class="name-word">{{ group.word }}</div>
     <div class="name-items">
+      {% for item in group.items %}
       <div class="name-item">
         <button class="name-trigger">
           <span class="ni-num">{{ item.number }}</span>
@@ -19,6 +20,7 @@ layout: home.njk
           <p>{{ item.detail }}</p>
         </div>
       </div>
+      {% endfor %}
     </div>
   </div>
   {% endfor %}

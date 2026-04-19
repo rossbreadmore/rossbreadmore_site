@@ -1,42 +1,59 @@
 [
   {
-    "letter": "B",
-    "number": "01",
-    "skill": "Everything starts with drawing",
-    "company": "Falmouth University",
-    "detail": "A degree in illustration taught me more than any business school could. Learning to see problems, to make abstract ideas concrete, and to answer a brief with something unexpected — that instinct has never left me. It's just applied to systems and organisations now, rather than paper.",
-    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z\"/><path d=\"m15 5 4 4\"/></svg>"
+    "word": "ROSS",
+    "items": [
+      {
+        "number": "01",
+        "skill": "Everything starts with drawing",
+        "company": "Falmouth University",
+        "detail": "A degree in illustration taught me more than any business school could. Learning to see problems, to make abstract ideas concrete, and to answer a brief with something unexpected — that instinct has never left me. It's just applied to systems and organisations now, rather than paper.",
+        "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z\"/><path d=\"m15 5 4 4\"/></svg>"
+      },
+      {
+        "number": "02",
+        "skill": "Open by default",
+        "company": "NixonMcInnes",
+        "detail": "A small agency with a big philosophy. I learned that transparency isn't a risk — it's a strategy. Sharing work early, inviting critique, building in public. Everything I do now starts with that same open hand.",
+        "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"12\" y1=\"12\" x2=\"12\" y2=\"3\"/><line x1=\"12\" y1=\"12\" x2=\"3.5\" y2=\"18\"/><line x1=\"12\" y1=\"12\" x2=\"20.5\" y2=\"18\"/></svg>"
+      }
+    ]
   },
   {
-    "letter": "R",
-    "number": "02",
-    "skill": "Open by default",
-    "company": "NixonMcInnes",
-    "detail": "A small agency with a big philosophy. I learned that transparency isn't a risk — it's a strategy. Sharing work early, inviting critique, building in public. Everything I do now starts with that same open hand.",
-    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"12\" y1=\"12\" x2=\"12\" y2=\"3\"/><line x1=\"12\" y1=\"12\" x2=\"3.5\" y2=\"18\"/><line x1=\"12\" y1=\"12\" x2=\"20.5\" y2=\"18\"/></svg>"
+    "word": "BREAD",
+    "items": [
+      {
+        "number": "03",
+        "skill": "Design × Engineering",
+        "company": "We Are Friday",
+        "detail": "Embedded in engineering teams before \"cross-functional\" became a buzzword. I learned that the best products come from designers and engineers working side by side, not throwing specs over a wall. Agile isn't a process — it's a posture.",
+        "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"4\" y1=\"4\" x2=\"20\" y2=\"20\"/><line x1=\"20\" y1=\"4\" x2=\"4\" y2=\"20\"/></svg>"
+      },
+      {
+        "number": "04",
+        "skill": "Doing the hard work to make it simple",
+        "company": "Lloyds Banking Group",
+        "detail": "Five years inside one of the UK's biggest institutions taught me that simplicity is hard — and that telling the story of why it matters is just as important as achieving it. The work that doesn't get told doesn't get done. Simplicity requires patience, institutional knowledge, and the courage to cut. But it also requires a narrative that brings people with you.",
+        "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"3\" y1=\"7\" x2=\"21\" y2=\"7\"/><line x1=\"6\" y1=\"12\" x2=\"18\" y2=\"12\"/><line x1=\"9\" y1=\"17\" x2=\"15\" y2=\"17\"/></svg>"
+      }
+    ]
   },
   {
-    "letter": "E",
-    "number": "03",
-    "skill": "Design × Engineering",
-    "company": "We Are Friday",
-    "detail": "Embedded in engineering teams before \"cross-functional\" became a buzzword. I learned that the best products come from designers and engineers working side by side, not throwing specs over a wall. Agile isn't a process — it's a posture.",
-    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"4\" y1=\"4\" x2=\"20\" y2=\"20\"/><line x1=\"20\" y1=\"4\" x2=\"4\" y2=\"20\"/></svg>"
-  },
-  {
-    "letter": "A",
-    "number": "04",
-    "skill": "Doing the hard work to make it simple",
-    "company": "Lloyds Banking Group",
-    "detail": "Five years inside one of the UK's biggest institutions taught me that simplicity is hard — and that telling the story of why it matters is just as important as achieving it. The work that doesn't get told doesn't get done. Simplicity requires patience, institutional knowledge, and the courage to cut. But it also requires a narrative that brings people with you.",
-    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"3\" y1=\"7\" x2=\"21\" y2=\"7\"/><line x1=\"6\" y1=\"12\" x2=\"18\" y2=\"12\"/><line x1=\"9\" y1=\"17\" x2=\"15\" y2=\"17\"/></svg>"
-  },
-  {
-    "letter": "D",
-    "number": "05",
-    "skill": "Productive Tension",
-    "company": "4G Capital",
-    "detail": "Good product leadership isn't comfortable. It requires holding the tension between what the business wants and what users need — and not letting either side win too easily. Working in East Africa sharpened this further: the stakes were real, the constraints were real, and the easy answer was rarely the right one.",
-    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"12\" x2=\"3\" y2=\"12\"/><polyline points=\"6 9 3 12 6 15\"/><line x1=\"12\" y1=\"12\" x2=\"21\" y2=\"12\"/><polyline points=\"18 9 21 12 18 15\"/></svg>"
+    "word": "MORE",
+    "items": [
+      {
+        "number": "05",
+        "skill": "Productive Tension",
+        "company": "4G Capital",
+        "detail": "Good product leadership isn't comfortable. It requires holding the tension between what the business wants and what users need — and not letting either side win too easily. Working in East Africa sharpened this further: the stakes were real, the constraints were real, and the easy answer was rarely the right one.",
+        "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"12\" x2=\"3\" y2=\"12\"/><polyline points=\"6 9 3 12 6 15\"/><line x1=\"12\" y1=\"12\" x2=\"21\" y2=\"12\"/><polyline points=\"18 9 21 12 18 15\"/></svg>"
+      },
+      {
+        "number": "06",
+        "skill": "Disruption with Purpose",
+        "company": "JPMorgan Chase",
+        "detail": "Bringing all of the above into one of the world's largest financial institutions. The goal isn't to break things — it's to change them from the inside, in ways that actually stick. Twenty years of unconventional moves, finally making sense.",
+        "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"3\" x2=\"12\" y2=\"21\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><polyline points=\"17 7 22 12 17 17\"/></svg>"
+      }
+    ]
   }
 ]
