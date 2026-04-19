@@ -3,27 +3,29 @@ title: Ross Breadmore
 layout: home.njk
 ---
 
-<section class="name-scaffold">
-  {% for group in timeline %}
-  <div class="name-section">
-    <div class="name-word">{{ group.word }}</div>
-    <div class="name-items">
-      {% for item in group.items %}
-      <div class="name-item">
-        <button class="name-trigger">
-          <span class="ni-num">{{ item.number }}</span>
-          <span class="ni-icon">{{ item.icon | safe }}</span>
-          <span class="ni-skill">{{ item.skill }}</span>
-          <span class="ni-company">{{ item.company }}</span>
+<section class="recipe-section">
+
+  <div class="recipe-hero">BREAD</div>
+
+  <div class="recipe-body">
+    <div class="recipe-label">Ingredients</div>
+    <ul class="ingredient-list">
+      {% for item in timeline %}
+      <li class="ingredient-item">
+        <button class="ingredient-trigger">
+          <span class="ing-qty">{{ item.quantity }}</span>
+          <span class="ing-name">{{ item.skill }}</span>
+          <span class="ing-company">{{ item.company }}</span>
         </button>
-        <div class="ni-detail">
+        <div class="ing-detail">
           <p>{{ item.detail }}</p>
         </div>
-      </div>
+      </li>
       {% endfor %}
-    </div>
+    </ul>
+    <p class="recipe-method">Combine. Prove for 20 years. Apply heat.</p>
   </div>
-  {% endfor %}
+
 </section>
 
 <ul class="post-list">
@@ -38,10 +40,10 @@ layout: home.njk
 </ul>
 
 <script>
-  var items = document.querySelectorAll('.name-item');
+  var items = document.querySelectorAll('.ingredient-item');
 
   items.forEach(function(item) {
-    var trigger = item.querySelector('.name-trigger');
+    var trigger = item.querySelector('.ingredient-trigger');
 
     trigger.addEventListener('click', function() {
       var isOpen = item.classList.contains('is-open');
