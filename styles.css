@@ -1,15 +1,15 @@
 /* =============================================
-   ROSS BREADMORE — STYLES
-   Brutalist. Bold. Minimal. Warm.
+   KNEAD — STYLES
+   Dark. Minimal. Electronic.
    ============================================= */
 
 :root {
-  --black: #F7F5F2;
-  --white: #2B2B2B;
-  --accent: #C75B12;
-  --grey: #888;
-  --border-heavy: 3px solid var(--white);
-  --border-light: 1px solid #D8D2CA;
+  --black: #0D0D0D;
+  --white: #EDEBE6;
+  --accent: #F0FF00;
+  --grey: #505050;
+  --border-heavy: 1px solid #222;
+  --border-light: 1px solid #161616;
 }
 
 /* --- Reset & Base --- */
@@ -53,7 +53,7 @@ main {
   font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 3px;
   color: var(--white);
   text-decoration: none;
 }
@@ -84,65 +84,81 @@ nav a:hover {
   text-decoration: none;
 }
 
-/* --- Recipe (homepage) --- */
-.recipe-section {
+/* --- Catalogue (homepage) --- */
+.catalogue-section {
   border-bottom: var(--border-heavy);
   padding-bottom: 3rem;
 }
 
-.recipe-hero {
+.catalogue-header {
+  padding: 3.5rem 0 2.5rem;
+}
+
+.catalogue-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(5rem, 23vw, 14rem);
   font-weight: 700;
   letter-spacing: -8px;
   line-height: 0.85;
   text-transform: uppercase;
-  color: #E8E3DC;
-  margin-bottom: 0.15em;
+  color: #1C1C1C;
   user-select: none;
 }
 
-.recipe-label {
+.catalogue-sub {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 1.5rem;
+}
+
+.catalogue-divider {
+  border-top: var(--border-heavy);
+  padding-top: 1.25rem;
+  margin-bottom: 0;
+}
+
+.catalogue-col-label {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--grey);
-  border-top: var(--border-light);
-  padding-top: 1.25rem;
-  margin-bottom: 0.25rem;
 }
 
-.ingredient-list {
+.catalogue-list {
   list-style: none;
 }
 
-.ingredient-trigger {
+.catalogue-trigger {
   display: flex;
   align-items: baseline;
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
   background: none;
   border: none;
-  border-bottom: 1px solid #E2DDD7;
-  padding: 1rem 0;
+  border-bottom: var(--border-light);
+  padding: 1.25rem 0;
   cursor: pointer;
   text-align: left;
+  color: inherit;
 }
 
-.ing-qty {
+.cat-num {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   color: var(--accent);
   flex-shrink: 0;
-  width: 11rem;
-  line-height: 1.4;
+  width: 4.5rem;
 }
 
-.ing-name {
+.cat-name {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.35rem);
   font-weight: 700;
@@ -154,57 +170,77 @@ nav a:hover {
   transition: color 0.08s ease;
 }
 
-.ing-company {
+.cat-company {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.6rem;
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #B0A89F;
+  color: #363636;
   flex-shrink: 0;
   white-space: nowrap;
   transition: color 0.08s ease;
 }
 
-.ingredient-trigger:hover .ing-name,
-.ingredient-item.is-open .ing-name {
+.cat-expand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #2A2A2A;
+  flex-shrink: 0;
+  transition: color 0.08s ease, transform 0.1s ease;
+  display: inline-block;
+}
+
+.catalogue-trigger:hover .cat-name,
+.catalogue-item.is-open .cat-name {
   color: var(--accent);
 }
 
-.ingredient-trigger:hover .ing-company,
-.ingredient-item.is-open .ing-company {
+.catalogue-trigger:hover .cat-company,
+.catalogue-item.is-open .cat-company {
   color: var(--grey);
 }
 
-.ing-detail {
-  display: none;
-  padding: 0.85rem 0 1rem 12rem;
-  border-bottom: 1px solid #E2DDD7;
+.catalogue-trigger:hover .cat-expand,
+.catalogue-item.is-open .cat-expand {
+  color: var(--accent);
 }
 
-.ingredient-item.is-open .ing-detail {
+.catalogue-item.is-open .cat-expand {
+  transform: rotate(45deg);
+}
+
+.cat-detail {
+  display: none;
+  padding: 1rem 0 1.25rem 6rem;
+  border-bottom: var(--border-light);
+}
+
+.catalogue-item.is-open .cat-detail {
   display: block;
 }
 
-.ing-detail p {
+.cat-detail p {
   font-size: 0.9rem;
-  line-height: 1.85;
-  color: #777;
+  line-height: 1.9;
+  color: #666;
   margin: 0;
-  max-width: 440px;
+  max-width: 460px;
 }
 
-.ingredient-item.is-dimmed .ingredient-trigger {
-  opacity: 0.25;
+.catalogue-item.is-dimmed .catalogue-trigger {
+  opacity: 0.15;
 }
 
-.recipe-method {
+.catalogue-footnote {
   padding-top: 1.5rem;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.8rem;
-  font-style: italic;
-  color: var(--grey);
-  letter-spacing: 0.2px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #2A2A2A;
 }
 
 /* --- Post list --- */
@@ -287,7 +323,7 @@ nav a:hover {
 .post-content {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #555;
+  color: #888;
   max-width: 640px;
 }
 
@@ -443,7 +479,7 @@ figcaption {
 .work-description {
   font-size: 1.05rem;
   line-height: 1.8;
-  color: #666;
+  color: #777;
   max-width: 600px;
   margin: 0;
 }
@@ -556,7 +592,7 @@ figcaption {
 .lab-status--stalled {
   background: none;
   color: var(--grey);
-  border: 1px solid #444;
+  border: 1px solid #333;
 }
 
 .lab-status--shipped {
@@ -614,7 +650,7 @@ figcaption {
 .video-description {
   font-size: 1rem;
   line-height: 1.75;
-  color: #666;
+  color: #777;
   max-width: 560px;
   margin-bottom: 1.5rem;
 }
@@ -623,7 +659,7 @@ figcaption {
   position: relative;
   cursor: pointer;
   aspect-ratio: 16 / 9;
-  background: #E0DAD2;
+  background: #111;
   overflow: hidden;
 }
 
@@ -715,34 +751,37 @@ footer p {
 
 /* --- Responsive --- */
 @media (max-width: 600px) {
-  .recipe-hero {
+  .catalogue-title {
     letter-spacing: -4px;
   }
 
-  .ingredient-trigger {
+  .catalogue-trigger {
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
-  .ing-qty {
+  .cat-num {
     width: 100%;
-    font-size: 0.62rem;
   }
 
-  .ing-name {
+  .cat-name {
     flex: unset;
-    width: calc(100% - 0rem);
-  }
-
-  .ing-company {
     width: 100%;
-    padding-top: 0.15rem;
   }
 
-  .ing-detail {
+  .cat-company {
+    width: 100%;
+    padding-top: 0.1rem;
+  }
+
+  .cat-expand {
+    display: none;
+  }
+
+  .cat-detail {
     padding-left: 0;
   }
-}
+
   .post-title {
     letter-spacing: -1.5px;
   }

@@ -1,30 +1,36 @@
 ---
-title: Ross Breadmore
+title: KNEAD
 layout: home.njk
 ---
 
-<section class="recipe-section">
+<section class="catalogue-section">
 
-  <div class="recipe-hero">BREAD</div>
-
-  <div class="recipe-body">
-    <div class="recipe-label">Ingredients</div>
-    <ul class="ingredient-list">
-      {% for item in timeline %}
-      <li class="ingredient-item">
-        <button class="ingredient-trigger">
-          <span class="ing-qty">{{ item.quantity }}</span>
-          <span class="ing-name">{{ item.skill }}</span>
-          <span class="ing-company">{{ item.company }}</span>
-        </button>
-        <div class="ing-detail">
-          <p>{{ item.detail }}</p>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-    <p class="recipe-method">Combine. Prove for 20 years. Apply heat.</p>
+  <div class="catalogue-header">
+    <div class="catalogue-title">KNEAD</div>
+    <p class="catalogue-sub">A label built from experience.</p>
   </div>
+
+  <div class="catalogue-divider">
+    <span class="catalogue-col-label">Catalogue</span>
+  </div>
+
+  <ul class="catalogue-list">
+    {% for item in timeline %}
+    <li class="catalogue-item">
+      <button class="catalogue-trigger">
+        <span class="cat-num">{{ item.catalogue }}</span>
+        <span class="cat-name">{{ item.skill }}</span>
+        <span class="cat-company">{{ item.company }}</span>
+        <span class="cat-expand">+</span>
+      </button>
+      <div class="cat-detail">
+        <p>{{ item.detail }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <p class="catalogue-footnote">Twenty years. Six pressings. All titles in print.</p>
 
 </section>
 
@@ -40,10 +46,10 @@ layout: home.njk
 </ul>
 
 <script>
-  var items = document.querySelectorAll('.ingredient-item');
+  var items = document.querySelectorAll('.catalogue-item');
 
   items.forEach(function(item) {
-    var trigger = item.querySelector('.ingredient-trigger');
+    var trigger = item.querySelector('.catalogue-trigger');
 
     trigger.addEventListener('click', function() {
       var isOpen = item.classList.contains('is-open');
