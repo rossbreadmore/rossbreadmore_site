@@ -1,15 +1,15 @@
 /* =============================================
-   KNEAD — STYLES
-   Dark. Minimal. Electronic.
+   ROSS BREADMORE — STYLES
+   Brutalist. Bold. Minimal.
    ============================================= */
 
 :root {
-  --black: #0D0D0D;
-  --white: #EDEBE6;
+  --black: #0a0a0a;
+  --white: #ffffff;
   --accent: #F0FF00;
-  --grey: #505050;
-  --border-heavy: 1px solid #222;
-  --border-light: 1px solid #161616;
+  --grey: #888;
+  --border-heavy: 3px solid var(--black);
+  --border-light: 1px solid #e8e8e8;
 }
 
 /* --- Reset & Base --- */
@@ -21,8 +21,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: var(--black);
-  color: var(--white);
+  background: var(--white);
+  color: var(--black);
   line-height: 1.5;
 }
 
@@ -53,8 +53,8 @@ main {
   font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--white);
+  letter-spacing: 1.5px;
+  color: var(--black);
   text-decoration: none;
 }
 
@@ -80,7 +80,7 @@ nav a {
 }
 
 nav a:hover {
-  color: var(--white);
+  color: var(--black);
   text-decoration: none;
 }
 
@@ -88,46 +88,7 @@ nav a:hover {
 .catalogue-section {
   border-bottom: var(--border-heavy);
   padding-bottom: 3rem;
-}
-
-.catalogue-header {
-  padding: 3.5rem 0 2.5rem;
-}
-
-.catalogue-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(5rem, 23vw, 14rem);
-  font-weight: 700;
-  letter-spacing: -8px;
-  line-height: 0.85;
-  text-transform: uppercase;
-  color: #1C1C1C;
-  user-select: none;
-}
-
-.catalogue-sub {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-top: 1.5rem;
-}
-
-.catalogue-divider {
-  border-top: var(--border-heavy);
-  padding-top: 1.25rem;
-  margin-bottom: 0;
-}
-
-.catalogue-col-label {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--grey);
+  padding-top: 3rem;
 }
 
 .catalogue-list {
@@ -137,25 +98,27 @@ nav a:hover {
 .catalogue-trigger {
   display: flex;
   align-items: baseline;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
   background: none;
   border: none;
   border-bottom: var(--border-light);
-  padding: 1.25rem 0;
+  padding: 1.1rem 0.5rem;
+  margin: 0 -0.5rem;
   cursor: pointer;
   text-align: left;
   color: inherit;
+  transition: background 0.08s ease;
 }
 
-.cat-num {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--accent);
-  flex-shrink: 0;
-  width: 4.5rem;
+.catalogue-trigger:hover {
+  background: var(--accent);
+}
+
+.catalogue-trigger:hover .cat-name,
+.catalogue-trigger:hover .cat-company,
+.catalogue-trigger:hover .cat-expand {
+  color: var(--black);
 }
 
 .cat-name {
@@ -164,10 +127,9 @@ nav a:hover {
   font-weight: 700;
   letter-spacing: -0.5px;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--black);
   flex: 1;
   line-height: 1.1;
-  transition: color 0.08s ease;
 }
 
 .cat-company {
@@ -176,44 +138,29 @@ nav a:hover {
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #363636;
+  color: var(--grey);
   flex-shrink: 0;
   white-space: nowrap;
-  transition: color 0.08s ease;
 }
 
 .cat-expand {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1.1rem;
   font-weight: 300;
-  color: #2A2A2A;
+  color: #ccc;
   flex-shrink: 0;
-  transition: color 0.08s ease, transform 0.1s ease;
+  transition: transform 0.1s ease;
   display: inline-block;
-}
-
-.catalogue-trigger:hover .cat-name,
-.catalogue-item.is-open .cat-name {
-  color: var(--accent);
-}
-
-.catalogue-trigger:hover .cat-company,
-.catalogue-item.is-open .cat-company {
-  color: var(--grey);
-}
-
-.catalogue-trigger:hover .cat-expand,
-.catalogue-item.is-open .cat-expand {
-  color: var(--accent);
 }
 
 .catalogue-item.is-open .cat-expand {
   transform: rotate(45deg);
+  color: var(--black);
 }
 
 .cat-detail {
   display: none;
-  padding: 1rem 0 1.25rem 6rem;
+  padding: 1rem 0.5rem 1.25rem;
   border-bottom: var(--border-light);
 }
 
@@ -224,23 +171,13 @@ nav a:hover {
 .cat-detail p {
   font-size: 0.9rem;
   line-height: 1.9;
-  color: #666;
+  color: #555;
   margin: 0;
-  max-width: 460px;
+  max-width: 480px;
 }
 
 .catalogue-item.is-dimmed .catalogue-trigger {
-  opacity: 0.15;
-}
-
-.catalogue-footnote {
-  padding-top: 1.5rem;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #2A2A2A;
+  opacity: 0.25;
 }
 
 /* --- Post list --- */
@@ -279,7 +216,7 @@ nav a:hover {
   font-weight: 700;
   font-size: 1.2rem;
   letter-spacing: -0.3px;
-  color: var(--white);
+  color: var(--black);
 }
 
 .post-list-date {
@@ -306,7 +243,7 @@ nav a:hover {
   letter-spacing: -2.5px;
   line-height: 0.95;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--black);
   margin-bottom: 1.5rem;
 }
 
@@ -323,7 +260,7 @@ nav a:hover {
 .post-content {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #888;
+  color: #444;
   max-width: 640px;
 }
 
@@ -337,7 +274,7 @@ nav a:hover {
   font-weight: 700;
   letter-spacing: -0.75px;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--black);
   margin-top: 3rem;
   margin-bottom: 1rem;
 }
@@ -348,13 +285,13 @@ nav a:hover {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--white);
+  color: var(--black);
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
 }
 
 .post-content a {
-  color: var(--white);
+  color: var(--black);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -366,7 +303,7 @@ nav a:hover {
 }
 
 .post-content blockquote {
-  border-left: 4px solid var(--white);
+  border-left: 4px solid var(--black);
   padding-left: 1.25rem;
   margin: 2rem 0;
   color: var(--grey);
@@ -407,7 +344,7 @@ figcaption {
   letter-spacing: -3px;
   line-height: 0.9;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--black);
   margin-bottom: 1.25rem;
 }
 
@@ -462,7 +399,7 @@ figcaption {
   font-weight: 700;
   letter-spacing: -1.5px;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--black);
   margin-bottom: 0.4rem;
 }
 
@@ -479,7 +416,7 @@ figcaption {
 .work-description {
   font-size: 1.05rem;
   line-height: 1.8;
-  color: #777;
+  color: #555;
   max-width: 600px;
   margin: 0;
 }
@@ -511,7 +448,7 @@ figcaption {
   flex-shrink: 0;
   width: 1.25rem;
   height: 1.25rem;
-  border: 2px solid var(--white);
+  border: 2px solid var(--black);
   margin-top: 0.2rem;
   position: relative;
   transition: background 0.08s ease;
@@ -553,7 +490,7 @@ figcaption {
   font-weight: 700;
   letter-spacing: -0.3px;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--black);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -561,7 +498,7 @@ figcaption {
 }
 
 .lab-title a {
-  color: var(--white);
+  color: var(--black);
   text-decoration: none;
 }
 
@@ -585,20 +522,20 @@ figcaption {
 }
 
 .lab-status--exploring {
-  background: var(--white);
-  color: var(--black);
+  background: var(--black);
+  color: var(--white);
 }
 
 .lab-status--stalled {
   background: none;
   color: var(--grey);
-  border: 1px solid #333;
+  border: 1px solid #ccc;
 }
 
 .lab-status--shipped {
   background: none;
-  color: var(--white);
-  border: 1px solid var(--white);
+  color: var(--black);
+  border: 1px solid var(--black);
 }
 
 .lab-description {
@@ -611,7 +548,7 @@ figcaption {
 .lab-item.is-checked .lab-title {
   opacity: 0.3;
   text-decoration: line-through;
-  text-decoration-color: var(--white);
+  text-decoration-color: var(--black);
 }
 
 .lab-item.is-checked .lab-description {
@@ -643,14 +580,14 @@ figcaption {
   font-weight: 700;
   letter-spacing: -1px;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--black);
   margin-bottom: 0.5rem;
 }
 
 .video-description {
   font-size: 1rem;
   line-height: 1.75;
-  color: #777;
+  color: #555;
   max-width: 560px;
   margin-bottom: 1.5rem;
 }
@@ -659,7 +596,7 @@ figcaption {
   position: relative;
   cursor: pointer;
   aspect-ratio: 16 / 9;
-  background: #111;
+  background: #f0f0f0;
   overflow: hidden;
 }
 
@@ -746,22 +683,14 @@ footer p {
 }
 
 .footer-links a:hover {
-  color: var(--white);
+  color: var(--black);
 }
 
 /* --- Responsive --- */
 @media (max-width: 600px) {
-  .catalogue-title {
-    letter-spacing: -4px;
-  }
-
   .catalogue-trigger {
     flex-wrap: wrap;
     gap: 0.4rem;
-  }
-
-  .cat-num {
-    width: 100%;
   }
 
   .cat-name {
@@ -776,10 +705,6 @@ footer p {
 
   .cat-expand {
     display: none;
-  }
-
-  .cat-detail {
-    padding-left: 0;
   }
 
   .post-title {

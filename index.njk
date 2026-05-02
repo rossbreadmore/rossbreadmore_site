@@ -1,24 +1,13 @@
 ---
-title: KNEAD
+title: Ross Breadmore
 layout: home.njk
 ---
 
 <section class="catalogue-section">
-
-  <div class="catalogue-header">
-    <div class="catalogue-title">KNEAD</div>
-    <p class="catalogue-sub">A label built from experience.</p>
-  </div>
-
-  <div class="catalogue-divider">
-    <span class="catalogue-col-label">Catalogue</span>
-  </div>
-
   <ul class="catalogue-list">
     {% for item in timeline %}
     <li class="catalogue-item">
       <button class="catalogue-trigger">
-        <span class="cat-num">{{ item.catalogue }}</span>
         <span class="cat-name">{{ item.skill }}</span>
         <span class="cat-company">{{ item.company }}</span>
         <span class="cat-expand">+</span>
@@ -29,9 +18,6 @@ layout: home.njk
     </li>
     {% endfor %}
   </ul>
-
-  <p class="catalogue-footnote">Twenty years. Six pressings. All titles in print.</p>
-
 </section>
 
 <ul class="post-list">
