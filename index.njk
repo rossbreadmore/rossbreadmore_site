@@ -12,9 +12,12 @@ layout: home.njk
     {% for item in timeline %}
     <li class="catalogue-item">
       <button class="catalogue-trigger">
-        <span class="cat-name">{{ item.skill }}</span>
+        <div class="cat-main">
+          <span class="cat-name">{{ item.skill }}</span>
+          <span class="cat-preview">{{ item.detail }}</span>
+        </div>
         <span class="cat-company">{{ item.company }}</span>
-        <span class="cat-expand">+</span>
+        <span class="cat-expand">↓</span>
       </button>
       <div class="cat-detail">
         <p>{{ item.detail }}</p>

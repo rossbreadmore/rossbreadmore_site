@@ -112,44 +112,65 @@ nav a:hover {
 
 .catalogue-trigger {
   display: flex;
-  align-items: baseline;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.5rem;
   width: 100%;
   background: none;
   border: none;
   border-bottom: var(--border-light);
-  padding: 1.1rem 0.5rem;
+  border-left: 3px solid transparent;
+  padding: 1.25rem 0.5rem 1.25rem 1rem;
   margin: 0 -0.5rem;
   cursor: pointer;
   text-align: left;
   color: inherit;
-  transition: background 0.08s ease;
+  transition: background 0.08s ease, border-color 0.08s ease;
 }
 
 .catalogue-trigger:hover {
-  background: var(--accent);
+  background: #fafafa;
+  border-left-color: var(--accent);
 }
 
-.catalogue-trigger:hover .cat-name,
-.catalogue-trigger:hover .cat-company,
-.catalogue-trigger:hover .cat-expand {
-  color: var(--black);
+.catalogue-item.is-open .catalogue-trigger {
+  border-left-color: var(--black);
+}
+
+.cat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
 }
 
 .cat-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-weight: 700;
   letter-spacing: -0.2px;
   text-transform: uppercase;
   color: var(--black);
-  flex: 1;
   line-height: 1.1;
+}
+
+.cat-preview {
+  font-size: 0.82rem;
+  color: #aaa;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.catalogue-item.is-open .cat-preview {
+  display: none;
 }
 
 .cat-company {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -159,24 +180,29 @@ nav a:hover {
 }
 
 .cat-expand {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 300;
-  color: #ccc;
+  font-size: 1rem;
+  color: #bbb;
   flex-shrink: 0;
-  transition: transform 0.1s ease;
+  transition: transform 0.15s ease, color 0.08s ease;
   display: inline-block;
+  line-height: 1;
+}
+
+.catalogue-trigger:hover .cat-expand {
+  color: var(--black);
 }
 
 .catalogue-item.is-open .cat-expand {
-  transform: rotate(45deg);
+  transform: rotate(180deg);
   color: var(--black);
 }
 
 .cat-detail {
   display: none;
-  padding: 1rem 0.5rem 1.25rem;
+  padding: 1.25rem 1rem 1.5rem 1rem;
   border-bottom: var(--border-light);
+  border-left: 3px solid var(--black);
+  margin: 0 -0.5rem;
 }
 
 .catalogue-item.is-open .cat-detail {
@@ -708,17 +734,11 @@ footer p {
   }
 
   .catalogue-trigger {
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .cat-name {
-    flex: unset;
-    width: 100%;
+    gap: 0.75rem;
   }
 
   .cat-company {
-    width: 100%;
+    display: none;
   }
 
   .cat-expand {
