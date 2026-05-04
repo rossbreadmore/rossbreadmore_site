@@ -84,24 +84,6 @@ nav a:hover {
   text-decoration: none;
 }
 
-/* --- Hero image --- */
-.hero-wrap {
-  text-align: center;
-  padding: 3rem 0 1rem;
-}
-
-.hero-image {
-  display: inline-block;
-  max-width: 340px;
-  width: 60%;
-  height: auto;
-  margin: 0 auto;
-  mix-blend-mode: multiply;
-  filter: brightness(1.06);
-  -webkit-mask-image: radial-gradient(ellipse 78% 88% at 50% 50%, black 40%, transparent 85%);
-  mask-image: radial-gradient(ellipse 78% 88% at 50% 50%, black 40%, transparent 85%);
-}
-
 /* --- Skills navigation (homepage) --- */
 .skills-section {
   border-bottom: var(--border-heavy);
@@ -697,10 +679,6 @@ footer p {
 @media (max-width: 600px) {
   .hero-image {
     width: 75%;
-  }
-
-  .hero-image {
-    width: 78%;
   }
 
   .skills-nav {

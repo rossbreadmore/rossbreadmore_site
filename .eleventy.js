@@ -11,6 +11,8 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("styles.css");
   eleventyConfig.addPassthroughCopy("img");
+  eleventyConfig.addPassthroughCopy("standalone");
+  eleventyConfig.ignores.add("standalone/**");
 
   return {
     dir: {

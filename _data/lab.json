@@ -1,5 +1,11 @@
 [
   {
+    "title": "Future Surveillance",
+    "status": "active",
+    "description": "A speculative design concept: a compliance intelligence platform set in a near-future surveillance economy. Built as a working prototype.",
+    "slug": "/standalone/future-surveillance.html"
+  },
+  {
     "title": "Storytelling at work",
     "status": "active",
     "description": "A piece on what narrative in corporate settings actually requires — and why most attempts fail. Draft exists, needs a better opening.",
