@@ -1,6 +1,6 @@
 /* =============================================
    ROSS BREADMORE — STYLES
-   Brutalist. Bold. Minimal.
+   Warm. Bold. Minimal.
    ============================================= */
 
 :root {
@@ -20,7 +20,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   background: var(--white);
   color: var(--black);
   line-height: 1.5;
@@ -49,11 +49,11 @@ main {
 }
 
 .site-logo {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--black);
   text-decoration: none;
 }
@@ -70,11 +70,11 @@ nav {
 }
 
 nav a {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--grey);
   text-decoration: none;
 }
@@ -84,11 +84,26 @@ nav a:hover {
   text-decoration: none;
 }
 
+/* --- Hero image --- */
+.hero-wrap {
+  text-align: center;
+  padding: 3rem 0 1rem;
+}
+
+.hero-image {
+  display: inline-block;
+  max-width: 340px;
+  width: 60%;
+  height: auto;
+  margin: 0 auto;
+  mix-blend-mode: multiply;
+}
+
 /* --- Catalogue (homepage) --- */
 .catalogue-section {
   border-bottom: var(--border-heavy);
   padding-bottom: 3rem;
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 .catalogue-list {
@@ -122,10 +137,10 @@ nav a:hover {
 }
 
 .cat-name {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.2px;
   text-transform: uppercase;
   color: var(--black);
   flex: 1;
@@ -133,10 +148,10 @@ nav a:hover {
 }
 
 .cat-company {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.6rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
   font-weight: 500;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--grey);
   flex-shrink: 0;
@@ -144,7 +159,7 @@ nav a:hover {
 }
 
 .cat-expand {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 1.1rem;
   font-weight: 300;
   color: #ccc;
@@ -169,8 +184,8 @@ nav a:hover {
 }
 
 .cat-detail p {
-  font-size: 0.9rem;
-  line-height: 1.9;
+  font-size: 0.95rem;
+  line-height: 1.85;
   color: #555;
   margin: 0;
   max-width: 480px;
@@ -212,19 +227,19 @@ nav a:hover {
 }
 
 .post-list-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 700;
-  font-size: 1.2rem;
-  letter-spacing: -0.3px;
+  font-size: 1.15rem;
+  letter-spacing: -0.1px;
   color: var(--black);
 }
 
 .post-list-date {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--grey);
   white-space: nowrap;
 }
@@ -237,10 +252,10 @@ nav a:hover {
 }
 
 .post-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(2.5rem, 7vw, 5rem);
   font-weight: 700;
-  letter-spacing: -2.5px;
+  letter-spacing: -2px;
   line-height: 0.95;
   text-transform: uppercase;
   color: var(--black);
@@ -248,11 +263,11 @@ nav a:hover {
 }
 
 .post-date {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--grey);
 }
 
@@ -269,10 +284,10 @@ nav a:hover {
 }
 
 .post-content h2 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 1.75rem;
   font-weight: 700;
-  letter-spacing: -0.75px;
+  letter-spacing: -0.5px;
   text-transform: uppercase;
   color: var(--black);
   margin-top: 3rem;
@@ -280,11 +295,11 @@ nav a:hover {
 }
 
 .post-content h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.25rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.2rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   color: var(--black);
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
@@ -338,10 +353,10 @@ figcaption {
 }
 
 .page-intro-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(3rem, 9vw, 6rem);
   font-weight: 700;
-  letter-spacing: -3px;
+  letter-spacing: -2.5px;
   line-height: 0.9;
   text-transform: uppercase;
   color: var(--black);
@@ -375,40 +390,40 @@ figcaption {
 }
 
 .work-index {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: var(--black);
   background: var(--accent);
   padding: 0.15rem 0.4rem;
 }
 
 .work-dates {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--grey);
 }
 
 .work-company {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(1.75rem, 5vw, 2.75rem);
   font-weight: 700;
-  letter-spacing: -1.5px;
+  letter-spacing: -1px;
   text-transform: uppercase;
   color: var(--black);
   margin-bottom: 0.4rem;
 }
 
 .work-role {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.72rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--grey);
   margin-bottom: 1.1rem;
 }
@@ -485,10 +500,10 @@ figcaption {
 }
 
 .lab-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.1px;
   text-transform: uppercase;
   color: var(--black);
   display: flex;
@@ -508,11 +523,11 @@ figcaption {
 }
 
 .lab-status {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   padding: 0.15rem 0.4rem;
 }
 
@@ -575,10 +590,10 @@ figcaption {
 }
 
 .video-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(1.5rem, 4vw, 2.25rem);
   font-weight: 700;
-  letter-spacing: -1px;
+  letter-spacing: -0.75px;
   text-transform: uppercase;
   color: var(--black);
   margin-bottom: 0.5rem;
@@ -660,10 +675,10 @@ footer {
 }
 
 footer p {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--grey);
 }
 
@@ -673,11 +688,11 @@ footer p {
 }
 
 .footer-links a {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--grey);
   text-decoration: none;
 }
@@ -688,6 +703,10 @@ footer p {
 
 /* --- Responsive --- */
 @media (max-width: 600px) {
+  .hero-image {
+    width: 75%;
+  }
+
   .catalogue-trigger {
     flex-wrap: wrap;
     gap: 0.4rem;
@@ -700,7 +719,6 @@ footer p {
 
   .cat-company {
     width: 100%;
-    padding-top: 0.1rem;
   }
 
   .cat-expand {
