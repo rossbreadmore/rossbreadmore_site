@@ -7,24 +7,26 @@ layout: home.njk
   <img src="/img/hero-loaf.jpg" alt="Breadmore" class="hero-image">
 </div>
 
-<section class="catalogue-section">
-  <ul class="catalogue-list">
+<section class="skills-section">
+  <nav class="skills-nav" aria-label="Skills">
     {% for item in timeline %}
-    <li class="catalogue-item">
-      <button class="catalogue-trigger">
-        <div class="cat-main">
-          <span class="cat-name">{{ item.skill }}</span>
-          <span class="cat-preview">{{ item.detail }}</span>
-        </div>
-        <span class="cat-company">{{ item.company }}</span>
-        <span class="cat-expand">↓</span>
-      </button>
-      <div class="cat-detail">
-        <p>{{ item.detail }}</p>
-      </div>
-    </li>
+    <button class="skill-pip{% if loop.first %} is-active{% endif %}" data-index="{{ loop.index0 }}">
+      {% if loop.index < 10 %}0{{ loop.index }}{% else %}{{ loop.index }}{% endif %}
+    </button>
     {% endfor %}
-  </ul>
+  </nav>
+
+  <div class="skills-panel">
+    {% for item in timeline %}
+    <div class="skill-card{% if loop.first %} is-active{% endif %}" data-index="{{ loop.index0 }}">
+      <div class="skill-card-header">
+        <span class="skill-card-name">{{ item.skill }}</span>
+        <span class="skill-card-company">{{ item.company }}</span>
+      </div>
+      <p class="skill-card-detail">{{ item.detail }}</p>
+    </div>
+    {% endfor %}
+  </div>
 </section>
 
 <ul class="post-list">
@@ -39,24 +41,15 @@ layout: home.njk
 </ul>
 
 <script>
-  var items = document.querySelectorAll('.catalogue-item');
+  var pips = document.querySelectorAll('.skill-pip');
+  var cards = document.querySelectorAll('.skill-card');
 
-  items.forEach(function(item) {
-    var trigger = item.querySelector('.catalogue-trigger');
-
-    trigger.addEventListener('click', function() {
-      var isOpen = item.classList.contains('is-open');
-
-      items.forEach(function(i) {
-        i.classList.remove('is-open', 'is-dimmed');
-      });
-
-      if (!isOpen) {
-        item.classList.add('is-open');
-        items.forEach(function(i) {
-          if (i !== item) i.classList.add('is-dimmed');
-        });
-      }
+  pips.forEach(function(pip, i) {
+    pip.addEventListener('click', function() {
+      pips.forEach(function(p) { p.classList.remove('is-active'); });
+      cards.forEach(function(c) { c.classList.remove('is-active'); });
+      pip.classList.add('is-active');
+      cards[i].classList.add('is-active');
     });
   });
 </script>

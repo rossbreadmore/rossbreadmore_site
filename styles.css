@@ -97,128 +97,94 @@ nav a:hover {
   height: auto;
   margin: 0 auto;
   mix-blend-mode: multiply;
+  filter: brightness(1.06);
+  -webkit-mask-image: radial-gradient(ellipse 78% 88% at 50% 50%, black 40%, transparent 85%);
+  mask-image: radial-gradient(ellipse 78% 88% at 50% 50%, black 40%, transparent 85%);
 }
 
-/* --- Catalogue (homepage) --- */
-.catalogue-section {
+/* --- Skills navigation (homepage) --- */
+.skills-section {
   border-bottom: var(--border-heavy);
-  padding-bottom: 3rem;
-  padding-top: 2rem;
+  padding: 2.5rem 0 3rem;
 }
 
-.catalogue-list {
-  list-style: none;
-}
-
-.catalogue-trigger {
+.skills-nav {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
-  background: none;
-  border: none;
-  border-bottom: var(--border-light);
-  border-left: 3px solid transparent;
-  padding: 1.25rem 0.5rem 1.25rem 1rem;
-  margin: 0 -0.5rem;
-  cursor: pointer;
-  text-align: left;
-  color: inherit;
-  transition: background 0.08s ease, border-color 0.08s ease;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
 }
 
-.catalogue-trigger:hover {
-  background: #fafafa;
-  border-left-color: var(--accent);
-}
-
-.catalogue-item.is-open .catalogue-trigger {
-  border-left-color: var(--black);
-}
-
-.cat-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  min-width: 0;
-}
-
-.cat-name {
+.skill-pip {
   font-family: 'DM Sans', sans-serif;
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: -0.2px;
-  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid #e0e0e0;
+  background: none;
+  cursor: pointer;
+  color: #ccc;
+  transition: border-color 0.08s ease, color 0.08s ease, background 0.08s ease;
+  flex-shrink: 0;
+}
+
+.skill-pip:hover {
+  border-color: var(--black);
   color: var(--black);
-  line-height: 1.1;
 }
 
-.cat-preview {
-  font-size: 0.82rem;
-  color: #aaa;
-  line-height: 1.4;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+.skill-pip.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--black);
 }
 
-.catalogue-item.is-open .cat-preview {
+.skill-card {
   display: none;
 }
 
-.cat-company {
+.skill-card.is-active {
+  display: block;
+}
+
+.skill-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: var(--border-light);
+}
+
+.skill-card-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.62rem;
+  font-size: clamp(1.75rem, 6vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  text-transform: uppercase;
+  color: var(--black);
+  line-height: 1;
+}
+
+.skill-card-company {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--grey);
-  flex-shrink: 0;
   white-space: nowrap;
 }
 
-.cat-expand {
+.skill-card-detail {
   font-size: 1rem;
-  color: #bbb;
-  flex-shrink: 0;
-  transition: transform 0.15s ease, color 0.08s ease;
-  display: inline-block;
-  line-height: 1;
-}
-
-.catalogue-trigger:hover .cat-expand {
-  color: var(--black);
-}
-
-.catalogue-item.is-open .cat-expand {
-  transform: rotate(180deg);
-  color: var(--black);
-}
-
-.cat-detail {
-  display: none;
-  padding: 1.25rem 1rem 1.5rem 1rem;
-  border-bottom: var(--border-light);
-  border-left: 3px solid var(--black);
-  margin: 0 -0.5rem;
-}
-
-.catalogue-item.is-open .cat-detail {
-  display: block;
-}
-
-.cat-detail p {
-  font-size: 0.95rem;
   line-height: 1.85;
   color: #555;
-  margin: 0;
-  max-width: 480px;
-}
-
-.catalogue-item.is-dimmed .catalogue-trigger {
-  opacity: 0.25;
+  max-width: 520px;
 }
 
 /* --- Post list --- */
@@ -733,15 +699,21 @@ footer p {
     width: 75%;
   }
 
-  .catalogue-trigger {
-    gap: 0.75rem;
+  .hero-image {
+    width: 78%;
   }
 
-  .cat-company {
-    display: none;
+  .skills-nav {
+    gap: 0.4rem;
   }
 
-  .cat-expand {
+  .skill-pip {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.65rem;
+  }
+
+  .skill-card-company {
     display: none;
   }
 
