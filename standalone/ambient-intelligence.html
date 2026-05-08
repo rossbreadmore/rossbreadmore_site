@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ambient Intelligence Surface — Sentinel Surveillance Platform</title>
+<meta name="description" content="Interactive prototype: Ambient Intelligence Surface for compliance surveillance. Calm-technology dashboard with agentic worker visibility and chat-first interaction.">
+<meta property="og:title" content="Sentinel — Ambient Intelligence Surface">
+<meta property="og:description" content="Future surveillance platform concept: calm complexity, agentic transparency, and conversational intelligence.">
+<meta property="og:type" content="website">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #06080f;
+    --surface: #0c1018;
+    --surface-2: #111827;
+    --surface-3: #1a2235;
+    --border: #1a2030;
+    --border-subtle: #141c2a;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --text-muted: #3a4558;
+    --accent: #3b82f6;
+    --accent-soft: rgba(59, 130, 246, 0.08);
+    --accent-glow: rgba(59, 130, 246, 0.2);
+    --green: #10b981;
+    --green-soft: rgba(16, 185, 129, 0.06);
+    --green-glow: rgba(16, 185, 129, 0.15);
+    --amber: #f59e0b;
+    --amber-soft: rgba(245, 158, 11, 0.06);
+    --amber-glow: rgba(245, 158, 11, 0.15);
+    --red: #ef4444;
+    --red-soft: rgba(239, 68, 68, 0.06);
+    --red-glow: rgba(239, 68, 68, 0.15);
+    --purple: #8b5cf6;
+    --cyan: #06b6d4;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 52px;
+    border-bottom: 1px solid var(--border-subtle);
+    flex-shrink: 0; background: rgba(6,8,15,0.85);
+    backdrop-filter: blur(20px); z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 18px; }
+  .topbar-logo {
+    font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .topbar-status { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 8px var(--green-glow); animation: breathe 3s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.2)} }
+  .topbar-center { display: flex; align-items: center; gap: 10px; }
+  .scenario-toggle { display: flex; border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; }
+  .scenario-tab {
+    font-size: 11px; padding: 5px 14px; background: transparent; color: var(--text-muted);
+    border: none; cursor: pointer; transition: all 0.2s; font-family: var(--font); white-space: nowrap;
+  }
+  .scenario-tab:not(:last-child) { border-right: 1px solid var(--border); }
+  .scenario-tab.active { background: var(--accent); color: white; }
+  .scenario-tab:hover:not(.active) { color: var(--text-dim); background: var(--surface-2); }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .topbar-metric { text-align: right; }
+  .topbar-metric .value { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); }
+  .topbar-metric .label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .topbar-divider { width: 1px; height: 26px; background: var(--border); }
+
+  /* MAIN */
+  .main { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+  /* AGENT STREAM */
+  .agent-stream {
+    width: 310px; border-right: 1px solid var(--border-subtle);
+    display: flex; flex-direction: column; background: rgba(6,8,15,0.6);
+    flex-shrink: 0; position: relative; overflow: hidden;
+  }
+  .agent-stream::after {
+    content:''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(transparent, var(--bg)); pointer-events: none; z-index: 2;
+  }
+  .agent-stream-header {
+    padding: 14px 18px; border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .agent-stream-header h2 {
+    font-size: 10px; font-weight: 500; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .agent-count-badge {
+    font-size: 10px; padding: 2px 8px; border-radius: 10px;
+    background: var(--accent-soft); color: var(--accent); font-weight: 600; font-family: var(--mono);
+  }
+  .agent-stream-list { flex: 1; overflow: hidden; padding: 6px 10px; position: relative; }
+  .agent-item {
+    padding: 9px 11px; border-radius: var(--radius-sm); margin-bottom: 3px;
+    font-size: 11px; line-height: 1.5; color: var(--text-dim);
+    border: 1px solid transparent; transition: all 0.4s; animation: fadeInUp 0.5s ease-out;
+  }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .agent-item.finding { background: var(--amber-soft); border-color: rgba(245,158,11,0.15); color: var(--text); }
+  .agent-item.critical { background: var(--red-soft); border-color: rgba(239,68,68,0.2); color: var(--text); }
+  .agent-item .agent-name {
+    font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--cyan);
+    margin-bottom: 2px; display: flex; align-items: center; gap: 6px;
+  }
+  .agent-item .agent-name .spinner {
+    width: 8px; height: 8px; border: 1.5px solid var(--cyan); border-top-color: transparent;
+    border-radius: 50%; animation: spin 1s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .agent-item .agent-name .check { color: var(--green); font-size: 10px; }
+  .agent-item .agent-name .alert-icon { color: var(--amber); font-size: 10px; }
+  .agent-item .agent-body { font-family: var(--mono); font-size: 10.5px; line-height: 1.5; }
+  .agent-item .agent-time { font-size: 9px; color: var(--text-muted); margin-top: 3px; font-family: var(--mono); }
+
+  .agent-stats {
+    padding: 10px 18px; border-top: 1px solid var(--border-subtle);
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    flex-shrink: 0; z-index: 3; background: var(--bg);
+  }
+  .agent-stat { text-align: center; }
+  .agent-stat .num { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+  .agent-stat .num.green { color: var(--green); }
+  .agent-stat .num.amber { color: var(--amber); }
+  .agent-stat .num.blue { color: var(--accent); }
+  .agent-stat .desc { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* SURFACE */
+  .surface { flex: 1; position: relative; overflow: hidden; background: var(--bg); }
+  #ambientCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.35; }
+  .desk-grid {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; z-index: 2; padding: 32px;
+  }
+  .desk-node {
+    width: 134px; height: 112px; border-radius: var(--radius); border: 1px solid var(--border);
+    background: var(--surface); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden;
+  }
+  .desk-node::before {
+    content:''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--green); opacity: 0.5; transition: all 0.6s;
+  }
+  .desk-node:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+  .desk-node.elevated { border-color: var(--amber); box-shadow: 0 0 20px var(--amber-soft); animation: nodeAmber 3s ease-in-out infinite; }
+  .desk-node.elevated::before { background: var(--amber); opacity: 1; }
+  .desk-node.critical { border-color: var(--red); box-shadow: 0 0 28px var(--red-soft); animation: nodeRed 2s ease-in-out infinite; }
+  .desk-node.critical::before { background: var(--red); opacity: 1; }
+  @keyframes nodeAmber { 0%,100%{box-shadow:0 0 20px var(--amber-soft)} 50%{box-shadow:0 0 36px rgba(245,158,11,0.12)} }
+  @keyframes nodeRed { 0%,100%{box-shadow:0 0 24px var(--red-soft)} 50%{box-shadow:0 0 44px rgba(239,68,68,0.15)} }
+  .desk-node .desk-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .desk-node .desk-sub { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .desk-node .desk-indicator { margin-top: 8px; display: flex; gap: 3px; align-items: center; }
+  .desk-node .desk-indicator .bar {
+    width: 3.5px; border-radius: 2px; background: var(--green); opacity: 0.4; transition: all 0.6s;
+  }
+  .desk-node.elevated .desk-indicator .bar { background: var(--amber); opacity: 0.7; }
+  .desk-node.critical .desk-indicator .bar { background: var(--red); opacity: 0.9; }
+  .desk-node .desk-badge {
+    position: absolute; top: 7px; right: 7px; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--red); color: white; font-size: 9px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .desk-node.elevated .desk-badge, .desk-node.critical .desk-badge { opacity: 1; transform: scale(1); }
+
+  /* ATTENTION CARDS */
+  .attention-cards {
+    position: absolute; bottom: 20px; left: 20px; right: 412px;
+    display: flex; gap: 12px; z-index: 10; pointer-events: none;
+  }
+  .attention-card {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 18px; min-width: 260px; max-width: 320px;
+    pointer-events: auto; cursor: pointer; backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1); animation: cardEmerge 0.6s cubic-bezier(0.16,1,0.3,1);
+    position: relative; overflow: hidden;
+  }
+  @keyframes cardEmerge { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .attention-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.4); }
+  .attention-card::before { content:''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .attention-card.amber::before { background: var(--amber); }
+  .attention-card.red::before { background: var(--red); }
+  .attention-card .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .attention-card .card-severity {
+    font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 2px 8px; border-radius: 6px;
+  }
+  .attention-card.amber .card-severity { background: var(--amber-soft); color: var(--amber); }
+  .attention-card.red .card-severity { background: var(--red-soft); color: var(--red); }
+  .attention-card .card-time { font-size: 9px; color: var(--text-muted); font-family: var(--mono); }
+  .attention-card .card-title { font-size: 13px; font-weight: 600; margin-bottom: 5px; color: var(--text); }
+  .attention-card .card-body { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+  .attention-card .card-agents { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; }
+  .attention-card .agent-tag {
+    font-size: 9px; font-family: var(--mono); padding: 2px 7px; border-radius: 6px;
+    background: var(--accent-soft); color: var(--accent);
+  }
+
+  /* CHAT PANEL */
+  .chat-panel {
+    width: 392px; border-left: 1px solid var(--border-subtle);
+    display: flex; flex-direction: column; background: rgba(6,8,15,0.85);
+    backdrop-filter: blur(20px); flex-shrink: 0; z-index: 20;
+  }
+  .chat-header {
+    padding: 14px 18px; border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .chat-header .ai-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .chat-header-text h2 { font-size: 13px; font-weight: 600; color: var(--text); }
+  .chat-header-text .sub { font-size: 10px; color: var(--text-muted); }
+
+  .chat-messages {
+    flex: 1; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .chat-msg { max-width: 95%; animation: msgAppear 0.3s ease-out; }
+  @keyframes msgAppear { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .chat-msg.user { align-self: flex-end; }
+  .chat-msg.user .msg-bubble {
+    background: var(--accent); color: white; border-radius: var(--radius) var(--radius) 4px var(--radius);
+    padding: 10px 14px; font-size: 12px; line-height: 1.5;
+  }
+  .chat-msg.ai .msg-bubble {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--radius) var(--radius) var(--radius) 4px;
+    padding: 12px 16px; font-size: 12px; line-height: 1.6; color: var(--text);
+  }
+  .chat-msg .msg-time { font-size: 9px; color: var(--text-muted); margin-top: 3px; font-family: var(--mono); }
+  .chat-msg.user .msg-time { text-align: right; }
+
+  .chat-card {
+    background: var(--surface-3); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 12px; margin-top: 8px;
+  }
+  .chat-card .card-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 11px; }
+  .chat-card .card-row .k { color: var(--text-dim); }
+  .chat-card .card-row .v { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .chat-card .card-row .v.red { color: var(--red); }
+  .chat-card .card-row .v.amber { color: var(--amber); }
+  .chat-card .card-row .v.green { color: var(--green); }
+  .chat-card-title { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .chat-card-bar { height: 4px; border-radius: 2px; background: var(--surface); margin-top: 8px; overflow: hidden; }
+  .chat-card-bar-fill { height: 100%; border-radius: 2px; transition: width 1s ease-out; }
+
+  .typing-indicator { display: flex; gap: 4px; padding: 10px 14px; align-items: center; }
+  .typing-indicator .dot {
+    width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted);
+    animation: typingBounce 1.4s ease-in-out infinite;
+  }
+  .typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%,60%,100%{transform:translateY(0);opacity:.3} 30%{transform:translateY(-5px);opacity:1} }
+
+  .suggestions { padding: 6px 18px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .suggestion-chip {
+    font-size: 10px; padding: 5px 11px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); cursor: pointer; transition: all 0.15s;
+    font-family: var(--font);
+  }
+  .suggestion-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+  .chat-input-area { padding: 14px 18px; border-top: 1px solid var(--border-subtle); }
+  .chat-input-wrapper {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 4px 4px 4px 14px; transition: border-color 0.15s;
+  }
+  .chat-input-wrapper:focus-within { border-color: var(--accent); }
+  .chat-input {
+    flex: 1; background: none; border: none; color: var(--text); font-size: 12px;
+    font-family: var(--font); outline: none; padding: 7px 0;
+  }
+  .chat-input::placeholder { color: var(--text-muted); }
+  .chat-send {
+    width: 34px; height: 34px; border-radius: var(--radius-sm); background: var(--accent);
+    border: none; color: white; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: all 0.15s; flex-shrink: 0;
+  }
+  .chat-send:hover { background: #2563eb; }
+  .chat-send svg { width: 15px; height: 15px; }
+
+  .concept-label {
+    position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; color: var(--text-muted); background: var(--surface);
+    padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); z-index: 50; pointer-events: none;
+  }
+
+  .toast {
+    position: fixed; top: 62px; left: 50%; transform: translateX(-50%) translateY(-20px);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 18px; font-size: 12px; color: var(--text); z-index: 200;
+    opacity: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); backdrop-filter: blur(20px);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast .toast-icon {
+    width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 10px; flex-shrink: 0;
+  }
+  .toast .toast-icon.red { background: var(--red-soft); color: var(--red); }
+  .toast .toast-icon.amber { background: var(--amber-soft); color: var(--amber); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-logo">Sentinel</span>
+    <div class="topbar-status"><span class="status-dot"></span><span id="agentStatusText">42 agents active</span></div>
+  </div>
+  <div class="topbar-center">
+    <div class="scenario-toggle">
+      <button class="scenario-tab active" data-scenario="insider">Insider Trading</button>
+      <button class="scenario-tab" data-scenario="barrier">Barrier Breach</button>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-metric"><div class="value" id="metricAlerts">3</div><div class="label">Open alerts</div></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-metric"><div class="value" id="metricScanned">847k</div><div class="label">Events today</div></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-metric"><div class="value" id="metricCoverage">99.2%</div><div class="label">Coverage</div></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="agent-stream">
+    <div class="agent-stream-header">
+      <h2>Agent Activity <span class="agent-count-badge" id="activeAgentCount">42</span></h2>
+    </div>
+    <div class="agent-stream-list" id="agentStreamList"></div>
+    <div class="agent-stats">
+      <div class="agent-stat"><div class="num green" id="statCleared">1,247</div><div class="desc">Cleared</div></div>
+      <div class="agent-stat"><div class="num amber" id="statFlagged">18</div><div class="desc">Flagged</div></div>
+      <div class="agent-stat"><div class="num blue" id="statRunning">42</div><div class="desc">Running</div></div>
+    </div>
+  </div>
+
+  <div class="surface" id="surface">
+    <canvas id="ambientCanvas"></canvas>
+    <div class="desk-grid" id="deskGrid"></div>
+    <div class="attention-cards" id="attentionCards"></div>
+  </div>
+
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="ai-avatar">S</div>
+      <div class="chat-header-text"><h2>Sentinel</h2><div class="sub">Compliance Intelligence</div></div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="suggestions" id="suggestions"></div>
+    <div class="chat-input-area">
+      <div class="chat-input-wrapper">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about any desk, person, or pattern..." />
+        <button class="chat-send" onclick="handleSend()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><div class="toast-icon amber" id="toastIcon">!</div><span id="toastText"></span></div>
+<div class="concept-label">Concept 2 — Ambient Intelligence Surface</div>
+
+<script>
+// ============================================
+// SCENARIO DATA
+// ============================================
+
+const scenarioData = {
+  insider: {
+    metrics: { alerts: '3', scanned: '847k', coverage: '99.2%' },
+    stats: { cleared: '1,247', flagged: '18', running: '42' },
+    agentCount: '42',
+    desks: [
+      { id:'eq', name:'Equities', sub:'US Markets', status:'critical', alerts:2, bars:[3,5,8,6,9,7,4] },
+      { id:'fi', name:'Fixed Income', sub:'Rates & Credit', status:'normal', alerts:0, bars:[2,3,2,3,2,2,3] },
+      { id:'fx', name:'FX & Rates', sub:'G10 & EM', status:'normal', alerts:0, bars:[3,2,4,3,2,3,2] },
+      { id:'cm', name:'Commodities', sub:'Energy & Metals', status:'normal', alerts:0, bars:[2,3,3,2,2,3,2] },
+      { id:'ap', name:'APAC Desk', sub:'Asia-Pacific', status:'elevated', alerts:1, bars:[3,4,5,6,4,5,3] },
+      { id:'em', name:'EMEA Desk', sub:'Europe & ME', status:'normal', alerts:0, bars:[2,2,3,2,3,2,2] },
+      { id:'pa', name:'Prime & Agency', sub:'Client Facing', status:'normal', alerts:0, bars:[3,2,2,3,2,2,3] },
+      { id:'qr', name:'Quant Research', sub:'Systematic', status:'normal', alerts:0, bars:[2,3,2,2,3,2,2] },
+    ],
+    attentionCards: [
+      { severity:'Critical', cls:'red', time:'12m ago', title:'Pre-announcement pattern: J. Marcus / ARC', body:'120k share accumulation correlated with external contacts prior to Phase III announcement. 84% confidence match.', agents:['pattern-detector-01','trade-correlator-07','comms-scanner-eq-14'], query:'What is the developing situation on Equities?' },
+      { severity:'Elevated', cls:'amber', time:'28m ago', title:'Position concentration: L. Wong / HSI Futures', body:'2.4x normal concentration in HSI futures. Reviewing overnight WeChat communications for context.', agents:['position-monitor-02','comms-scanner-ap-08'], query:'Show me APAC desk activity' },
+    ],
+    initialChat: {
+      text: 'Good morning. All systems operating normally. 42 surveillance agents are active across 8 desks.',
+      card: { title: "Today's Snapshot", rows: [
+        {k:'Events processed',v:'847,291',c:''},
+        {k:'Alerts generated',v:'3',c:'amber'},
+        {k:'Auto-cleared',v:'1,247',c:'green'},
+        {k:'Requiring review',v:'2',c:'red'},
+      ], bar:{w:'99.2%',color:'var(--green)'} },
+      followUp: "I'm monitoring a developing situation on the Equities desk — a communication pattern flagged 12 minutes ago. I'll surface it when confidence reaches threshold.",
+    },
+    initialSuggestions: ["What's developing on Equities?", "APAC desk activity", "Info barrier status"],
+    agentFeed: [
+      { agent:'comms-scanner-eq-14', body:'Analyzing 342 Bloomberg chat messages from Equities desk...', type:'running' },
+      { agent:'trade-correlator-07', body:'Cross-referencing J. Marcus external contacts with ARC order flow', type:'running' },
+      { agent:'barrier-monitor-03', body:'Information barrier check: Equities ↔ Research — 2 anomalous contacts', type:'finding' },
+      { agent:'sentiment-nlp-12', body:'Sentiment shift detected in Marcus → Patel thread. Urgency score: 0.87', type:'finding' },
+      { agent:'pattern-detector-01', body:'Accumulation pattern on ARC matches pre-announcement template (84%)', type:'critical' },
+      { agent:'voice-transcriber-09', body:'Transcribing turret recording: Marcus ↔ External (4m 32s)', type:'running' },
+      { agent:'comms-scanner-ap-08', body:'APAC desk: Scanning 189 WeChat messages from overnight session', type:'running' },
+      { agent:'position-monitor-02', body:'APAC: Unusual HSI futures concentration. Reviewing.', type:'finding' },
+      { agent:'clearance-checker-05', body:'Personal trading pre-clearance request from J. Marcus flagged', type:'finding' },
+      { agent:'comms-scanner-fi-11', body:'Fixed Income: 512 messages scanned. No anomalies.', type:'complete' },
+      { agent:'network-mapper-04', body:'Updating communication graph. 12,841 edges processed.', type:'running' },
+      { agent:'volume-anomaly-10', body:'ARC volume 340% above 30-day average. Flagging.', type:'finding' },
+    ],
+    liveFeed: [
+      { agent:'comms-scanner-eq-14', body:'New message detected: Marcus → External. Queuing.', type:'running' },
+      { agent:'trade-correlator-07', body:'ARC correlation updated. Confidence now 86%.', type:'finding' },
+      { agent:'volume-anomaly-10', body:'ARC after-hours volume spike: 420% above norm.', type:'finding' },
+      { agent:'comms-scanner-fi-11', body:'FI batch complete: 0 anomalies in 128 messages.', type:'complete' },
+      { agent:'sentiment-nlp-12', body:'Running NLP pass on Marcus voice transcript...', type:'running' },
+      { agent:'barrier-monitor-03', body:'Barrier scan complete. 2 findings persistent.', type:'finding' },
+      { agent:'regulatory-feed-06', body:'SEC EDGAR monitor: No new material events for ARC.', type:'running' },
+      { agent:'network-mapper-04', body:'Marcus external contact count above P95 for role.', type:'finding' },
+      { agent:'voice-transcriber-09', body:'Transcript ready: Marcus ↔ External call. Flagging phrases.', type:'finding' },
+      { agent:'trade-reconciler-08', body:'Reconciling 4,891 trades. All matched.', type:'complete' },
+    ],
+    chatResponses: {
+      "What's developing on Equities?": {
+        text:'Tracking a potential pre-announcement trading pattern involving <strong>J. Marcus</strong> on the Equities desk:',
+        card:{title:'⚠ Alert TCE-2891 — Equities Desk', rows:[
+          {k:'Subject',v:'J. Marcus (Senior PM)',c:''},
+          {k:'Pattern',v:'Pre-announcement accumulation',c:'red'},
+          {k:'Security',v:'ARC (Arcadian Therapeutics)',c:''},
+          {k:'Position change',v:'+120,000 shares / 48hrs',c:'amber'},
+          {k:'External contacts',v:'3 calls to HedgeCo (D. Chen)',c:'red'},
+          {k:'Confidence',v:'84%',c:'amber'},
+        ], bar:{w:'84%',color:'var(--amber)'}},
+        followUp:'Pattern-detector matched this to pre-announcement template. Recommend opening formal investigation. <strong>Temporal Correlation view</strong> is ready.',
+        suggestions:['Open investigation on Marcus','Show the timeline','Who is D. Chen?'],
+        highlight:'eq',
+      },
+      "APAC desk activity": {
+        text:'APAC desk has elevated activity from overnight trading:',
+        card:{title:'APAC Desk — Elevated', rows:[
+          {k:'HSI Futures position',v:'2.4x normal concentration',c:'amber'},
+          {k:'Trader',v:'L. Wong',c:''},
+          {k:'WeChat messages flagged',v:'4 of 189 scanned',c:'amber'},
+          {k:'Barrier status',v:'Clean',c:'green'},
+        ], bar:{w:'62%',color:'var(--amber)'}},
+        followUp:"Looks like concentrated directional risk rather than compliance concern. Position-monitor still analyzing. I'll alert you if it escalates.",
+        suggestions:['Deep dive on L. Wong','HSI position history','Compare to APAC norms'],
+        highlight:'ap',
+      },
+      "Info barrier status": {
+        text:'Two barrier-related findings today:',
+        card:{title:'Information Barrier Status', rows:[
+          {k:'Equities ↔ Research',v:'2 anomalous contacts',c:'red'},
+          {k:'FI ↔ Trading',v:'Clean',c:'green'},
+          {k:'APAC ↔ EMEA',v:'Clean',c:'green'},
+          {k:'All other barriers',v:'No issues',c:'green'},
+        ], bar:null},
+        followUp:'Equities ↔ Research contacts relate to the Marcus situation — he requested a model update from M. Webb in Research before the trading pattern began.',
+        suggestions:['Barrier breach details','Who is M. Webb?','Historical violations'],
+        highlight:'eq',
+      },
+    },
+    escalation: { toast:'Agent pattern-detector-01: Confidence threshold reached for TCE-2891', toastIcon:'red', deskId:'eq', deskTo:'critical',
+      agentMsg:{ agent:'pattern-detector-01', body:'THRESHOLD: Pre-announcement pattern ARC now 86%. Immediate human review recommended.', type:'critical' }
+    },
+  },
+  barrier: {
+    metrics: { alerts: '2', scanned: '623k', coverage: '98.7%' },
+    stats: { cleared: '982', flagged: '24', running: '38' },
+    agentCount: '38',
+    desks: [
+      { id:'eq', name:'Equities', sub:'US Markets', status:'normal', alerts:0, bars:[2,3,2,3,2,2,3] },
+      { id:'fi', name:'Fixed Income', sub:'Rates & Credit', status:'normal', alerts:0, bars:[2,3,2,3,2,2,3] },
+      { id:'rs', name:'Research', sub:'Equity Research', status:'critical', alerts:2, bars:[4,6,8,7,5,8,6] },
+      { id:'sl', name:'Sales', sub:'Institutional', status:'elevated', alerts:1, bars:[3,5,6,5,4,6,4] },
+      { id:'ap', name:'APAC Desk', sub:'Asia-Pacific', status:'normal', alerts:0, bars:[2,2,3,2,3,2,2] },
+      { id:'em', name:'EMEA Desk', sub:'Europe & ME', status:'normal', alerts:0, bars:[2,2,3,2,3,2,2] },
+      { id:'pa', name:'Prime & Agency', sub:'Client Facing', status:'normal', alerts:0, bars:[3,2,2,3,2,2,3] },
+      { id:'tr', name:'Trading', sub:'Execution', status:'normal', alerts:0, bars:[2,3,2,2,3,2,2] },
+    ],
+    attentionCards: [
+      { severity:'Critical', cls:'red', time:'8m ago', title:'Barrier breach: Nakamura (Research) → Fontaine (Sales)', body:'3 cross-barrier WhatsApp messages with coded language detected. Wall-cross request was denied by compliance.', agents:['barrier-monitor-03','nlp-codedlang-02','graph-analyzer-06'], query:'What is the barrier breach?' },
+      { severity:'Elevated', cls:'amber', time:'19m ago', title:'Client front-running: Apex Capital / MER', body:'180,000 MER shares sold by Apex Capital in 72hrs preceding research publication. Correlation with Fontaine comms.', agents:['trade-correlator-07','client-monitor-11'], query:'Show me the Apex Capital activity' },
+    ],
+    initialChat: {
+      text: 'Good morning. 38 surveillance agents active. Two barrier-related findings require your attention.',
+      card: { title: "Today's Snapshot", rows: [
+        {k:'Events processed',v:'623,104',c:''},
+        {k:'Barrier crossings detected',v:'3 (all same pair)',c:'red'},
+        {k:'NLP flags',v:'Coded language in 3 messages',c:'amber'},
+        {k:'Client activity correlation',v:'1 match (Apex Capital)',c:'red'},
+      ], bar:{w:'98.7%',color:'var(--amber)'} },
+      followUp: "The barrier-monitor and NLP agents have identified a pattern between <strong>K. Nakamura</strong> (Research) and <strong>R. Fontaine</strong> (Sales) involving coded language on WhatsApp and a denied wall-cross request.",
+    },
+    initialSuggestions: ["What is the barrier breach?", "Show me the Apex Capital activity", "Nakamura communication history"],
+    agentFeed: [
+      { agent:'barrier-monitor-03', body:'Cross-barrier contact detected: Nakamura (Research) → Fontaine (Sales) via WhatsApp', type:'critical' },
+      { agent:'nlp-codedlang-02', body:'Coded language match: "weather in Milan" maps to Meridian Corp (MER) with 91% confidence', type:'finding' },
+      { agent:'graph-analyzer-06', body:'Communication graph anomaly: Nakamura-Fontaine edge weight 4.2x above baseline for cross-desk pairs', type:'finding' },
+      { agent:'wallcross-tracker-04', body:'Wall-cross request #WC-882 for Fontaine was DENIED on Apr 7. Subsequent contact detected.', type:'critical' },
+      { agent:'client-monitor-11', body:'Apex Capital: 180k MER shares sold in 72hr window pre-publication. Reviewing.', type:'finding' },
+      { agent:'comms-scanner-rs-09', body:'Research desk: Scanning 246 messages. 4 flagged for Nakamura.', type:'running' },
+      { agent:'comms-scanner-sl-10', body:'Sales desk: Scanning 318 messages. 3 flagged for Fontaine.', type:'running' },
+      { agent:'trade-correlator-07', body:'Cross-referencing Apex Capital trades with Fontaine communication timestamps', type:'running' },
+      { agent:'sentiment-nlp-12', body:'Analyzing Fontaine → Apex thread: tipping language score 0.82', type:'finding' },
+      { agent:'publication-monitor-08', body:'MER research note published Apr 9 08:00. Tracking pre-publication activity window.', type:'running' },
+      { agent:'whatsapp-ingester-13', body:'3 WhatsApp messages between Nakamura and Fontaine ingested from archive', type:'running' },
+      { agent:'barrier-monitor-03', body:'All other barrier pairs: clean. Isolating to Research ↔ Sales only.', type:'complete' },
+    ],
+    liveFeed: [
+      { agent:'nlp-codedlang-02', body:'Second coded phrase identified: "weather clearing up" → publication timing. Confidence 88%.', type:'finding' },
+      { agent:'client-monitor-11', body:'Apex Capital MER short position grew 3.1x in pre-pub window.', type:'finding' },
+      { agent:'graph-analyzer-06', body:'Nakamura-Fontaine personal device usage 6x above policy threshold.', type:'finding' },
+      { agent:'comms-scanner-fi-11', body:'Fixed Income: 290 messages scanned. Clean.', type:'complete' },
+      { agent:'barrier-monitor-03', body:'Timeline reconstruction: first breach preceded denied wall-cross by 4hrs.', type:'critical' },
+      { agent:'trade-correlator-07', body:'Fontaine inquiry for MER borrows 2hrs after WhatsApp contact.', type:'finding' },
+      { agent:'sentiment-nlp-12', body:'Post-publication message "Apex sends their thanks" — acknowledgment pattern.', type:'finding' },
+      { agent:'comms-scanner-ap-08', body:'APAC desk: 178 messages scanned. No anomalies.', type:'complete' },
+      { agent:'wallcross-tracker-04', body:'Historical check: Nakamura has 0 prior wall-cross violations.', type:'complete' },
+      { agent:'publication-monitor-08', body:'MER stock down 38% since note publication. Impact confirmed material.', type:'finding' },
+    ],
+    chatResponses: {
+      "What is the barrier breach?": {
+        text:'I\'ve identified a serious information barrier breach between Research and Sales:',
+        card:{title:'⚠ Alert IB-4417 — Research ↔ Sales Barrier', rows:[
+          {k:'Restricted side',v:'K. Nakamura (Equity Research)',c:''},
+          {k:'Public side',v:'R. Fontaine (Institutional Sales)',c:''},
+          {k:'Channel',v:'WhatsApp (personal device)',c:'red'},
+          {k:'Coded language',v:'"Weather in Milan" → MER (91%)',c:'red'},
+          {k:'Wall-cross request',v:'Denied — Apr 7',c:'red'},
+          {k:'Post-denial contact',v:'2 additional messages',c:'red'},
+        ], bar:{w:'91%',color:'var(--red)'}},
+        followUp:'The NLP agent flagged "weather in Milan" as coded language for Meridian Corp (ticker MER, HQ Milan). Nakamura\'s research note initiated coverage with Underperform rating and $18 PT vs $31 consensus. The <strong>wall-cross request was denied</strong> before two of the three WhatsApp messages were sent.',
+        suggestions:['Show me the coded language analysis','Timeline of all contacts','What did Fontaine do after?'],
+        highlight:'rs',
+      },
+      "Show me the Apex Capital activity": {
+        text:'Apex Capital activity correlates with the barrier breach timeline:',
+        card:{title:'Client Activity — Apex Capital / MER', rows:[
+          {k:'Sales coverage',v:'R. Fontaine',c:''},
+          {k:'MER shares sold (pre-pub)',v:'180,000 shares',c:'red'},
+          {k:'Timing',v:'72hrs before research publication',c:'red'},
+          {k:'P&L impact',v:'Est. $2.3M avoided loss',c:'red'},
+          {k:'Fontaine tipping language',v:'Score: 0.82',c:'amber'},
+        ], bar:{w:'82%',color:'var(--red)'}},
+        followUp:'Fontaine told Apex to "revisit your Meridian position before month-end" and "have your ducks in a row" by Monday. Apex sold their entire position in the 72 hours before the Underperform note dropped. MER is down 38% since.',
+        suggestions:['Full Fontaine-Apex thread','Other Fontaine clients','Report to legal'],
+        highlight:'sl',
+      },
+      "Nakamura communication history": {
+        text:'Nakamura\'s recent communication pattern:',
+        card:{title:'K. Nakamura — Communication Profile', rows:[
+          {k:'Cross-barrier contacts (30d)',v:'3 (all to Fontaine)',c:'red'},
+          {k:'Personal device usage',v:'6x above policy',c:'amber'},
+          {k:'Prior violations',v:'None',c:'green'},
+          {k:'Active coverage',v:'MER (Meridian Corp)',c:''},
+          {k:'Note status',v:'Published Apr 9',c:''},
+        ], bar:null},
+        followUp:'Nakamura has no prior compliance history, which makes this more likely a judgment lapse than systematic behavior. However, the use of coded language and personal WhatsApp suggests awareness that the communication was improper.',
+        suggestions:['Nakamura-Fontaine relationship history','Other Nakamura contacts','Personal device policy'],
+        highlight:'rs',
+      },
+    },
+    escalation: { toast:'Agent nlp-codedlang-02: Third coded phrase identified — escalation confidence 94%', toastIcon:'red', deskId:'rs', deskTo:'critical',
+      agentMsg:{ agent:'nlp-codedlang-02', body:'ESCALATION: Third coded phrase "sunny skies ahead" matched to positive sentiment re: MER timing. Confidence 94%.', type:'critical' }
+    },
+  },
+};
+
+// ============================================
+// STATE
+// ============================================
+let currentScenario = 'insider';
+let liveIndex = 0;
+let liveInterval = null;
+let escalationTimeout = null;
+let barInterval = null;
+
+function SD() { return scenarioData[currentScenario]; }
+
+// ============================================
+// RENDER
+// ============================================
+
+function renderAll() {
+  const s = SD();
+  // Metrics
+  document.getElementById('metricAlerts').textContent = s.metrics.alerts;
+  document.getElementById('metricScanned').textContent = s.metrics.scanned;
+  document.getElementById('metricCoverage').textContent = s.metrics.coverage;
+  document.getElementById('activeAgentCount').textContent = s.agentCount;
+  document.getElementById('agentStatusText').textContent = s.agentCount + ' agents active';
+  document.getElementById('statCleared').textContent = s.stats.cleared;
+  document.getElementById('statFlagged').textContent = s.stats.flagged;
+  document.getElementById('statRunning').textContent = s.stats.running;
+
+  renderDesks();
+  renderAgentStream();
+  renderAttentionCards();
+  renderInitialChat();
+}
+
+function renderDesks() {
+  const grid = document.getElementById('deskGrid');
+  grid.innerHTML = '';
+  SD().desks.forEach(d => {
+    const node = document.createElement('div');
+    node.className = `desk-node ${d.status}`;
+    node.dataset.id = d.id;
+    node.innerHTML = `
+      <div class="desk-badge">${d.alerts}</div>
+      <div class="desk-name">${d.name}</div>
+      <div class="desk-sub">${d.sub}</div>
+      <div class="desk-indicator">${d.bars.map(h=>`<div class="bar" style="height:${h*2+4}px"></div>`).join('')}</div>
+    `;
+    node.addEventListener('click', () => {
+      const query = Object.keys(SD().chatResponses)[0];
+      if (d.status !== 'normal') processMessage(query);
+    });
+    grid.appendChild(node);
+  });
+}
+
+function renderAgentStream() {
+  const list = document.getElementById('agentStreamList');
+  list.innerHTML = '';
+  SD().agentFeed.forEach((a, i) => {
+    const item = document.createElement('div');
+    item.className = `agent-item ${a.type==='finding'?'finding':a.type==='critical'?'critical':''}`;
+    item.style.animationDelay = (i*0.04)+'s';
+    const icon = a.type==='running' ? '<span class="spinner"></span>' : a.type==='complete' ? '<span class="check">✓</span>' : '<span class="alert-icon">⚡</span>';
+    const now = new Date();
+    const t = new Date(now.getTime() - (i*45000));
+    const ts = `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}:${String(t.getSeconds()).padStart(2,'0')}`;
+    item.innerHTML = `<div class="agent-name">${icon} ${a.agent}</div><div class="agent-body">${a.body}</div><div class="agent-time">${ts}</div>`;
+    list.appendChild(item);
+  });
+}
+
+function renderAttentionCards() {
+  const container = document.getElementById('attentionCards');
+  container.innerHTML = '';
+  SD().attentionCards.forEach(c => {
+    const card = document.createElement('div');
+    card.className = `attention-card ${c.cls}`;
+    card.onclick = () => processMessage(c.query);
+    card.innerHTML = `
+      <div class="card-header"><span class="card-severity">${c.severity}</span><span class="card-time">${c.time}</span></div>
+      <div class="card-title">${c.title}</div>
+      <div class="card-body">${c.body}</div>
+      <div class="card-agents">${c.agents.map(a=>`<span class="agent-tag">${a}</span>`).join('')}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function renderInitialChat() {
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = '';
+  const ic = SD().initialChat;
+  let html = `<p>${ic.text}</p>`;
+  if (ic.card) {
+    html += `<div class="chat-card"><div class="chat-card-title">${ic.card.title}</div>`;
+    ic.card.rows.forEach(r => { html += `<div class="card-row"><span class="k">${r.k}</span><span class="v ${r.c}">${r.v}</span></div>`; });
+    if (ic.card.bar) html += `<div class="chat-card-bar"><div class="chat-card-bar-fill" style="width:${ic.card.bar.w};background:${ic.card.bar.color}"></div></div>`;
+    html += `</div>`;
+  }
+  if (ic.followUp) html += `<p style="margin-top:10px">${ic.followUp}</p>`;
+  addAIMsg(html, '08:42');
+  updateSuggestions(SD().initialSuggestions);
+}
+
+// ============================================
+// CHAT
+// ============================================
+
+function addUserMsg(text) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg user';
+  const now = new Date();
+  div.innerHTML = `<div class="msg-bubble">${text}</div><div class="msg-time">${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addAIMsg(html, timeOverride) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ai';
+  const now = new Date();
+  const t = timeOverride || `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  div.innerHTML = `<div class="msg-bubble">${html}</div><div class="msg-time">${t}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addTyping() {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ai'; div.id = 'typingInd';
+  div.innerHTML = '<div class="msg-bubble"><div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+function removeTyping() { const el = document.getElementById('typingInd'); if(el) el.remove(); }
+
+function updateSuggestions(items) {
+  const container = document.getElementById('suggestions');
+  container.innerHTML = '';
+  items.forEach(s => {
+    const chip = document.createElement('button');
+    chip.className = 'suggestion-chip'; chip.textContent = s;
+    chip.onclick = () => processMessage(s);
+    container.appendChild(chip);
+  });
+}
+
+function buildResponseHTML(resp) {
+  let html = `<p>${resp.text}</p>`;
+  if (resp.card) {
+    html += `<div class="chat-card"><div class="chat-card-title">${resp.card.title}</div>`;
+    resp.card.rows.forEach(r => { html += `<div class="card-row"><span class="k">${r.k}</span><span class="v ${r.c}">${r.v}</span></div>`; });
+    if (resp.card.bar) html += `<div class="chat-card-bar"><div class="chat-card-bar-fill" style="width:0%;background:${resp.card.bar.color}" data-target="${resp.card.bar.w}"></div></div>`;
+    html += `</div>`;
+  }
+  if (resp.followUp) html += `<p style="margin-top:10px">${resp.followUp}</p>`;
+  return html;
+}
+
+const defaultResp = {
+  text:'Searching across all agent feeds and data sources:',
+  card:{title:'Search Results', rows:[{k:'Agents queried',v:'All active',c:''},{k:'Status',v:'Processing...',c:'amber'}], bar:{w:'45%',color:'var(--accent)'}},
+  followUp:"I'll update this view as findings come in. Try refining your query or explore the surface.",
+  suggestions:['Narrow to this week','Focus on flagged desks','Show all open alerts'],
+};
+
+function processMessage(text) {
+  addUserMsg(text);
+  addTyping();
+  const resp = SD().chatResponses[text] || defaultResp;
+  setTimeout(() => {
+    removeTyping();
+    addAIMsg(buildResponseHTML(resp));
+    // Animate bars
+    setTimeout(() => {
+      document.querySelectorAll('.chat-card-bar-fill[data-target]').forEach(bar => {
+        if (bar.style.width === '0%') bar.style.width = bar.dataset.target;
+      });
+    }, 100);
+    updateSuggestions(resp.suggestions || defaultResp.suggestions);
+    if (resp.highlight) highlightDesk(resp.highlight);
+  }, 1000 + Math.random() * 800);
+}
+
+function highlightDesk(id) {
+  const node = document.querySelector(`.desk-node[data-id="${id}"]`);
+  if (!node) return;
+  node.style.transform = 'translateY(-4px) scale(1.05)';
+  node.style.boxShadow = '0 0 36px var(--accent-glow), 0 10px 36px rgba(0,0,0,0.4)';
+  node.style.borderColor = 'var(--accent)';
+  setTimeout(() => { node.style.transform=''; node.style.boxShadow=''; node.style.borderColor=''; }, 3000);
+}
+
+function handleSend() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  processMessage(text);
+}
+
+// ============================================
+// AMBIENT CANVAS
+// ============================================
+
+function initCanvas() {
+  const canvas = document.getElementById('ambientCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize() {
+    canvas.width = canvas.offsetWidth * (window.devicePixelRatio||1);
+    canvas.height = canvas.offsetHeight * (window.devicePixelRatio||1);
+    ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+  }
+  resize(); window.addEventListener('resize', resize);
+  for (let i=0; i<50; i++) particles.push({
+    x:Math.random()*canvas.offsetWidth, y:Math.random()*canvas.offsetHeight,
+    vx:(Math.random()-0.5)*0.25, vy:(Math.random()-0.5)*0.25,
+    r:Math.random()*1.5+0.5, o:Math.random()*0.25+0.08,
+  });
+  function draw() {
+    ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);
+    for(let i=0;i<particles.length;i++) {
+      for(let j=i+1;j<particles.length;j++) {
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<110) { ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(59,130,246,${0.05*(1-dist/110)})`; ctx.lineWidth=0.5; ctx.stroke(); }
+      }
+    }
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(59,130,246,${p.o})`; ctx.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=canvas.offsetWidth; if(p.x>canvas.offsetWidth)p.x=0;
+      if(p.y<0)p.y=canvas.offsetHeight; if(p.y>canvas.offsetHeight)p.y=0;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ============================================
+// LIVE FEED + ESCALATION
+// ============================================
+
+function startLiveFeed() {
+  if (liveInterval) clearInterval(liveInterval);
+  liveIndex = 0;
+  liveInterval = setInterval(() => {
+    const feed = SD().liveFeed;
+    const a = feed[liveIndex % feed.length];
+    liveIndex++;
+    const list = document.getElementById('agentStreamList');
+    const now = new Date();
+    const ts = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+    const item = document.createElement('div');
+    item.className = `agent-item ${a.type==='finding'?'finding':a.type==='critical'?'critical':''}`;
+    const icon = a.type==='running'?'<span class="spinner"></span>':a.type==='complete'?'<span class="check">✓</span>':'<span class="alert-icon">⚡</span>';
+    item.innerHTML = `<div class="agent-name">${icon} ${a.agent}</div><div class="agent-body">${a.body}</div><div class="agent-time">${ts}</div>`;
+    list.insertBefore(item, list.firstChild);
+    while(list.children.length > 18) list.removeChild(list.lastChild);
+    // Update scanned metric
+    const el = document.getElementById('metricScanned');
+    const cur = parseFloat(el.textContent.replace('k',''));
+    el.textContent = (cur + Math.random()*1.5).toFixed(0) + 'k';
+  }, 3500 + Math.random()*2000);
+}
+
+function scheduleEscalation() {
+  if (escalationTimeout) clearTimeout(escalationTimeout);
+  escalationTimeout = setTimeout(() => {
+    const esc = SD().escalation;
+    // Toast
+    const toast = document.getElementById('toast');
+    document.getElementById('toastText').textContent = esc.toast;
+    document.getElementById('toastIcon').className = 'toast-icon ' + esc.toastIcon;
+    toast.classList.add('visible');
+    setTimeout(() => toast.classList.remove('visible'), 5000);
+    // Desk state
+    const node = document.querySelector(`.desk-node[data-id="${esc.deskId}"]`);
+    if (node) { node.classList.remove('elevated','normal'); node.classList.add(esc.deskTo); }
+    // Agent message
+    const list = document.getElementById('agentStreamList');
+    const now = new Date();
+    const ts = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+    const item = document.createElement('div');
+    item.className = 'agent-item critical';
+    const m = esc.agentMsg;
+    item.innerHTML = `<div class="agent-name"><span class="alert-icon">⚡</span> ${m.agent}</div><div class="agent-body">${m.body}</div><div class="agent-time">${ts}</div>`;
+    list.insertBefore(item, list.firstChild);
+  }, 15000);
+}
+
+function startBarAnimation() {
+  if (barInterval) clearInterval(barInterval);
+  barInterval = setInterval(() => {
+    document.querySelectorAll('.desk-node .bar').forEach(bar => {
+      const h = parseInt(bar.style.height);
+      bar.style.height = Math.max(4, Math.min(22, h + (Math.random()-0.5)*3)) + 'px';
+    });
+  }, 2000);
+}
+
+// ============================================
+// SCENARIO SWITCH
+// ============================================
+
+document.querySelectorAll('.scenario-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentScenario = tab.dataset.scenario;
+    renderAll();
+    startLiveFeed();
+    scheduleEscalation();
+  });
+});
+
+// Keyboard
+document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key==='Enter') handleSend(); });
+document.addEventListener('keydown', e => { if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('chatInput').focus();} });
+
+// ============================================
+// INIT
+// ============================================
+renderAll();
+initCanvas();
+startLiveFeed();
+scheduleEscalation();
+startBarAnimation();
+</script>
+</body>
+</html>
