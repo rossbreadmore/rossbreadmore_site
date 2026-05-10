@@ -13,6 +13,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("img");
   eleventyConfig.addPassthroughCopy("standalone");
   eleventyConfig.ignores.add("standalone/**");
+  eleventyConfig.addPassthroughCopy("acupuncture");
+  eleventyConfig.ignores.add("acupuncture/**");
 
   return {
     dir: {

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Charlotte Breadmore Acupuncture</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sage:#5d8a6e;--sage-dk:#3f6b52;--sage-lt:#e8f2ec;--sage-xl:#f0f7f2;
+  --gold:#c9a84c;--gold-lt:#fdf6e3;
+  --ink:#1f2d24;--muted:#6b7c72;--border:#d4e0d8;--bg:#f4f8f5;--white:#fff;
+  --red:#c0392b;--red-lt:#fdecea;
+  --r:10px;--sh:0 2px 12px rgba(0,0,0,.08);
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif
+}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);min-height:100vh}
+button{cursor:pointer;font-family:var(--font)}input,textarea,select{font-family:var(--font)}
+
+/* ── CONFIG BANNER ───────────────────────────────────────────────── */
+#config-banner{position:fixed;inset:0;z-index:9999;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:20px}
+#config-banner .cb-card{background:var(--white);border-radius:16px;padding:40px;
+  max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15);text-align:center}
+#config-banner h2{font-size:1.5rem;margin-bottom:6px}
+#config-banner p{color:var(--muted);font-size:.9rem;margin-bottom:22px;line-height:1.6}
+#config-banner input{width:100%;padding:11px 14px;border-radius:var(--r);border:1.5px solid var(--border);
+  font-size:.9rem;margin-bottom:10px;outline:none}
+#config-banner input:focus{border-color:var(--sage)}
+#config-banner .cbtn{width:100%;padding:13px;border-radius:var(--r);border:none;
+  background:var(--sage);color:#fff;font-size:1rem;font-weight:700;margin-top:6px}
+
+/* ── LOGIN ───────────────────────────────────────────────────────── */
+#auth-screen{display:none;min-height:100vh;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#2d5240 0%,#4a7a5e 40%,#6fa87d 100%)}
+.lcard{background:var(--white);border-radius:18px;padding:44px 38px;width:100%;max-width:420px;
+  box-shadow:0 24px 64px rgba(0,0,0,.22);text-align:center}
+.lcard .logo{font-size:3rem;margin-bottom:6px}
+.lcard h1{font-size:1.35rem;font-weight:800;color:var(--ink);margin-bottom:2px;line-height:1.3}
+.lcard .sub{color:var(--muted);font-size:.88rem;margin-bottom:26px}
+.auth-tabs{display:flex;margin-bottom:20px;border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border)}
+.auth-tab{flex:1;padding:10px;font-size:.88rem;font-weight:600;border:none;background:var(--bg);color:var(--muted);transition:all .15s}
+.auth-tab.on{background:var(--sage);color:#fff}
+.lcard input{width:100%;padding:11px 15px;border-radius:var(--r);border:1.5px solid var(--border);
+  font-size:.95rem;outline:none;margin-bottom:10px}
+.lcard input:focus{border-color:var(--sage)}
+.lcard .lbtn{width:100%;padding:13px;border-radius:var(--r);border:none;
+  background:var(--sage);color:#fff;font-size:1rem;font-weight:700;transition:background .2s}
+.lcard .lbtn:hover{background:var(--sage-dk)}
+.lcard .lbtn:disabled{opacity:.5;cursor:not-allowed}
+.auth-msg{font-size:.82rem;margin-top:12px;color:var(--muted)}
+.auth-msg a{color:var(--sage);font-weight:600;cursor:pointer}
+.auth-error{color:var(--red);font-size:.82rem;margin-top:8px;min-height:20px}
+
+/* ── TOP BAR ─────────────────────────────────────────────────────── */
+#app{display:none;flex-direction:column;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:58px;background:var(--white);
+  border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04);
+  position:sticky;top:0;z-index:200}
+.topbar-l{display:flex;align-items:center;gap:9px}
+.topbar-logo{font-size:1.5rem}
+.topbar-brand{font-size:1rem;font-weight:800;color:var(--sage-dk);line-height:1.2}
+.topbar-brand small{font-size:.72rem;font-weight:500;color:var(--muted);display:block}
+.topbar-r{display:flex;align-items:center;gap:10px}
+.topbar-user{font-size:.82rem;color:var(--muted)}
+.topbar-user b{color:var(--sage-dk)}
+.tbtn{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);
+  background:var(--white);font-size:.8rem;color:var(--muted);font-weight:600;transition:all .2s}
+.tbtn:hover{border-color:var(--sage);color:var(--sage)}
+
+/* ── LAYOUT ──────────────────────────────────────────────────────── */
+.shell{display:flex;flex:1}
+.sidebar{width:210px;min-height:calc(100vh - 58px);background:var(--white);
+  border-right:1px solid var(--border);padding:18px 10px;flex-shrink:0}
+.slabel{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin:14px 10px 6px}
+.nav-btn{display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;
+  border-radius:var(--r);border:none;background:transparent;
+  font-size:.85rem;font-weight:500;color:var(--muted);text-align:left;transition:all .14s}
+.nav-btn .ni{font-size:.95rem}
+.nav-btn:hover{background:var(--sage-lt);color:var(--sage-dk)}
+.nav-btn.on{background:var(--sage-lt);color:var(--sage-dk);font-weight:700}
+.nav-btn .bdg{margin-left:auto;background:var(--sage);color:#fff;
+  font-size:.66rem;font-weight:700;padding:2px 6px;border-radius:10px}
+
+/* ── PAGE ─────────────────────────────────────────────────────────── */
+.page{flex:1;padding:28px 32px;overflow-y:auto}
+.sec{display:none}.sec.on{display:block}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px}
+.pt{font-size:1.45rem;font-weight:800}.pt small{font-size:.85rem;font-weight:500;color:var(--muted);display:block;margin-top:1px}
+
+/* ── BUTTONS ─────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+  border-radius:var(--r);border:none;font-size:.85rem;font-weight:600;transition:all .14s;cursor:pointer}
+.bp{background:var(--sage);color:#fff}.bp:hover{background:var(--sage-dk)}
+.bs{background:var(--sage-lt);color:var(--sage-dk);border:1.5px solid var(--border)}.bs:hover{background:#d4e9db}
+.bd{background:var(--red-lt);color:var(--red);border:1.5px solid #f5c2be}.bd:hover{background:#f5c2be}
+.sm{padding:5px 11px;font-size:.76rem}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── CARDS & STATS ───────────────────────────────────────────────── */
+.card{background:var(--white);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:18px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+.scard{background:var(--white);border-radius:var(--r);border:1px solid var(--border);
+  padding:18px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)}
+.si{font-size:1.8rem}.sv{font-size:1.7rem;font-weight:800;color:var(--sage-dk);line-height:1}
+.sl{font-size:.75rem;color:var(--muted);margin-top:2px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:860px){.dgrid{grid-template-columns:1fr}}
+
+/* ── LIST ITEMS ──────────────────────────────────────────────────── */
+.ri{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.ri:last-child{border-bottom:none}
+.av{width:34px;height:34px;border-radius:50%;background:var(--sage-lt);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--sage-dk);flex-shrink:0;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.rn{font-weight:600;font-size:.85rem}.rm{font-size:.75rem;color:var(--muted)}
+.rd{margin-left:auto;font-size:.73rem;color:var(--muted);text-align:right}
+
+/* ── PATIENT CARDS ───────────────────────────────────────────────── */
+.psearch{display:flex;gap:10px;margin-bottom:16px}
+.si-input{flex:1;padding:8px 14px 8px 34px;border-radius:var(--r);
+  border:1.5px solid var(--border);font-size:.9rem;outline:none;
+  background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%236b7c72' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E") no-repeat 10px center;
+  transition:border-color .2s}
+.si-input:focus{border-color:var(--sage)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.pc{background:var(--white);border-radius:var(--r);border:1px solid var(--border);
+  padding:15px;cursor:pointer;transition:all .16s;box-shadow:var(--sh)}
+.pc:hover{border-color:var(--sage);transform:translateY(-2px);box-shadow:0 6px 18px rgba(93,138,110,.14)}
+.pc-h{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pname{font-weight:700;font-size:.9rem}.pdob{font-size:.75rem;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tag{font-size:.68rem;font-weight:600;padding:2px 7px;border-radius:20px;background:var(--sage-lt);color:var(--sage-dk)}
+.tg{background:var(--gold-lt);color:#7a5c0a}.tr{background:var(--red-lt);color:var(--red)}
+.pf{display:flex;justify-content:space-between;margin-top:9px}
+.pf span{font-size:.73rem;color:var(--muted)}
+
+/* ── PATIENT DETAIL ──────────────────────────────────────────────── */
+.dh{background:var(--white);border-radius:var(--r);border:1px solid var(--border);
+  padding:22px;margin-bottom:18px;display:flex;gap:18px;align-items:flex-start;box-shadow:var(--sh);flex-wrap:wrap}
+.avxl{width:70px;height:70px;border-radius:50%;background:var(--sage-lt);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.6rem;color:var(--sage-dk);
+  flex-shrink:0;overflow:hidden;border:3px solid var(--border)}
+.avxl img{width:100%;height:100%;object-fit:cover}
+.di h2{font-size:1.3rem;font-weight:800}
+.dmeta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.dmeta span{font-size:.8rem;color:var(--muted)}.dmeta b{color:var(--ink)}
+.da{margin-left:auto;display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap}
+.dtabs{display:flex;gap:3px;margin-bottom:18px;flex-wrap:wrap}
+.dtab{padding:7px 16px;border-radius:8px 8px 0 0;border:1.5px solid var(--border);
+  border-bottom:none;background:var(--bg);font-size:.82rem;font-weight:600;
+  color:var(--muted);cursor:pointer;transition:all .12s}
+.dtab.on{background:var(--white);color:var(--sage-dk)}
+.tc{display:none}.tc.on{display:block}
+
+/* ── TREATMENT CARDS ─────────────────────────────────────────────── */
+.tlist{display:flex;flex-direction:column;gap:12px}
+.tcard{background:var(--white);border-radius:var(--r);border:1px solid var(--border);
+  padding:16px 18px;box-shadow:var(--sh)}
+.tc-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tdate{font-weight:700;font-size:.88rem}
+.ttype{font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--gold-lt);color:#7a5c0a}
+.points{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.pt-tag{font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:5px;
+  background:#edf5f0;color:var(--sage-dk);border:1px solid var(--border)}
+.tnotes{font-size:.82rem;color:var(--muted);margin-top:6px;line-height:1.55}
+.tf{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
+.oc{font-size:.78rem;font-weight:600}.oim{color:#2e7d32}.osa{color:var(--gold)}.owo{color:var(--red)}
+
+/* ── FORMS ───────────────────────────────────────────────────────── */
+.fg{margin-bottom:14px}.fl{display:block;font-size:.8rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.fi{width:100%;padding:8px 12px;border-radius:var(--r);border:1.5px solid var(--border);
+  font-size:.9rem;outline:none;transition:border-color .2s;background:var(--white)}
+.fi:focus{border-color:var(--sage)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fta{min-height:72px;resize:vertical}
+.fh{font-size:.72rem;color:var(--muted);margin-top:3px}
+.fdiv{border-top:1px solid var(--border);margin:20px 0;padding-top:16px}
+.fdivl{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:12px}
+.ig-row{padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:9px}
+.ig-row:last-child{border-bottom:none;margin-bottom:0}
+.ig-l{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:1px}
+.ig-v{font-size:.86rem;color:var(--ink);line-height:1.55}
+
+/* ── POINTS PICKER ───────────────────────────────────────────────── */
+.pp-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.pp{padding:3px 10px;border-radius:6px;border:1.5px solid var(--border);
+  font-size:.74rem;font-weight:600;cursor:pointer;background:var(--white);
+  color:var(--muted);transition:all .12s;user-select:none}
+.pp.sel{border-color:var(--sage);background:var(--sage-lt);color:var(--sage-dk)}
+
+/* ── MODAL ───────────────────────────────────────────────────────── */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.46);
+  z-index:500;align-items:center;justify-content:center;padding:16px}
+.mo.open{display:flex}
+.md{background:var(--white);border-radius:14px;width:100%;max-width:660px;
+  max-height:92vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.22)}
+.md-h{display:flex;align-items:center;justify-content:space-between;
+  padding:18px 22px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:1}
+.md-t{font-size:1.05rem;font-weight:800}
+.mc{width:28px;height:28px;border-radius:50%;border:none;background:var(--bg);
+  font-size:1rem;color:var(--muted);cursor:pointer}.mc:hover{background:var(--border);color:var(--ink)}
+.md-b{padding:20px 22px}.md-f{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
+/* ── SIGNATURE ───────────────────────────────────────────────────── */
+.sig-wrap{border:2px solid var(--border);border-radius:var(--r);background:#fafcfb;overflow:hidden}
+.sig-wrap canvas{display:block;cursor:crosshair;touch-action:none}
+.sig-display{border:1px solid var(--border);border-radius:var(--r);padding:4px;background:#fafcfb;max-width:260px}
+.sig-display img{max-width:100%;display:block}
+.consent-box{background:var(--sage-xl);border:1px solid var(--border);border-radius:var(--r);
+  padding:14px;font-size:.8rem;color:var(--muted);line-height:1.65;margin-bottom:14px;max-height:170px;overflow-y:auto}
+
+/* ── INTAKE STEP PROGRESS ────────────────────────────────────────── */
+.step-progress{display:flex;align-items:center;margin-bottom:28px}
+.sp-item{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.sp-item:not(:last-child)::after{content:'';position:absolute;top:13px;left:50%;width:100%;height:2px;background:var(--border);z-index:0}
+.sp-item.done::after{background:var(--sage)}
+.sp-dot{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--muted);position:relative;z-index:1}
+.sp-item.done .sp-dot{background:var(--sage);color:#fff}
+.sp-item.cur .sp-dot{background:var(--sage-dk);color:#fff;box-shadow:0 0 0 3px var(--sage-lt)}
+.sp-label{font-size:.64rem;margin-top:3px;color:var(--muted);text-align:center}
+.sp-item.cur .sp-label{color:var(--sage-dk);font-weight:700}
+.step-box{background:var(--white);border-radius:14px;border:1px solid var(--border);
+  padding:24px;box-shadow:var(--sh);margin-bottom:18px}
+.step-title{font-size:1.1rem;font-weight:800;margin-bottom:18px}
+.step-nav{display:flex;gap:8px;justify-content:flex-end}
+
+/* ── PORTAL ──────────────────────────────────────────────────────── */
+.pw{background:linear-gradient(120deg,var(--sage-dk),var(--sage));
+  border-radius:var(--r);padding:24px 26px;color:#fff;margin-bottom:22px}
+.pw h2{font-size:1.3rem;font-weight:800;margin-bottom:3px}.pw p{opacity:.85;font-size:.9rem}
+
+/* ── EMPTY & TOAST ───────────────────────────────────────────────── */
+.empty{text-align:center;padding:40px 18px;color:var(--muted)}
+.ei{font-size:2.8rem;margin-bottom:10px}.et{font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.es{font-size:.85rem;margin-bottom:16px}
+.toast{position:fixed;bottom:22px;right:22px;z-index:9999;
+  padding:11px 18px;border-radius:var(--r);font-size:.85rem;font-weight:600;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);transform:translateY(60px);opacity:0;transition:all .26s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{background:var(--sage-dk);color:#fff}.toast.err{background:var(--red);color:#fff}
+
+@media(max-width:680px){
+  .sidebar{display:none}.page{padding:16px 12px}
+  .fr{grid-template-columns:1fr}
+  .dh{flex-direction:column;align-items:center;text-align:center}
+  .da{margin-left:0}.dmeta{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════  CONFIG (first-time setup)  ══════════════════════ -->
+<div id="config-banner">
+  <div class="cb-card">
+    <div style="font-size:2.5rem;margin-bottom:8px;">🌿</div>
+    <h2>First-Time Setup</h2>
+    <p>Enter your Supabase project details.<br/>Find these in: Supabase Dashboard → Project Settings → API.</p>
+    <input id="cfg-url" placeholder="Project URL (e.g. https://abc123.supabase.co)" />
+    <input id="cfg-key" placeholder="Anon (public) Key" />
+    <button class="cbtn" onclick="saveConfig()">Connect &amp; Launch</button>
+    <p style="font-size:.75rem;color:var(--muted);margin-top:10px;">Saved in your browser only. The anon key is safe for client-side use.</p>
+  </div>
+</div>
+
+<!-- ══════════════  AUTH SCREEN  ════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="lcard">
+    <div class="logo">🌿</div>
+    <h1>Charlotte Breadmore<br/>Acupuncture</h1>
+    <div class="sub">Secure patient management portal</div>
+    <div class="auth-tabs">
+      <button class="auth-tab on" onclick="setAuthMode('login')">Sign In</button>
+      <button class="auth-tab" onclick="setAuthMode('signup')">Create Account</button>
+    </div>
+    <div id="auth-name-row" style="display:none"><input id="auth-name" placeholder="Your full name" /></div>
+    <input id="auth-email" type="email" placeholder="Email address" />
+    <input id="auth-pass" type="password" placeholder="Password (min 6 characters)" />
+    <button class="lbtn" id="auth-btn" onclick="doAuth()">Sign In</button>
+    <div class="auth-error" id="auth-error"></div>
+    <div class="auth-msg" id="auth-msg">New patient? <a onclick="setAuthMode('signup')">Create an account</a></div>
+  </div>
+</div>
+
+<!-- ══════════════  MAIN APP  ══════════════════════════════════════ -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-l">
+      <span class="topbar-logo">🌿</span>
+      <div class="topbar-brand">Charlotte Breadmore<small>Acupuncture</small></div>
+    </div>
+    <div class="topbar-r">
+      <span class="topbar-user"><b id="tb-name">—</b></span>
+      <button class="tbtn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+  <div class="shell">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="page" id="page-container"></div>
+  </div>
+</div>
+
+<!-- ══════════════  MODALS  ════════════════════════════════════════ -->
+<div class="mo" id="mo-edit"><div class="md">
+  <div class="md-h"><span class="md-t">Edit Treatment</span><button class="mc" onclick="closeMo('mo-edit')">✕</button></div>
+  <div class="md-b" id="mo-edit-body"></div>
+  <div class="md-f"><button class="btn bs" onclick="closeMo('mo-edit')">Cancel</button><button class="btn bp" id="save-edit-btn">Save Changes</button></div>
+</div></div>
+
+<div class="mo" id="mo-del"><div class="md" style="max-width:360px;">
+  <div class="md-h"><span class="md-t">Confirm Delete</span><button class="mc" onclick="closeMo('mo-del')">✕</button></div>
+  <div class="md-b"><p style="font-size:.9rem;color:var(--muted);line-height:1.6" id="del-msg">Are you sure?</p></div>
+  <div class="md-f"><button class="btn bs" onclick="closeMo('mo-del')">Cancel</button><button class="btn bd" id="del-btn">Delete</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════  JAVASCRIPT  ════════════════════════════════════ -->
+<script>
+let sb=null,user=null,patients=[],treatments=[];
+let curPtId=null,selPts=[],editTId=null,authMode='login';
+let ipStep=0,ipData={},sigCtx,sigDrawing=false;
+
+const esc=s=>s==null?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const attr=s=>s==null?'':String(s).replace(/"/g,'&quot;');
+const fmtD=d=>{if(!d)return'';try{const p=d.split('-');const M='Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');return`${+p[2]} ${M[+p[1]-1]} ${p[0]}`}catch{return d}};
+const age=d=>{if(!d)return null;const b=new Date(d),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n.getMonth()<b.getMonth()||(n.getMonth()===b.getMonth()&&n.getDate()<b.getDate()))a--;return a};
+const trunc=(s,n)=>s&&s.length>n?s.slice(0,n)+'…':s||'';
+const $=id=>document.getElementById(id);
+function toast(m,t='ok'){const e=$('toast');e.textContent=m;e.className='toast '+t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),3200)}
+function openMo(id){$(id).classList.add('open')}
+function closeMo(id){$(id).classList.remove('open')}
+document.querySelectorAll('.mo').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+function ir(l,v){if(!v)return'';return`<div class="ig-row"><div class="ig-l">${l}</div><div class="ig-v">${esc(v)}</div></div>`}
+
+const POINTS='LI4 LI11 LU7 LU9 PC6 HT7 TE5 ST25 ST36 ST40 ST44 SP6 SP9 SP10 LV3 LV8 GB20 GB21 GB34 GB40 BL13 BL17 BL20 BL21 BL23 BL40 KD3 KD6 KD7 RN4 RN6 RN12 RN17 GV4 GV14 GV20 SI3 YIN_TANG TAI_YANG'.split(' ');
+const T_COL='Pale,Pale with red tip,Normal pink,Red,Deep red / Scarlet,Purple,Blue-purple,Dusky'.split(',');
+const T_COAT='Thin white,Thick white,Thin yellow,Thick yellow,Grey / Black,Greasy,Peeled / No coat,Absent'.split(',');
+const TX_T='Acupuncture (Five Element),Acupuncture (TCM),Moxibustion,Cupping,Gua-sha,Facial Acupuncture,Combination'.split(',');
+
+/* ── Config ──────────────────────────────────────────────────── */
+function boot(){
+  const url=localStorage.getItem('sb_url'),key=localStorage.getItem('sb_key');
+  if(!url||!key){$('config-banner').style.display='flex';$('auth-screen').style.display='none';return}
+  $('config-banner').style.display='none';initSB(url,key);
+}
+function saveConfig(){
+  const url=$('cfg-url').value.trim().replace(/\/$/,''),key=$('cfg-key').value.trim();
+  if(!url||!key){toast('Enter both fields','err');return}
+  localStorage.setItem('sb_url',url);localStorage.setItem('sb_key',key);
+  $('config-banner').style.display='none';initSB(url,key);
+}
+async function initSB(url,key){
+  sb=supabase.createClient(url,key);
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){await loadUser(session.user);launchApp()}
+  else{$('auth-screen').style.display='flex'}
+}
+
+/* ── Auth ─────────────────────────────────────────────────────── */
+function setAuthMode(m){
+  authMode=m;
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('on',i===(m==='login'?0:1)));
+  $('auth-name-row').style.display=m==='signup'?'block':'none';
+  $('auth-btn').textContent=m==='login'?'Sign In':'Create Account';
+  $('auth-error').textContent='';
+  $('auth-msg').innerHTML=m==='login'?'New patient? <a onclick="setAuthMode(\'signup\')">Create an account</a>'
+    :'Already registered? <a onclick="setAuthMode(\'login\')">Sign in</a>';
+}
+
+async function doAuth(){
+  const email=$('auth-email').value.trim(),pass=$('auth-pass').value;
+  $('auth-error').textContent='';
+  if(!email||!pass){$('auth-error').textContent='Enter email and password';return}
+  $('auth-btn').disabled=true;
+  if(authMode==='login'){
+    const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error){$('auth-error').textContent=error.message;$('auth-btn').disabled=false;return}
+    await loadUser(data.user);launchApp();
+  } else {
+    const name=$('auth-name')?.value.trim()||'';
+    const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,role:'patient'}}});
+    if(error){$('auth-error').textContent=error.message;$('auth-btn').disabled=false;return}
+    if(data.user&&!data.session){
+      $('auth-msg').innerHTML='✅ Check your email to confirm, then sign in.';
+      $('auth-btn').disabled=false;setAuthMode('login');return;
+    }
+    await loadUser(data.user);launchApp();
+  }
+  $('auth-btn').disabled=false;
+}
+
+async function loadUser(au){
+  const{data}=await sb.from('profiles').select('*').eq('id',au.id).single();
+  user={id:au.id,email:au.email,role:data?.role||'patient',name:data?.full_name||au.email};
+}
+
+async function doLogout(){
+  await sb.auth.signOut();user=null;patients=[];treatments=[];
+  $('app').style.display='none';$('auth-screen').style.display='flex';$('auth-btn').disabled=false;
+}
+
+$('auth-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth()});
+
+/* ── Launch ──────────────────────────────────────────────────── */
+async function launchApp(){
+  $('auth-screen').style.display='none';$('app').style.display='flex';
+  $('tb-name').textContent=user.name||user.email;buildSidebar();
+  await loadData();
+  user.role==='practitioner'?nav('dash'):nav('portal-home');
+}
+
+function buildSidebar(){
+  const s=$('sidebar');
+  s.innerHTML=user.role==='practitioner'?`
+    <div class="slabel">Practice</div>
+    <button class="nav-btn on" data-s="dash"><span class="ni">📊</span> Dashboard</button>
+    <button class="nav-btn" data-s="patients"><span class="ni">👥</span> Patients <span class="bdg" id="pt-bdg">0</span></button>
+    <div class="slabel">Actions</div>
+    <button class="nav-btn" data-s="new-treat"><span class="ni">➕</span> New Treatment</button>
+    <button class="nav-btn" data-s="new-pt"><span class="ni">🧑‍⚕️</span> Add Patient</button>`
+  :`<div class="slabel">My Health</div>
+    <button class="nav-btn on" data-s="portal-home"><span class="ni">🏠</span> Overview</button>
+    <button class="nav-btn" data-s="portal-treats"><span class="ni">📋</span> My Treatments</button>
+    <button class="nav-btn" data-s="portal-intake"><span class="ni">📝</span> Intake Form</button>`;
+  s.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.s)));
+}
+
+async function loadData(){
+  const{data:p}=await sb.from('patients').select('*').order('created_at',{ascending:false});
+  patients=p||[];
+  const{data:t}=await sb.from('treatments').select('*').order('treatment_date',{ascending:false});
+  treatments=t||[];
+}
+
+/* ── Nav ─────────────────────────────────────────────────────── */
+function nav(s){
+  $('sidebar').querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+  const m={dash:renderDash,patients:renderPts,ptd:()=>renderPtDetail(curPtId),
+    'new-pt':renderNewPt,'new-treat':renderNewTreat,
+    'portal-home':renderPortalHome,'portal-treats':renderPortalTreats,'portal-intake':renderPortalIntake};
+  if(m[s])m[s]();
+}
+
+/* ─── PRACTITIONER ───────────────────────────────────────────── */
+
+function renderDash(){
+  const mo=new Date().toISOString().slice(0,7);
+  if($('pt-bdg'))$('pt-bdg').textContent=patients.length;
+  $('page-container').innerHTML=`<div class="sec on">
+    <div class="ph"><div class="pt">Dashboard<small>Practice overview</small></div><button class="btn bp" onclick="nav('new-treat')">+ New Treatment</button></div>
+    <div class="sgrid">
+      <div class="scard"><div class="si">👥</div><div><div class="sv">${patients.length}</div><div class="sl">Patients</div></div></div>
+      <div class="scard"><div class="si">💆</div><div><div class="sv">${treatments.length}</div><div class="sl">Treatments</div></div></div>
+      <div class="scard"><div class="si">📅</div><div><div class="sv">${treatments.filter(t=>(t.treatment_date||'').startsWith(mo)).length}</div><div class="sl">This Month</div></div></div>
+      <div class="scard"><div class="si">✅</div><div><div class="sv">${treatments.filter(t=>t.outcome==='improved').length}</div><div class="sl">Improved</div></div></div>
+    </div>
+    <div class="dgrid">
+      <div class="card"><div style="font-weight:700;margin-bottom:12px">🕐 Recent Treatments</div>
+        ${treatments.slice(0,5).map(t=>{const pt=patients.find(p=>p.id===t.patient_id);const i=pt?pt.first_name[0]+pt.last_name[0]:'?';
+        return`<div class="ri" onclick="openPt('${t.patient_id}')"><div class="av">${i}</div><div><div class="rn">${pt?pt.first_name+' '+pt.last_name:'—'}</div><div class="rm">${esc(t.treatment_type||'')}</div></div><div class="rd">${fmtD(t.treatment_date)}</div></div>`}).join('')||'<div class="empty"><div class="ei">💆</div><div class="et">No treatments yet</div></div>'}
+      </div>
+      <div class="card"><div style="font-weight:700;margin-bottom:12px">👥 Recent Patients</div>
+        ${patients.slice(0,5).map(pt=>{const i=pt.first_name[0]+pt.last_name[0];const c=treatments.filter(t=>t.patient_id===pt.id).length;
+        return`<div class="ri" onclick="openPt('${pt.id}')"><div class="av">${i}</div><div><div class="rn">${pt.first_name} ${pt.last_name}</div><div class="rm">${c} session${c!==1?'s':''}</div></div></div>`}).join('')||'<div class="empty"><div class="ei">🧑‍⚕️</div><div class="et">No patients yet</div></div>'}
+      </div>
+    </div></div>`;
+}
+
+function renderPts(f=''){
+  if($('pt-bdg'))$('pt-bdg').textContent=patients.length;
+  const fl=patients.filter(p=>(p.first_name+' '+p.last_name).toLowerCase().includes(f.toLowerCase()));
+  $('page-container').innerHTML=`<div class="sec on">
+    <div class="ph"><div class="pt">Patients</div><button class="btn bp" onclick="nav('new-pt')">+ Add Patient</button></div>
+    <div class="psearch"><input class="si-input" placeholder="Search…" oninput="renderPts(this.value)" value="${attr(f)}"/></div>
+    <div class="pgrid">${fl.length?fl.map(pt=>{const i=pt.first_name[0]+pt.last_name[0];const c=treatments.filter(t=>t.patient_id===pt.id).length;const a=age(pt.dob);
+      return`<div class="pc" onclick="openPt('${pt.id}')"><div class="pc-h"><div class="av">${i}</div><div><div class="pname">${pt.first_name} ${pt.last_name}</div><div class="pdob">${a!==null?a+' yrs':''}${pt.gender?' · '+pt.gender:''}</div></div></div>
+      ${pt.chief_complaint?`<div style="font-size:.78rem;color:var(--muted);margin-bottom:4px">${trunc(pt.chief_complaint,60)}</div>`:''}
+      <div class="tags">${pt.allergies&&pt.allergies!=='None known'?`<span class="tag tg">⚠ ${esc(pt.allergies)}</span>`:''}${pt.intake_completed?'<span class="tag">Intake ✓</span>':'<span class="tag tr">Intake pending</span>'}</div>
+      <div class="pf"><span>💆 ${c}</span></div></div>`}).join('')
+    :'<div class="empty" style="grid-column:1/-1"><div class="ei">👥</div><div class="et">No patients</div><button class="btn bp" onclick="nav(\'new-pt\')">+ Add</button></div>'}</div></div>`;
+}
+
+async function openPt(id){curPtId=id;await loadData();nav('ptd')}
+
+function renderPtDetail(id){
+  const pt=patients.find(p=>p.id===id);if(!pt)return;
+  const ptt=treatments.filter(t=>t.patient_id===id);const i=pt.first_name[0]+pt.last_name[0];const a=age(pt.dob);const ip=user.role==='practitioner';
+  $('page-container').innerHTML=`<div class="sec on">
+    ${ip?'<button class="btn bs sm" style="margin-bottom:14px" onclick="nav(\'patients\')">← All Patients</button>':''}
+    <div class="dh"><div class="avxl">${i}</div><div class="di"><h2>${esc(pt.first_name)} ${esc(pt.last_name)}</h2>
+      <div class="dmeta">${a!==null?`<span><b>Age:</b> ${a}</span>`:''}${pt.gender?`<span><b>Gender:</b> ${esc(pt.gender)}</span>`:''}${pt.dob?`<span><b>DOB:</b> ${fmtD(pt.dob)}</span>`:''}${pt.phone?`<span><b>Phone:</b> ${esc(pt.phone)}</span>`:''}${pt.email?`<span><b>Email:</b> ${esc(pt.email)}</span>`:''}</div></div>
+      ${ip?`<div class="da"><button class="btn bp sm" onclick="navTF('${id}')">+ Treatment</button><button class="btn bd sm" onclick="confirmDelPt('${id}')">🗑</button></div>`:''}</div>
+    <div class="dtabs">
+      <button class="dtab on" onclick="sTab('t',this)">💆 Treatments (${ptt.length})</button>
+      <button class="dtab" onclick="sTab('c',this)">📋 Clinical</button>
+      <button class="dtab" onclick="sTab('i',this)">📝 Intake</button>
+      ${ip?'<button class="dtab" onclick="sTab(\'n\',this)">🔒 Notes</button>':''}
+    </div>
+    <div class="tc on" id="tab-t">${ptt.length?`<div class="tlist">${ptt.map(t=>tCard(t,ip)).join('')}</div>`
+      :`<div class="empty"><div class="ei">💆</div><div class="et">No treatments</div>${ip?`<button class="btn bp" onclick="navTF('${id}')">+ Record</button>`:''}</div>`}</div>
+    <div class="tc" id="tab-c"><div class="card" style="max-width:600px"><div style="display:grid;gap:0">
+      ${ir('Address',pt.address)}${ir('GP',pt.gp_details)}${ir('Blood Pressure',pt.blood_pressure)}${ir('Occupation',pt.occupation)}
+      ${ir('Chief Complaint',pt.chief_complaint)}${ir('Other Complaints',pt.other_complaints)}${ir('History',pt.medical_history)}
+      ${ir('Medications',pt.medications)}${ir('Allergies',pt.allergies)}${ir('Sleep',pt.sleep_info)}${ir('Headaches',pt.headaches)}
+      ${ir('Mood',pt.mood)}${ir('Diet',pt.diet)}${ir('Fluids',pt.fluid_intake)}${ir('Bowels',pt.bowels)}${ir('Waterworks',pt.waterworks)}
+      ${ir('Perspiration',pt.perspiration)}${ir('Periods',pt.periods)}${ir('Exercise',pt.exercise)}${ir('Energy',pt.energy_levels)}
+      ${ir('Pregnancies',pt.pregnancies)}${pt.red_flags?`<div class="ig-row"><div class="ig-l" style="color:var(--red)">⚠ Red Flags</div><div class="ig-v" style="color:var(--red);font-weight:600">${esc(pt.red_flags)}</div></div>`:''}
+      ${ir('Akabane',pt.akabane)}${ir('JAD',pt.jad)}${ir('Jiao Temp',pt.jiao_temp)}
+      ${pt.signature_url?`<div class="ig-row"><div class="ig-l">Signature</div><div class="sig-display"><img src="${pt.signature_url}"/></div>${pt.consent_signed_at?`<div style="font-size:.72rem;color:var(--muted);margin-top:3px">Signed ${new Date(pt.consent_signed_at).toLocaleString()}</div>`:''}</div>`:''}
+    </div></div></div>
+    <div class="tc" id="tab-i">${pt.intake_completed
+      ?`<div class="card" style="max-width:600px"><div style="font-size:.88rem;font-weight:700;color:var(--sage-dk);margin-bottom:12px">✅ Intake completed</div><div style="display:grid;gap:0">${ir('Complaint',pt.chief_complaint)}${ir('History',pt.medical_history)}${ir('Medications',pt.medications)}${ir('Allergies',pt.allergies)}</div></div>`
+      :`<div class="empty"><div class="ei">📝</div><div class="et">Intake pending</div><div class="es">${ip?'Patient needs to complete their intake form via the portal.':'Complete your intake form below.'}</div>${!ip?'<button class="btn bp" onclick="nav(\'portal-intake\')">Complete Intake</button>':''}</div>`}</div>
+    ${ip?`<div class="tc" id="tab-n">${ptt.filter(t=>t.private_notes).length?ptt.filter(t=>t.private_notes).map(t=>`<div class="card" style="margin-bottom:10px"><div style="font-size:.73rem;color:var(--muted);margin-bottom:5px">🔒 ${fmtD(t.treatment_date)} · ${esc(t.treatment_type||'')}</div><div style="font-size:.85rem">${esc(t.private_notes)}</div></div>`).join(''):'<div class="empty"><div class="ei">🔒</div><div class="et">No private notes</div></div>'}</div>`:''}</div>`;
+}
+
+function sTab(t,b){document.querySelectorAll('#page-container .tc').forEach(x=>x.classList.remove('on'));document.querySelectorAll('#page-container .dtab').forEach(x=>x.classList.remove('on'));$('tab-'+t).classList.add('on');b.classList.add('on')}
+
+function tCard(t,ip){
+  const oc=t.outcome==='improved'?'<span class="oc oim">↑ Improved</span>':t.outcome==='worse'?'<span class="oc owo">↓ Worse</span>':t.outcome==='same'?'<span class="oc osa">→ Same</span>':'';
+  return`<div class="tcard"><div class="tc-h"><span class="tdate">📅 ${fmtD(t.treatment_date)} <span style="font-size:.78rem;font-weight:400;color:var(--muted)">· ${esc(t.duration||'')}</span></span><span class="ttype">${esc(t.treatment_type||'')}</span></div>
+    ${t.updates_since_last?`<div style="font-size:.82rem;color:var(--ink);margin-bottom:7px;line-height:1.45;border-left:3px solid var(--sage-lt);padding-left:9px">${esc(t.updates_since_last)}</div>`:''}
+    ${t.tongue_colour||t.tongue_coating?`<div style="font-size:.78rem;color:var(--muted);margin:3px 0"><b>Tongue:</b> ${[t.tongue_colour,t.tongue_coating,t.tongue_notes].filter(Boolean).map(esc).join(' · ')}</div>`:''}
+    ${t.pulse_overall?`<div style="font-size:.78rem;color:var(--muted);margin:3px 0"><b>Pulse:</b> ${esc(t.pulse_overall)}</div>`:''}
+    ${t.diagnosis?`<div style="font-size:.78rem;color:var(--muted);margin:3px 0"><b>Dx:</b> ${esc(t.diagnosis)}</div>`:''}
+    ${t.treatment_notes?`<div class="tnotes">${esc(t.treatment_notes)}</div>`:''}
+    ${(t.points||[]).length?`<div class="points">${t.points.map(p=>`<span class="pt-tag">${esc(p)}</span>`).join('')}</div>`:''}
+    ${t.next_session_notes?`<div style="font-size:.76rem;color:var(--sage-dk);margin-top:5px;font-style:italic">📌 Next: ${esc(t.next_session_notes)}</div>`:''}
+    <div class="tf">${oc}${ip?`<div style="display:flex;gap:4px"><button class="btn bs sm" onclick="editT('${t.id}')">✏</button><button class="btn bd sm" onclick="delT('${t.id}')">🗑</button></div>`:''}</div></div>`;
+}
+
+/* ── New Patient ─────────────────────────────────────────────── */
+function renderNewPt(){
+  $('page-container').innerHTML=`<div class="sec on"><div class="ph"><div class="pt">Add Patient</div></div>
+    <div class="card" style="max-width:600px">
+      <div class="fr"><div class="fg"><label class="fl">First Name *</label><input class="fi" id="np-fn"/></div><div class="fg"><label class="fl">Last Name *</label><input class="fi" id="np-ln"/></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Date of Birth</label><input class="fi" id="np-dob" type="date"/></div><div class="fg"><label class="fl">Gender</label><select class="fi" id="np-g"><option value="">--</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Email *</label><input class="fi" id="np-em" type="email" placeholder="Patient's email (for portal login)"/></div><div class="fg"><label class="fl">Phone</label><input class="fi" id="np-ph" type="tel"/></div></div>
+      <div class="fh" style="margin-bottom:14px">The patient signs up with this email to access their portal, complete intake forms, and view treatment history.</div>
+      <div style="display:flex;gap:8px"><button class="btn bp" onclick="saveNP()">Save Patient</button><button class="btn bs" onclick="nav('patients')">Cancel</button></div>
+    </div></div>`;
+}
+
+async function saveNP(){
+  const fn=$('np-fn').value.trim(),ln=$('np-ln').value.trim(),em=$('np-em').value.trim();
+  if(!fn||!ln){toast('Enter name','err');return}if(!em){toast('Email required','err');return}
+  const{data,error}=await sb.from('patients').insert({practitioner_id:user.id,first_name:fn,last_name:ln,dob:$('np-dob').value||null,gender:$('np-g').value||null,email:em,patient_email:em,phone:$('np-ph').value.trim()||null}).select().single();
+  if(error){toast(error.message,'err');return}
+  toast('Saved!','ok');await loadData();openPt(data.id);
+}
+
+/* ── New Treatment ───────────────────────────────────────────── */
+function renderNewTreat(pre){
+  const opts=patients.map(p=>`<option value="${p.id}" ${p.id===pre?'selected':''}>${p.first_name} ${p.last_name}</option>`).join('');
+  selPts=[];const today=new Date().toISOString().slice(0,10);
+  $('page-container').innerHTML=`<div class="sec on"><div class="ph"><div class="pt">Record Treatment</div></div>
+    <div class="card" style="max-width:680px">
+      <div class="fr"><div class="fg"><label class="fl">Patient *</label><select class="fi" id="nt-pt"><option value="">--</option>${opts}</select></div><div class="fg"><label class="fl">Date *</label><input class="fi" id="nt-d" type="date" value="${today}"/></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Type</label><select class="fi" id="nt-ty">${TX_T.map(t=>`<option>${t}</option>`).join('')}</select></div><div class="fg"><label class="fl">Duration</label><select class="fi" id="nt-dur"><option>30 min</option><option>45 min</option><option selected>60 min</option><option>75 min</option><option>90 min</option></select></div></div>
+      <div class="fdiv"><div class="fdivl">📋 Updates Since Last Session</div><div class="fg"><textarea class="fi fta" id="nt-upd" style="min-height:90px" placeholder="Patient updates, progress…"></textarea></div></div>
+      <div class="fdiv"><div class="fdivl">🫀 Pulse</div><div class="fr"><div class="fg"><label class="fl">Left</label><textarea class="fi fta" id="nt-pl" placeholder="Cun/Guan/Chi…"></textarea></div><div class="fg"><label class="fl">Right</label><textarea class="fi fta" id="nt-pr"></textarea></div></div><div class="fg"><label class="fl">Overall</label><input class="fi" id="nt-po"/></div></div>
+      <div class="fdiv"><div class="fdivl">👅 Tongue</div><div class="fr"><div class="fg"><label class="fl">Colour</label><select class="fi" id="nt-tc"><option value="">--</option>${T_COL.map(c=>`<option>${c}</option>`).join('')}</select></div><div class="fg"><label class="fl">Coating</label><select class="fi" id="nt-tco"><option value="">--</option>${T_COAT.map(c=>`<option>${c}</option>`).join('')}</select></div></div><div class="fg"><label class="fl">Notes</label><input class="fi" id="nt-tn"/></div></div>
+      <div class="fdiv"><div class="fdivl">🎯 Diagnosis &amp; Treatment</div><div class="fg"><label class="fl">Diagnosis</label><textarea class="fi fta" id="nt-dx"></textarea></div><div class="fg"><label class="fl">Treatment</label><textarea class="fi fta" id="nt-tx" style="min-height:100px" placeholder="Points, techniques, moxa, cupping…"></textarea></div>
+        <div class="fg"><label class="fl">Points</label><div class="pp-wrap" id="pp-w">${POINTS.map(p=>`<div class="pp" onclick="tgPP('${p}')">${p}</div>`).join('')}</div>
+        <div style="display:flex;gap:7px;margin-top:7px"><input class="fi" id="pp-c" placeholder="Custom" style="flex:1"/><button class="btn bs sm" onclick="addPP()">+</button></div><div id="pp-s" style="margin-top:6px;display:flex;flex-wrap:wrap;gap:3px"></div></div></div>
+      <div class="fdiv"><div class="fdivl">📊 Outcome</div><div class="fr"><div class="fg"><label class="fl">Outcome</label><select class="fi" id="nt-oc"><option value="">--</option><option value="improved">Improved</option><option value="same">Same</option><option value="worse">Worse</option></select></div><div class="fg"><label class="fl">Next Session</label><textarea class="fi fta" id="nt-nx"></textarea></div></div><div class="fg"><label class="fl">🔒 Private Notes</label><textarea class="fi fta" id="nt-pv"></textarea></div></div>
+      <div style="display:flex;gap:8px"><button class="btn bp" onclick="saveT()">Save Treatment</button><button class="btn bs" onclick="nav('dash')">Cancel</button></div>
+    </div></div>`;
+}
+
+function navTF(id){renderNewTreat(id)}
+function tgPP(p){selPts=selPts.includes(p)?selPts.filter(x=>x!==p):[...selPts,p];document.querySelectorAll('#pp-w .pp').forEach(e=>e.classList.toggle('sel',selPts.includes(e.textContent)));$('pp-s').innerHTML=selPts.map(p=>`<span class="pt-tag">${p}</span>`).join('')}
+function addPP(){const v=$('pp-c').value.trim().toUpperCase();if(v&&!selPts.includes(v)){selPts.push(v);$('pp-s').innerHTML=selPts.map(p=>`<span class="pt-tag">${p}</span>`).join('')}$('pp-c').value=''}
+
+async function saveT(){
+  const pid=$('nt-pt').value,d=$('nt-d').value;
+  if(!pid){toast('Select patient','err');return}if(!d){toast('Enter date','err');return}
+  const{error}=await sb.from('treatments').insert({patient_id:pid,practitioner_id:user.id,treatment_date:d,duration:$('nt-dur').value,treatment_type:$('nt-ty').value,
+    updates_since_last:$('nt-upd').value.trim()||null,pulse_left:$('nt-pl').value.trim()||null,pulse_right:$('nt-pr').value.trim()||null,pulse_overall:$('nt-po').value.trim()||null,
+    tongue_colour:$('nt-tc').value||null,tongue_coating:$('nt-tco').value||null,tongue_notes:$('nt-tn').value.trim()||null,
+    diagnosis:$('nt-dx').value.trim()||null,treatment_notes:$('nt-tx').value.trim()||null,points:selPts.length?selPts:null,
+    outcome:$('nt-oc').value||null,next_session_notes:$('nt-nx').value.trim()||null,private_notes:$('nt-pv').value.trim()||null});
+  if(error){toast(error.message,'err');return}toast('Saved!','ok');await loadData();openPt(pid);
+}
+
+/* ── Edit Treatment ──────────────────────────────────────────── */
+function editT(tid){
+  const t=treatments.find(x=>x.id===tid);if(!t)return;editTId=tid;
+  $('mo-edit-body').innerHTML=`
+    <div class="fr"><div class="fg"><label class="fl">Date</label><input class="fi" id="et-d" type="date" value="${t.treatment_date||''}"/></div><div class="fg"><label class="fl">Duration</label><select class="fi" id="et-dur">${['30 min','45 min','60 min','75 min','90 min'].map(x=>`<option ${t.duration===x?'selected':''}>${x}</option>`).join('')}</select></div></div>
+    <div class="fg"><label class="fl">Type</label><select class="fi" id="et-ty">${TX_T.map(x=>`<option ${t.treatment_type===x?'selected':''}>${x}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Updates</label><textarea class="fi fta" id="et-upd">${esc(t.updates_since_last||'')}</textarea></div>
+    <div class="fr"><div class="fg"><label class="fl">Pulse L</label><textarea class="fi fta" id="et-pl">${esc(t.pulse_left||'')}</textarea></div><div class="fg"><label class="fl">Pulse R</label><textarea class="fi fta" id="et-pr">${esc(t.pulse_right||'')}</textarea></div></div>
+    <div class="fg"><label class="fl">Pulse Overall</label><input class="fi" id="et-po" value="${attr(t.pulse_overall||'')}"/></div>
+    <div class="fr"><div class="fg"><label class="fl">Tongue</label><select class="fi" id="et-tc"><option value="">--</option>${T_COL.map(x=>`<option ${t.tongue_colour===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="fg"><label class="fl">Coating</label><select class="fi" id="et-tco"><option value="">--</option>${T_COAT.map(x=>`<option ${t.tongue_coating===x?'selected':''}>${x}</option>`).join('')}</select></div></div>
+    <div class="fg"><label class="fl">Tongue Notes</label><input class="fi" id="et-tn" value="${attr(t.tongue_notes||'')}"/></div>
+    <div class="fg"><label class="fl">Diagnosis</label><textarea class="fi fta" id="et-dx">${esc(t.diagnosis||'')}</textarea></div>
+    <div class="fg"><label class="fl">Treatment</label><textarea class="fi fta" id="et-tx">${esc(t.treatment_notes||'')}</textarea></div>
+    <div class="fg"><label class="fl">Points (comma-sep)</label><input class="fi" id="et-pts" value="${(t.points||[]).join(', ')}"/></div>
+    <div class="fg"><label class="fl">Outcome</label><select class="fi" id="et-oc"><option value="">--</option><option value="improved" ${t.outcome==='improved'?'selected':''}>Improved</option><option value="same" ${t.outcome==='same'?'selected':''}>Same</option><option value="worse" ${t.outcome==='worse'?'selected':''}>Worse</option></select></div>
+    <div class="fg"><label class="fl">Next Session</label><textarea class="fi fta" id="et-nx">${esc(t.next_session_notes||'')}</textarea></div>
+    <div class="fg"><label class="fl">Private</label><textarea class="fi fta" id="et-pv">${esc(t.private_notes||'')}</textarea></div>`;
+  $('save-edit-btn').onclick=async()=>{
+    const{error}=await sb.from('treatments').update({treatment_date:$('et-d').value,duration:$('et-dur').value,treatment_type:$('et-ty').value,
+      updates_since_last:$('et-upd').value.trim()||null,pulse_left:$('et-pl').value.trim()||null,pulse_right:$('et-pr').value.trim()||null,pulse_overall:$('et-po').value.trim()||null,
+      tongue_colour:$('et-tc').value||null,tongue_coating:$('et-tco').value||null,tongue_notes:$('et-tn').value.trim()||null,
+      diagnosis:$('et-dx').value.trim()||null,treatment_notes:$('et-tx').value.trim()||null,
+      points:$('et-pts').value.split(',').map(p=>p.trim()).filter(Boolean),
+      outcome:$('et-oc').value||null,next_session_notes:$('et-nx').value.trim()||null,private_notes:$('et-pv').value.trim()||null
+    }).eq('id',editTId);
+    if(error){toast(error.message,'err');return}closeMo('mo-edit');toast('Updated!','ok');await loadData();renderPtDetail(curPtId);
+  };openMo('mo-edit');
+}
+
+/* ── Delete ───────────────────────────────────────────────────── */
+function delT(tid){$('del-msg').textContent='Delete this treatment?';$('del-btn').onclick=async()=>{const t=treatments.find(x=>x.id===tid);await sb.from('treatments').delete().eq('id',tid);closeMo('mo-del');toast('Deleted');await loadData();renderPtDetail(t?.patient_id||curPtId)};openMo('mo-del')}
+function confirmDelPt(pid){$('del-msg').textContent='Delete patient and ALL treatments?';$('del-btn').onclick=async()=>{await sb.from('treatments').delete().eq('patient_id',pid);await sb.from('patients').delete().eq('id',pid);closeMo('mo-del');toast('Deleted');await loadData();nav('patients')};openMo('mo-del')}
+
+/* ─── PATIENT PORTAL ─────────────────────────────────────────── */
+function renderPortalHome(){
+  const mp=patients.find(p=>p.patient_email===user.email);const mt=mp?treatments.filter(t=>t.patient_id===mp.id):[];
+  $('page-container').innerHTML=`<div class="sec on">
+    <div class="pw"><h2>Hello${mp?', '+mp.first_name:''} 👋</h2><p>Welcome to your acupuncture health portal.</p></div>
+    ${mp?`<div class="sgrid">
+      <div class="scard"><div class="si">💆</div><div><div class="sv">${mt.length}</div><div class="sl">Sessions</div></div></div>
+      <div class="scard"><div class="si">✅</div><div><div class="sv">${mt.filter(t=>t.outcome==='improved').length}</div><div class="sl">Improved</div></div></div>
+      <div class="scard"><div class="si">📅</div><div><div class="sv">${mt[0]?fmtD(mt[0].treatment_date):'—'}</div><div class="sl">Last Visit</div></div></div>
+    </div>
+    ${!mp.intake_completed?`<div class="card" style="margin-bottom:18px;background:var(--gold-lt);border-color:#e6d5a3"><div style="font-weight:700;margin-bottom:4px">📝 Complete Your Intake Form</div><p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">Charlotte needs your health info before your first appointment.</p><button class="btn bp" onclick="nav('portal-intake')">Complete Intake</button></div>`:''}
+    ${mt.length?`<div class="card"><div style="font-weight:700;margin-bottom:12px">🕐 Recent Treatments</div><div class="tlist">${mt.slice(0,3).map(t=>tCard(t,false)).join('')}</div></div>`:''}`
+    :`<div class="card"><div class="empty"><div class="ei">⏳</div><div class="et">Your record is being set up</div><div class="es">Make sure you signed up with the email your practitioner has on file.</div></div></div>`}
+  </div>`;
+}
+
+function renderPortalTreats(){
+  const mp=patients.find(p=>p.patient_email===user.email);const mt=mp?treatments.filter(t=>t.patient_id===mp.id):[];
+  $('page-container').innerHTML=`<div class="sec on"><div class="ph"><div class="pt">My Treatments</div></div>
+    ${mt.length?`<div class="tlist">${mt.map(t=>tCard(t,false)).join('')}</div>`:'<div class="empty"><div class="ei">💆</div><div class="et">No treatments yet</div></div>'}</div>`;
+}
+
+/* ── Intake Form (Patient) ───────────────────────────────────── */
+const ISTEPS=['Personal','Health','Lifestyle','Clinical','Consent'];
+
+function renderPortalIntake(){
+  const mp=patients.find(p=>p.patient_email===user.email);
+  if(!mp){$('page-container').innerHTML=`<div class="sec on"><div class="empty"><div class="ei">❌</div><div class="et">No record found</div><div class="es">Ask Charlotte to add you with email: ${user.email}</div></div></div>`;return}
+  if(mp.intake_completed){$('page-container').innerHTML=`<div class="sec on"><div class="empty"><div class="ei">✅</div><div class="et">Intake already submitted</div></div></div>`;return}
+  ipStep=0;ipData={};renderIP(mp);
+}
+
+function renderIP(mp){
+  if(!mp)mp=patients.find(p=>p.patient_email===user.email);
+  const prog=ISTEPS.map((s,i)=>`<div class="sp-item ${i<ipStep?'done':i===ipStep?'cur':''}"><div class="sp-dot">${i<ipStep?'✓':i+1}</div><div class="sp-label">${s}</div></div>`).join('');
+  const nav_=`<div class="step-nav">${ipStep>0?'<button class="btn bs" onclick="ipN(-1)">← Back</button>':''}${ipStep<4?'<button class="btn bp" onclick="ipN(1)">Next →</button>':'<button class="btn bp" onclick="ipSub()">✅ Submit</button>'}</div>`;
+  let f='';
+  if(ipStep===0)f=`<div class="step-title">👤 Personal Info</div>
+    <div class="fg"><label class="fl">Address</label><textarea class="fi fta" id="ip-addr">${esc(ipData.address||mp.address||'')}</textarea></div>
+    <div class="fr"><div class="fg"><label class="fl">Phone</label><input class="fi" id="ip-ph" value="${attr(ipData.phone||mp.phone||'')}"/></div><div class="fg"><label class="fl">DOB</label><input class="fi" id="ip-dob" type="date" value="${ipData.dob||mp.dob||''}"/></div></div>
+    <div class="fg"><label class="fl">GP Details</label><input class="fi" id="ip-gp" value="${attr(ipData.gp_details||'')}"/></div>
+    <div class="fg"><label class="fl">Blood Pressure</label><input class="fi" id="ip-bp" value="${attr(ipData.blood_pressure||'')}"/></div>
+    <div class="fg"><label class="fl">Occupation</label><input class="fi" id="ip-occ" value="${attr(ipData.occupation||'')}"/></div>`;
+  else if(ipStep===1)f=`<div class="step-title">🏥 Health History</div>
+    <div class="fg"><label class="fl">Main Complaint *</label><div class="fh" style="margin-bottom:5px">Include tests done/due, consultants.</div><textarea class="fi fta" style="min-height:90px" id="ip-cc">${esc(ipData.chief_complaint||'')}</textarea></div>
+    <div class="fg"><label class="fl">Other Complaints</label><textarea class="fi fta" id="ip-oc">${esc(ipData.other_complaints||'')}</textarea></div>
+    <div class="fg"><label class="fl">Medical History (childhood + parents)</label><textarea class="fi fta" id="ip-mh">${esc(ipData.medical_history||'')}</textarea></div>
+    <div class="fg"><label class="fl">Medications (inc recreational, doses)</label><textarea class="fi fta" id="ip-med">${esc(ipData.medications||'')}</textarea></div>
+    <div class="fg"><label class="fl">Allergies</label><input class="fi" id="ip-al" value="${attr(ipData.allergies||'')}"/></div>
+    <div class="fg"><label class="fl">Pregnancies / Labours</label><textarea class="fi fta" id="ip-pg">${esc(ipData.pregnancies||'')}</textarea></div>
+    <div style="background:var(--red-lt);border:1px solid #f5c2be;border-radius:var(--r);padding:11px"><label class="fl" style="color:var(--red)">⚠ Red Flags</label><textarea class="fi fta" id="ip-rf">${esc(ipData.red_flags||'')}</textarea></div>`;
+  else if(ipStep===2)f=`<div class="step-title">🌿 Lifestyle</div>
+    <div class="fr"><div class="fg"><label class="fl">Sleep</label><textarea class="fi fta" id="ip-sl">${esc(ipData.sleep_info||'')}</textarea></div><div class="fg"><label class="fl">Headaches</label><textarea class="fi fta" id="ip-hd">${esc(ipData.headaches||'')}</textarea></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Mood</label><textarea class="fi fta" id="ip-mo">${esc(ipData.mood||'')}</textarea></div><div class="fg"><label class="fl">Energy</label><textarea class="fi fta" id="ip-en">${esc(ipData.energy_levels||'')}</textarea></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Diet / Appetite</label><textarea class="fi fta" id="ip-di">${esc(ipData.diet||'')}</textarea></div><div class="fg"><label class="fl">Fluid Intake (+ alcohol)</label><textarea class="fi fta" id="ip-fl">${esc(ipData.fluid_intake||'')}</textarea></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Bowels / Digestion</label><textarea class="fi fta" id="ip-bo">${esc(ipData.bowels||'')}</textarea></div><div class="fg"><label class="fl">Waterworks</label><textarea class="fi fta" id="ip-ww">${esc(ipData.waterworks||'')}</textarea></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Perspiration / Temp</label><textarea class="fi fta" id="ip-ps">${esc(ipData.perspiration||'')}</textarea></div><div class="fg"><label class="fl">Periods</label><textarea class="fi fta" id="ip-pr">${esc(ipData.periods||'')}</textarea></div></div>
+    <div class="fg"><label class="fl">Exercise</label><input class="fi" id="ip-ex" value="${attr(ipData.exercise||'')}"/></div>`;
+  else if(ipStep===3)f=`<div class="step-title">🔬 Clinical</div><p style="font-size:.82rem;color:var(--muted);margin-bottom:14px">Charlotte may fill these during your first session.</p>
+    <div class="fr"><div class="fg"><label class="fl">Akabane</label><textarea class="fi fta" id="ip-ak">${esc(ipData.akabane||'')}</textarea></div><div class="fg"><label class="fl">JAD</label><textarea class="fi fta" id="ip-jd">${esc(ipData.jad||'')}</textarea></div></div>
+    <div class="fg"><label class="fl">Jiao Temp</label><input class="fi" id="ip-jt" value="${attr(ipData.jiao_temp||'')}"/></div>`;
+  else if(ipStep===4)f=`<div class="step-title">✍️ Consent &amp; Signature</div>
+    <div class="consent-box"><strong>Informed Consent for Acupuncture Treatment</strong><br/><br/>I consent to receive acupuncture and associated treatments from Charlotte Breadmore (charlottebreadmore@gmail.com). I understand that:<br/><br/>• Acupuncture involves fine sterile needles inserted at specific points.<br/>• Minor side effects (bruising, soreness, light-headedness) may occur.<br/>• My data is stored securely in accordance with GDPR (EU servers).<br/>• I can withdraw consent at any time.<br/>• I have disclosed all relevant medical information accurately.<br/><br/><strong>Privacy:</strong> Your data is stored on secure EU servers and used only for treatment purposes. You may request access, correction, or deletion at any time.</div>
+    <div style="font-size:.8rem;font-weight:700;margin-bottom:6px">Sign below:</div>
+    <div class="sig-wrap"><canvas id="sig-canvas" width="560" height="150"></canvas></div>
+    <div style="margin-top:7px"><button class="btn bs sm" onclick="clearSig()">🗑 Clear</button></div>
+    <div style="margin-top:14px"><label style="display:flex;gap:9px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="consent-cb" style="margin-top:2px"/><span>I agree to the consent above and confirm all information is accurate.</span></label></div>`;
+
+  $('page-container').innerHTML=`<div class="sec on"><div class="ph"><div class="pt">Intake Form</div></div><div style="max-width:680px"><div class="step-progress">${prog}</div><div class="step-box">${f}</div>${nav_}</div></div>`;
+  if(ipStep===4)setTimeout(initSig,80);
+}
+
+function ipCollect(){
+  if(ipStep===0){ipData.address=$('ip-addr')?.value.trim();ipData.phone=$('ip-ph')?.value.trim();ipData.dob=$('ip-dob')?.value;ipData.gp_details=$('ip-gp')?.value.trim();ipData.blood_pressure=$('ip-bp')?.value.trim();ipData.occupation=$('ip-occ')?.value.trim()}
+  else if(ipStep===1){ipData.chief_complaint=$('ip-cc')?.value.trim();if(!ipData.chief_complaint){toast('Describe main complaint','err');return false}ipData.other_complaints=$('ip-oc')?.value.trim();ipData.medical_history=$('ip-mh')?.value.trim();ipData.medications=$('ip-med')?.value.trim();ipData.allergies=$('ip-al')?.value.trim();ipData.pregnancies=$('ip-pg')?.value.trim();ipData.red_flags=$('ip-rf')?.value.trim()}
+  else if(ipStep===2){ipData.sleep_info=$('ip-sl')?.value.trim();ipData.headaches=$('ip-hd')?.value.trim();ipData.mood=$('ip-mo')?.value.trim();ipData.energy_levels=$('ip-en')?.value.trim();ipData.diet=$('ip-di')?.value.trim();ipData.fluid_intake=$('ip-fl')?.value.trim();ipData.bowels=$('ip-bo')?.value.trim();ipData.waterworks=$('ip-ww')?.value.trim();ipData.perspiration=$('ip-ps')?.value.trim();ipData.periods=$('ip-pr')?.value.trim();ipData.exercise=$('ip-ex')?.value.trim()}
+  else if(ipStep===3){ipData.akabane=$('ip-ak')?.value.trim();ipData.jad=$('ip-jd')?.value.trim();ipData.jiao_temp=$('ip-jt')?.value.trim()}
+  return true;
+}
+function ipN(d){if(d>0&&!ipCollect())return;ipStep=Math.max(0,Math.min(4,ipStep+d));renderIP();window.scrollTo(0,0)}
+
+async function ipSub(){
+  if(!ipCollect())return;if(!$('consent-cb')?.checked){toast('Check consent','err');return}
+  const c=$('sig-canvas');if(isCBlank(c)){toast('Sign the form','err');return}
+  const sig=c.toDataURL('image/png');const mp=patients.find(p=>p.patient_email===user.email);if(!mp)return;
+  const{error}=await sb.from('patients').update({...ipData,signature_url:sig,consent_signed:true,consent_signed_at:new Date().toISOString(),intake_completed:true,intake_data:ipData}).eq('id',mp.id);
+  if(error){toast(error.message,'err');return}
+  toast('Submitted!','ok');await loadData();
+  $('page-container').innerHTML=`<div class="sec on"><div style="text-align:center;padding:50px 20px"><div style="font-size:3.5rem;margin-bottom:10px">🌿</div><div style="font-size:1.3rem;font-weight:800;margin-bottom:6px">Thank you, ${mp.first_name}!</div><div style="color:var(--muted);font-size:.9rem;line-height:1.65">Your intake form has been submitted.<br/>Charlotte will review it before your appointment.</div></div></div>`;
+}
+
+function initSig(){
+  const c=$('sig-canvas');if(!c)return;c.width=c.parentElement.offsetWidth-4;
+  sigCtx=c.getContext('2d');sigCtx.strokeStyle='#1f2d24';sigCtx.lineWidth=2.5;sigCtx.lineCap='round';sigCtx.lineJoin='round';
+  const p=e=>{const r=c.getBoundingClientRect();return e.touches?{x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top}:{x:e.clientX-r.left,y:e.clientY-r.top}};
+  c.onmousedown=e=>{sigDrawing=true;const q=p(e);sigCtx.beginPath();sigCtx.moveTo(q.x,q.y)};
+  c.onmousemove=e=>{if(!sigDrawing)return;const q=p(e);sigCtx.lineTo(q.x,q.y);sigCtx.stroke()};
+  c.onmouseup=c.onmouseleave=()=>sigDrawing=false;
+  c.ontouchstart=e=>{e.preventDefault();sigDrawing=true;const q=p(e);sigCtx.beginPath();sigCtx.moveTo(q.x,q.y)};
+  c.ontouchmove=e=>{e.preventDefault();if(!sigDrawing)return;const q=p(e);sigCtx.lineTo(q.x,q.y);sigCtx.stroke()};
+  c.ontouchend=()=>sigDrawing=false;
+}
+function clearSig(){if(sigCtx){const c=$('sig-canvas');sigCtx.clearRect(0,0,c.width,c.height)}}
+function isCBlank(c){return!c.getContext('2d').getImageData(0,0,c.width,c.height).data.some(v=>v!==0)}
+
+boot();
+</script>
+</body>
+</html>
