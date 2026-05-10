@@ -258,9 +258,11 @@ button{cursor:pointer;font-family:var(--font)}input,textarea,select{font-family:
     <div id="auth-name-row" style="display:none"><input id="auth-name" placeholder="Your full name" /></div>
     <input id="auth-email" type="email" placeholder="Email address" />
     <input id="auth-pass" type="password" placeholder="Password (min 6 characters)" />
+    <div id="auth-new-pass-row" style="display:none"><input id="auth-new-pass" type="password" placeholder="New password (min 6 characters)" /></div>
     <button class="lbtn" id="auth-btn" onclick="doAuth()">Sign In</button>
     <div class="auth-error" id="auth-error"></div>
     <div class="auth-msg" id="auth-msg">New patient? <a onclick="setAuthMode('signup')">Create an account</a></div>
+    <div id="auth-forgot" style="margin-top:8px"><a onclick="setAuthMode('forgot')" style="font-size:.82rem;color:var(--sage);font-weight:600;cursor:pointer">Forgot password?</a></div>
   </div>
 </div>
 
@@ -329,27 +331,69 @@ function boot(){
 }
 async function initSB(url,key){
   sb=supabase.createClient(url,key);
+
+  /* Listen for password recovery event from reset link */
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='PASSWORD_RECOVERY'){
+      $('auth-screen').style.display='flex';
+      $('app').style.display='none';
+      setAuthMode('reset');
+    }
+  });
+
   const{data:{session}}=await sb.auth.getSession();
-  if(session){await loadUser(session.user);launchApp()}
+  /* Check if URL contains recovery token */
+  const hash=window.location.hash;
+  if(hash&&hash.includes('type=recovery')){
+    $('auth-screen').style.display='flex';
+    setAuthMode('reset');
+  } else if(session){await loadUser(session.user);launchApp()}
   else{$('auth-screen').style.display='flex'}
 }
 
 /* ── Auth ─────────────────────────────────────────────────────── */
 function setAuthMode(m){
   authMode=m;
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('on',i===(m==='login'?0:1)));
-  $('auth-name-row').style.display=m==='signup'?'block':'none';
-  $('auth-btn').textContent=m==='login'?'Sign In':'Create Account';
+  const isLogin=m==='login',isSignup=m==='signup',isForgot=m==='forgot',isReset=m==='reset';
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('on',i===(isLogin||isForgot?0:1)));
+  $('auth-name-row').style.display=isSignup?'block':'none';
+  $('auth-pass').style.display=isForgot?'none':'block';
+  $('auth-new-pass-row').style.display=isReset?'block':'none';
+  $('auth-email').style.display=isReset?'none':'block';
+  $('auth-forgot').style.display=isLogin?'block':'none';
+  $('auth-btn').textContent=isLogin?'Sign In':isSignup?'Create Account':isForgot?'Send Reset Link':'Set New Password';
   $('auth-error').textContent='';
-  $('auth-msg').innerHTML=m==='login'?'New patient? <a onclick="setAuthMode(\'signup\')">Create an account</a>'
-    :'Already registered? <a onclick="setAuthMode(\'login\')">Sign in</a>';
+  if(isLogin)$('auth-msg').innerHTML='New patient? <a onclick="setAuthMode(\'signup\')">Create an account</a>';
+  else if(isSignup)$('auth-msg').innerHTML='Already registered? <a onclick="setAuthMode(\'login\')">Sign in</a>';
+  else if(isForgot)$('auth-msg').innerHTML='<a onclick="setAuthMode(\'login\')">← Back to sign in</a>';
+  else if(isReset)$('auth-msg').innerHTML='Enter your new password below.';
 }
 
 async function doAuth(){
+  $('auth-error').textContent='';$('auth-btn').disabled=true;
+
+  if(authMode==='forgot'){
+    const email=$('auth-email').value.trim();
+    if(!email){$('auth-error').textContent='Enter your email address';$('auth-btn').disabled=false;return}
+    const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
+    if(error){$('auth-error').textContent=error.message;$('auth-btn').disabled=false;return}
+    $('auth-msg').innerHTML='✅ Check your email for a reset link.';
+    $('auth-btn').disabled=false;return;
+  }
+
+  if(authMode==='reset'){
+    const pass=$('auth-new-pass').value;
+    if(!pass||pass.length<6){$('auth-error').textContent='Password must be at least 6 characters';$('auth-btn').disabled=false;return}
+    const{data,error}=await sb.auth.updateUser({password:pass});
+    if(error){$('auth-error').textContent=error.message;$('auth-btn').disabled=false;return}
+    toast('Password updated!','ok');
+    await loadUser(data.user);launchApp();
+    $('auth-btn').disabled=false;return;
+  }
+
   const email=$('auth-email').value.trim(),pass=$('auth-pass').value;
-  $('auth-error').textContent='';
-  if(!email||!pass){$('auth-error').textContent='Enter email and password';return}
-  $('auth-btn').disabled=true;
+  if(!email||!pass){$('auth-error').textContent='Enter email and password';$('auth-btn').disabled=false;return}
+
   if(authMode==='login'){
     const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
     if(error){$('auth-error').textContent=error.message;$('auth-btn').disabled=false;return}
