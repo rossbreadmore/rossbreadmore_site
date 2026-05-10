@@ -1,0 +1,20 @@
+---
+title: Writing — Ross Breadmore
+layout: home.njk
+---
+
+<div class="page-intro">
+  <h2 class="page-intro-title">Writing</h2>
+  <p class="page-intro-sub">Posts on design, product, AI, and working life.</p>
+</div>
+
+<ul class="post-list">
+  {% for post in collections.posts %}
+    <li>
+      <a href="{{ post.url }}">
+        <span class="post-list-title">{{ post.data.title }}</span>
+        <span class="post-list-date">{{ post.date | date("MMM yyyy") }}</span>
+      </a>
+    </li>
+  {% endfor %}
+</ul>

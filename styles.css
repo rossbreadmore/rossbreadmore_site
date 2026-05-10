@@ -245,6 +245,27 @@ nav a:hover {
   color: var(--grey);
 }
 
+/* --- Post navigation --- */
+.post-nav {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: var(--border-heavy);
+}
+
+.post-nav-back {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--grey);
+  text-decoration: none;
+}
+
+.post-nav-back:hover {
+  color: var(--black);
+}
+
 /* --- Post body content --- */
 .post-content {
   font-size: 1.1rem;
