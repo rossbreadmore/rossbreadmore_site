@@ -84,6 +84,19 @@ nav a:hover {
   text-decoration: none;
 }
 
+/* --- Homepage intro --- */
+.homepage-intro {
+  padding: 2.5rem 0 2rem;
+  border-bottom: var(--border-heavy);
+  max-width: 560px;
+}
+
+.homepage-intro p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #444;
+}
+
 /* --- Skills navigation (homepage) --- */
 .skills-section {
   border-bottom: var(--border-heavy);
