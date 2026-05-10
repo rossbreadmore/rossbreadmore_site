@@ -411,9 +411,12 @@ async function doAuth(){
   $('auth-btn').disabled=false;
 }
 
+const PRACTITIONER_EMAILS=['charlottebreadmore@gmail.com','rossbreadmore@gmail.com'];
+
 async function loadUser(au){
   const{data}=await sb.from('profiles').select('*').eq('id',au.id).single();
-  user={id:au.id,email:au.email,role:data?.role||'patient',name:data?.full_name||au.email};
+  const isPract=PRACTITIONER_EMAILS.includes(au.email.toLowerCase());
+  user={id:au.id,email:au.email,role:isPract?'practitioner':(data?.role||'patient'),name:data?.full_name||au.email};
 }
 
 async function doLogout(){
