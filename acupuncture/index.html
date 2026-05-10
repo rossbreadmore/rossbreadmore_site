@@ -18,18 +18,7 @@
 body{font-family:var(--font);background:var(--bg);color:var(--ink);min-height:100vh}
 button{cursor:pointer;font-family:var(--font)}input,textarea,select{font-family:var(--font)}
 
-/* ── CONFIG BANNER ───────────────────────────────────────────────── */
-#config-banner{position:fixed;inset:0;z-index:9999;background:var(--bg);
-  display:flex;align-items:center;justify-content:center;padding:20px}
-#config-banner .cb-card{background:var(--white);border-radius:16px;padding:40px;
-  max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15);text-align:center}
-#config-banner h2{font-size:1.5rem;margin-bottom:6px}
-#config-banner p{color:var(--muted);font-size:.9rem;margin-bottom:22px;line-height:1.6}
-#config-banner input{width:100%;padding:11px 14px;border-radius:var(--r);border:1.5px solid var(--border);
-  font-size:.9rem;margin-bottom:10px;outline:none}
-#config-banner input:focus{border-color:var(--sage)}
-#config-banner .cbtn{width:100%;padding:13px;border-radius:var(--r);border:none;
-  background:var(--sage);color:#fff;font-size:1rem;font-weight:700;margin-top:6px}
+/* ── CONFIG BANNER (removed — credentials hardcoded) ─────────────── */
 
 /* ── LOGIN ───────────────────────────────────────────────────────── */
 #auth-screen{display:none;min-height:100vh;align-items:center;justify-content:center;
@@ -254,18 +243,7 @@ button{cursor:pointer;font-family:var(--font)}input,textarea,select{font-family:
 </head>
 <body>
 
-<!-- ══════════════  CONFIG (first-time setup)  ══════════════════════ -->
-<div id="config-banner">
-  <div class="cb-card">
-    <div style="font-size:2.5rem;margin-bottom:8px;">🌿</div>
-    <h2>First-Time Setup</h2>
-    <p>Enter your Supabase project details.<br/>Find these in: Supabase Dashboard → Project Settings → API.</p>
-    <input id="cfg-url" placeholder="Project URL (e.g. https://abc123.supabase.co)" />
-    <input id="cfg-key" placeholder="Anon (public) Key" />
-    <button class="cbtn" onclick="saveConfig()">Connect &amp; Launch</button>
-    <p style="font-size:.75rem;color:var(--muted);margin-top:10px;">Saved in your browser only. The anon key is safe for client-side use.</p>
-  </div>
-</div>
+<!-- Config removed — credentials hardcoded -->
 
 <!-- ══════════════  AUTH SCREEN  ════════════════════════════════════ -->
 <div id="auth-screen">
@@ -342,17 +320,12 @@ const T_COL='Pale,Pale with red tip,Normal pink,Red,Deep red / Scarlet,Purple,Bl
 const T_COAT='Thin white,Thick white,Thin yellow,Thick yellow,Grey / Black,Greasy,Peeled / No coat,Absent'.split(',');
 const TX_T='Acupuncture (Five Element),Acupuncture (TCM),Moxibustion,Cupping,Gua-sha,Facial Acupuncture,Combination'.split(',');
 
-/* ── Config ──────────────────────────────────────────────────── */
+/* ── Config (hardcoded) ───────────────────────────────────────── */
+const SB_URL='https://baofstqpkrguraeisjs.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhb2ZzdHFwa3JndXJhZWlzanNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjkyMTAsImV4cCI6MjA5MDMwNTIxMH0.l7YzX8aSL2epjJZg5ypRo-ieUwpRtUhmMl2CpCcFagA';
+
 function boot(){
-  const url=localStorage.getItem('sb_url'),key=localStorage.getItem('sb_key');
-  if(!url||!key){$('config-banner').style.display='flex';$('auth-screen').style.display='none';return}
-  $('config-banner').style.display='none';initSB(url,key);
-}
-function saveConfig(){
-  const url=$('cfg-url').value.trim().replace(/\/$/,''),key=$('cfg-key').value.trim();
-  if(!url||!key){toast('Enter both fields','err');return}
-  localStorage.setItem('sb_url',url);localStorage.setItem('sb_key',key);
-  $('config-banner').style.display='none';initSB(url,key);
+  initSB(SB_URL,SB_KEY);
 }
 async function initSB(url,key){
   sb=supabase.createClient(url,key);
