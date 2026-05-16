@@ -4,7 +4,7 @@
     "quantity": "2 parts",
     "skill": "Visual thinking",
     "company": "Falmouth University",
-    "detail": "You get someone who can make the abstract concrete. Complex problems, unclear briefs, tangled systems — I translate them into something a team can actually act on. That started with a degree in illustration at Falmouth and has never stopped scaling.",
+    "detail": "I think in pictures. A Falmouth degree in illustration trained me to make the abstract concrete — to take a confused brief and return something a team can act on. That instinct has never left, whether I'm on paper, in a workshop, or mapping a product system.",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z\"/><path d=\"m15 5 4 4\"/></svg>"
   },
   {
@@ -12,7 +12,7 @@
     "quantity": "1 part",
     "skill": "Radical transparency",
     "company": "NixonMcInnes",
-    "detail": "Your team ships better work when nothing is hidden. I build cultures where showing early, inviting critique, and working in the open is just how things are done — not a value on a wall. Learned this properly at NixonMcInnes, practised it ever since.",
+    "detail": "I share work early, and I build teams who do the same. At NixonMcInnes I ran sessions in total transparency — showing messy work, inviting hard critique, building in public. That habit still sits at the centre of how I work.",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"12\" y1=\"12\" x2=\"12\" y2=\"3\"/><line x1=\"12\" y1=\"12\" x2=\"3.5\" y2=\"18\"/><line x1=\"12\" y1=\"12\" x2=\"20.5\" y2=\"18\"/></svg>"
   },
   {
@@ -20,7 +20,7 @@
     "quantity": "Equal measures",
     "skill": "Design × Engineering",
     "company": "We Are Friday",
-    "detail": "You get a design leader who engineers actually want in the room. I've been embedded in delivery teams since before cross-functional was a job description — which means I understand constraints, speak the language, and don't throw specs over a wall.",
+    "detail": "I sit inside delivery teams, not above them. Embedded with engineers before cross-functional was a job description, I learned to speak the language, understand the constraints, and not throw specs over a wall.",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"4\" y1=\"4\" x2=\"20\" y2=\"20\"/><line x1=\"20\" y1=\"4\" x2=\"4\" y2=\"20\"/></svg>"
   },
   {
@@ -28,7 +28,7 @@
     "quantity": "A generous helping of",
     "skill": "Institutional patience",
     "company": "Lloyds Banking Group",
-    "detail": "You get someone who knows how large organisations actually move — and how to move them. Simplicity inside a complex institution requires patience, political fluency, the courage to cut, and a narrative that brings stakeholders with you. Five years at Lloyds Banking Group taught me all of that.",
+    "detail": "I know how large organisations move — and how to move them. Five years at Lloyds taught me that simplicity inside a complex institution requires patience, political fluency, the courage to cut, and a narrative that brings people with you.",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><line x1=\"3\" y1=\"7\" x2=\"21\" y2=\"7\"/><line x1=\"6\" y1=\"12\" x2=\"18\" y2=\"12\"/><line x1=\"9\" y1=\"17\" x2=\"15\" y2=\"17\"/></svg>"
   },
   {
@@ -36,7 +36,7 @@
     "quantity": "A pinch of",
     "skill": "Productive tension",
     "company": "4G Capital",
-    "detail": "You get someone who won't let the business railroad the user — or the other way around. I hold the tension between commercial pressure and real user need, and I don't let either side win too easily. That skill was forged at 4G Capital in East Africa, where the stakes were real and the easy answer was rarely the right one.",
+    "detail": "I hold the tension between what the business wants and what users actually need — and I don't let either side win too easily. At 4G Capital in East Africa, the stakes were real, the constraints were severe, and the easy answer was rarely the right one.",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"12\" x2=\"3\" y2=\"12\"/><polyline points=\"6 9 3 12 6 15\"/><line x1=\"12\" y1=\"12\" x2=\"21\" y2=\"12\"/><polyline points=\"18 9 21 12 18 15\"/></svg>"
   },
   {
@@ -44,7 +44,7 @@
     "quantity": "To taste",
     "skill": "Purposeful disruption",
     "company": "JPMorgan Chase",
-    "detail": "You get someone who can change a large institution without being consumed by it. At JPMorgan Chase I apply everything above at global scale — pushing for unconventional thinking in a place that doesn't naturally reward it, and making changes that actually stick. Twenty years of an unusual career, finally in the right context.",
+    "detail": "I change institutions from the inside. At JPMorgan Chase I apply everything above at global scale — pushing unconventional thinking in a place that doesn't naturally reward it, and building things that actually stick.",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"12\" y1=\"3\" x2=\"12\" y2=\"21\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><polyline points=\"17 7 22 12 17 17\"/></svg>"
   }
 ]

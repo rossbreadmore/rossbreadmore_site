@@ -3,8 +3,10 @@ title: Ross Breadmore
 layout: home.njk
 ---
 
-<div class="homepage-intro">
-  <p>Design and product leadership for complex organisations — helping teams think more clearly about what they're actually building, and build it better. Currently Executive Director of UX at JPMorgan Chase.</p>
+<div class="homepage-hero">
+  <h1 class="hero-name">Ross<br>Breadmore</h1>
+  <p class="hero-meta">London, UK — Executive Director of UX, JPMorgan Chase</p>
+  <p class="hero-bio">Design and product leadership for complex organisations. Twenty years helping teams think more clearly about what they're building — and build it better.</p>
 </div>
 
 <section class="skills-section">
@@ -29,16 +31,19 @@ layout: home.njk
   </div>
 </section>
 
-<ul class="post-list">
-  {% for post in collections.posts %}
-    <li>
-      <a href="{{ post.url }}">
-        <span class="post-list-title">{{ post.data.title }}</span>
-        <span class="post-list-date">{{ post.date | date("MMM yyyy") }}</span>
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+<section class="writing-section">
+  <h2 class="section-label">Writing</h2>
+  <ul class="post-list">
+    {% for post in collections.posts %}
+      <li>
+        <a href="{{ post.url }}">
+          <span class="post-list-title">{{ post.data.title }}</span>
+          <span class="post-list-date">{{ post.date | date("MMM yyyy") }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
 
 <script>
   var pips = document.querySelectorAll('.skill-pip');
