@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Outer shell — organic D/teardrop shape -->
+  <path d="
+    M 52,18
+    C 32,20 18,38 16,60
+    C 14,80 22,104 40,118
+    C 52,128 68,132 80,124
+    C 96,114 110,96 112,74
+    C 114,52 104,28 88,20
+    C 78,14 64,16 52,18
+    Z
+  "/>
+  <!-- Inner contour line (parallel, slightly inset) -->
+  <path d="
+    M 55,30
+    C 40,32 30,48 30,64
+    C 30,80 38,100 52,110
+    C 62,118 74,120 82,114
+    C 94,106 104,90 104,72
+    C 104,54 96,36 82,30
+    C 74,26 64,28 55,30
+    Z
+  "/>
+  <!-- Safety pin — oval head -->
+  <ellipse cx="70" cy="58" rx="10" ry="6" transform="rotate(-30 70 58)"/>
+  <!-- Safety pin — straight body -->
+  <line x1="62" y1="62" x2="88" y2="100"/>
+  <!-- Pin tip closure bump -->
+  <path d="M 86,98 C 90,102 92,104 88,106 C 85,108 82,106 82,102"/>
+  <!-- Stitches across lower portion -->
+  <line x1="44" y1="92" x2="44" y2="106"/>
+  <line x1="54" y1="94" x2="54" y2="108"/>
+  <line x1="64" y1="94" x2="64" y2="108"/>
+  <line x1="74" y1="92" x2="74" y2="106"/>
+  <!-- Stitch crossbar -->
+  <line x1="40" y1="99" x2="78" y2="99"/>
+</svg>

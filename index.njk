@@ -4,9 +4,14 @@ layout: home.njk
 ---
 
 <div class="homepage-hero">
-  <h1 class="hero-name">Ross<br>Breadmore</h1>
-  <p class="hero-meta">London, UK — Executive Director of UX, JPMorgan Chase</p>
-  <p class="hero-bio">Design and product leadership for complex organisations. Twenty years helping teams think more clearly about what they're building — and build it better.</p>
+  <div class="hero-text">
+    <h1 class="hero-name">Ross<br>Breadmore</h1>
+    <p class="hero-meta">London, UK — Executive Director of UX, JPMorgan Chase</p>
+    <p class="hero-bio">Design and product leadership for complex organisations. Twenty years helping teams think more clearly about what they're building — and build it better.</p>
+  </div>
+  <div class="hero-illustration">
+    {% include "illustrations/robot.svg" %}
+  </div>
 </div>
 
 <section class="skills-section">
@@ -30,6 +35,10 @@ layout: home.njk
     {% endfor %}
   </div>
 </section>
+
+<div class="section-marker">
+  {% include "illustrations/pin-face.svg" %}
+</div>
 
 <section class="writing-section">
   <h2 class="section-label">Writing</h2>

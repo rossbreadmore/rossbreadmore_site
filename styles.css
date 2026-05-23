@@ -87,8 +87,29 @@ nav a:hover {
 
 /* --- Homepage hero --- */
 .homepage-hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
   padding: 5rem 0 4.5rem;
   border-bottom: 1px solid var(--border);
+}
+
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-illustration {
+  flex-shrink: 0;
+  width: 130px;
+  color: rgba(237, 232, 223, 0.18);
+  padding-bottom: 0.5rem;
+}
+
+.hero-illustration svg {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .hero-name {
@@ -201,6 +222,18 @@ nav a:hover {
   line-height: 1.85;
   color: var(--text-dim);
   max-width: 520px;
+}
+
+/* --- Illustration section marker --- */
+.section-marker {
+  padding: 3.5rem 0 1rem;
+  color: rgba(237, 232, 223, 0.15);
+}
+
+.section-marker svg {
+  width: 64px;
+  height: auto;
+  display: block;
 }
 
 /* --- Writing section --- */
@@ -743,8 +776,28 @@ footer p {
   color: var(--text);
 }
 
+.footer-illustration {
+  width: 40px;
+  color: rgba(237, 232, 223, 0.14);
+  flex-shrink: 0;
+}
+
+.footer-illustration svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* --- Responsive --- */
 @media (max-width: 600px) {
+  .homepage-hero {
+    align-items: flex-start;
+  }
+
+  .hero-illustration {
+    width: 90px;
+  }
+
   .hero-name {
     letter-spacing: -2.5px;
     margin-bottom: 2rem;

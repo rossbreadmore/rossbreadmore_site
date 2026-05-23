@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 220" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Head outline -->
+  <path d="M 42,8 C 44,5 48,4 52,4 L 112,5 C 116,5 120,7 121,11 L 122,68 L 40,70 L 40,12 Z"/>
+  <!-- Left eye -->
+  <rect x="51" y="18" width="13" height="11" rx="1"/>
+  <!-- Right eye -->
+  <rect x="78" y="17" width="13" height="11" rx="1"/>
+  <!-- Mouth/grill outer rect -->
+  <rect x="43" y="42" width="76" height="18"/>
+  <!-- Grill bars -->
+  <line x1="55" y1="42" x2="55" y2="60"/>
+  <line x1="66" y1="42" x2="66" y2="60"/>
+  <line x1="77" y1="42" x2="77" y2="60"/>
+  <line x1="88" y1="42" x2="88" y2="60"/>
+  <line x1="99" y1="42" x2="99" y2="60"/>
+  <line x1="110" y1="42" x2="110" y2="60"/>
+  <!-- Body + arm outline (single path going around perimeter) -->
+  <path d="
+    M 40,70
+    L 40,78
+    L 28,78
+    L 24,84
+    L 22,142
+    L 38,144
+    L 38,170
+    L 38,178
+    L 56,180
+    L 58,162
+    L 58,148
+    L 84,148
+    L 88,148
+    L 88,166
+    L 92,180
+    L 108,178
+    L 106,162
+    L 106,146
+    L 120,146
+    L 122,144
+    L 122,112
+    C 122,110 124,108 126,107
+    L 154,95
+    L 148,82
+    L 126,88
+    C 124,89 122,88 122,86
+    L 122,68
+    L 40,70
+    Z
+  "/>
+</svg>

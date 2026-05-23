@@ -12,6 +12,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("styles.css");
   eleventyConfig.addPassthroughCopy("img");
   eleventyConfig.addPassthroughCopy("images");
+  eleventyConfig.addPassthroughCopy("illustrations");
   eleventyConfig.addPassthroughCopy("standalone");
   eleventyConfig.ignores.add("standalone/**");
   eleventyConfig.addPassthroughCopy("acupuncture");
