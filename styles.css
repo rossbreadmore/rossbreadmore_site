@@ -32,6 +32,8 @@ body {
   max-width: 840px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 main {
@@ -101,8 +103,8 @@ nav a:hover {
 
 .hero-illustration {
   flex-shrink: 0;
-  width: 200px;
-  color: rgba(237, 232, 223, 0.55);
+  width: 240px;
+  color: rgba(237, 232, 223, 0.75);
   padding-bottom: 0.5rem;
 }
 
@@ -222,18 +224,6 @@ nav a:hover {
   line-height: 1.85;
   color: var(--text-dim);
   max-width: 520px;
-}
-
-/* --- Illustration section marker --- */
-.section-marker {
-  padding: 3.5rem 0 1rem;
-  color: rgba(237, 232, 223, 0.5);
-}
-
-.section-marker svg {
-  width: 110px;
-  height: auto;
-  display: block;
 }
 
 /* --- Writing section --- */
@@ -774,18 +764,6 @@ footer p {
 
 .footer-links a:hover {
   color: var(--text);
-}
-
-.footer-illustration {
-  width: 64px;
-  color: rgba(237, 232, 223, 0.45);
-  flex-shrink: 0;
-}
-
-.footer-illustration svg {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 /* --- Responsive --- */
