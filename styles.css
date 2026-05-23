@@ -101,8 +101,8 @@ nav a:hover {
 
 .hero-illustration {
   flex-shrink: 0;
-  width: 130px;
-  color: rgba(237, 232, 223, 0.18);
+  width: 200px;
+  color: rgba(237, 232, 223, 0.55);
   padding-bottom: 0.5rem;
 }
 
@@ -227,11 +227,11 @@ nav a:hover {
 /* --- Illustration section marker --- */
 .section-marker {
   padding: 3.5rem 0 1rem;
-  color: rgba(237, 232, 223, 0.15);
+  color: rgba(237, 232, 223, 0.5);
 }
 
 .section-marker svg {
-  width: 64px;
+  width: 110px;
   height: auto;
   display: block;
 }
@@ -777,8 +777,8 @@ footer p {
 }
 
 .footer-illustration {
-  width: 40px;
-  color: rgba(237, 232, 223, 0.14);
+  width: 64px;
+  color: rgba(237, 232, 223, 0.45);
   flex-shrink: 0;
 }
 
@@ -795,7 +795,7 @@ footer p {
   }
 
   .hero-illustration {
-    width: 90px;
+    width: 140px;
   }
 
   .hero-name {
