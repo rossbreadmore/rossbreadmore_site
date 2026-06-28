@@ -1,5 +1,17 @@
 [
   {
+    "title": "The Quiet Channel",
+    "status": "active",
+    "description": "A fourth concept in the same world — a chat-only interface, with an ambient status indicator and a quiet log of everything noticed, shown or not. Another working prototype.",
+    "slug": "/standalone/the-quiet-channel.html"
+  },
+  {
+    "title": "The Relay",
+    "status": "active",
+    "description": "A third concept in the same world — multi-agent orchestration made visible as a baton handed across agents and across the human's devices. Another working prototype.",
+    "slug": "/standalone/the-relay.html"
+  },
+  {
     "title": "Future Surveillance",
     "status": "active",
     "description": "A speculative design concept: a compliance intelligence platform set in a near-future surveillance economy. Built as a working prototype.",
@@ -10,12 +22,6 @@
     "status": "active",
     "description": "A second concept in the same world — ambient intelligence surfacing. Another working prototype.",
     "slug": "/standalone/ambient-intelligence.html"
-  },
-  {
-    "title": "The Relay",
-    "status": "active",
-    "description": "A third concept in the same world — multi-agent orchestration made visible as a baton handed across agents and across the human's devices. Another working prototype.",
-    "slug": "/standalone/the-relay.html"
   },
   {
     "title": "Storytelling at work",

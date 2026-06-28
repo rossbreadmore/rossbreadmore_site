@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel — The Quiet Channel</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-panel:#f8fafc;
+    --bg-muted:#f1f5f9;
+    --bg-card:#ffffff;
+    --border:#e2e8f0;
+    --border-strong:#cbd5e1;
+    --border-interactive:#64748b;
+    --border-line:#94a3b8;
+    --text:#0f172a;
+    --text-secondary:#334155;
+    --text-muted:#475569;
+    --accent:#2563eb;
+    --accent-text:#1d4ed8;
+    --accent-soft:#eff6ff;
+    --green:#15803d;
+    --green-soft:#f0fdf4;
+    --amber:#b45309;
+    --amber-soft:#fffbeb;
+    --red:#b91c1c;
+    --red-soft:#fef2f2;
+    --cyan:#0e7490;
+    --cyan-soft:#ecfeff;
+    --radius:12px;
+    --radius-sm:8px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; height:100%; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  body{ display:flex; flex-direction:column; height:100vh; overflow:hidden; }
+
+  a, button{ font-family:inherit; }
+  button{ cursor:pointer; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+
+  /* ---------- Header ---------- */
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px; border-bottom:1px solid var(--border);
+    background:var(--bg); flex-shrink:0; position:relative; z-index:5;
+  }
+  .brand{ display:flex; align-items:baseline; gap:8px; }
+  .brand .name{ font-size:15px; font-weight:600; letter-spacing:-0.01em; color:var(--text); }
+  .brand .sub{ font-size:13px; color:var(--text-muted); }
+  .header-right{ display:flex; align-items:center; gap:16px; }
+  .clock{ font-size:13px; color:var(--text-muted); font-variant-numeric:tabular-nums; }
+
+  .ambient-btn{
+    display:flex; align-items:center; gap:8px; background:none; border:1px solid transparent;
+    border-radius:999px; padding:5px 10px 5px 8px; transition:border-color .15s, background .15s;
+  }
+  .ambient-btn:hover, .ambient-btn[aria-expanded="true"]{ border-color:var(--border); background:var(--bg-panel); }
+  .ambient-dot{
+    width:9px; height:9px; border-radius:50%; background:var(--border-strong);
+    transition:background .4s, box-shadow .4s; flex-shrink:0;
+  }
+  .ambient-dot.watching{ background:var(--cyan); }
+  .ambient-dot.needs-response{ background:var(--accent); }
+  .ambient-dot.resolved{ background:var(--green); }
+  .ambient-dot.pulse-once{ animation:dotPulse 900ms ease-out; }
+  @keyframes dotPulse{
+    0%{ box-shadow:0 0 0 0 rgba(37,99,235,0.35); }
+    70%{ box-shadow:0 0 0 7px rgba(37,99,235,0); }
+    100%{ box-shadow:0 0 0 0 rgba(37,99,235,0); }
+  }
+  .ambient-label{ font-size:13px; color:var(--text-secondary); white-space:nowrap; }
+
+  /* ---------- Quiet log panel ---------- */
+  .quiet-log{
+    position:absolute; top:56px; right:16px; width:320px; max-width:calc(100vw - 32px);
+    background:var(--bg-card); border:1px solid var(--border-strong); border-radius:var(--radius);
+    box-shadow:0 8px 24px rgba(15,23,42,0.12); padding:14px 16px; z-index:10;
+    display:none;
+  }
+  .quiet-log.open{ display:block; }
+  .quiet-log h3{ margin:0 0 4px; font-size:13px; font-weight:600; color:var(--text); }
+  .quiet-log p.lede{ margin:0 0 10px; font-size:12.5px; color:var(--text-muted); line-height:1.4; }
+  .quiet-row{
+    display:flex; gap:10px; padding:8px 0; border-top:1px solid var(--border); font-size:12.5px;
+  }
+  .quiet-row:first-of-type{ border-top:none; }
+  .quiet-time{ color:var(--text-muted); font-variant-numeric:tabular-nums; flex-shrink:0; width:42px; }
+  .quiet-body{ flex:1; }
+  .quiet-detail{ color:var(--text-secondary); line-height:1.4; }
+  .quiet-meta{ display:flex; gap:8px; margin-top:3px; align-items:center; }
+  .quiet-conf{ font-size:11px; color:var(--text-muted); font-variant-numeric:tabular-nums; }
+  .quiet-tag{ font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.03em; padding:1px 6px; border-radius:999px; }
+  .quiet-tag.logged{ background:var(--bg-muted); color:var(--text-muted); }
+  .quiet-tag.pushed{ background:var(--accent-soft); color:var(--accent-text); }
+  .quiet-row.pending .quiet-detail, .quiet-row.pending .quiet-time{ color:var(--border-strong); }
+  .quiet-row.pending .quiet-tag{ background:var(--bg-muted); color:var(--border-strong); }
+
+  /* ---------- Chat ---------- */
+  main{ flex:1; overflow-y:auto; display:flex; justify-content:center; }
+  .chat-col{ width:100%; max-width:600px; padding:24px 20px 12px; display:flex; flex-direction:column; gap:4px; }
+
+  .empty-note{
+    margin:auto; text-align:center; color:var(--border-strong); font-size:13.5px; padding:60px 0;
+  }
+
+  .time-divider{ text-align:center; margin:18px 0 14px; font-size:11.5px; color:var(--text-muted);
+    font-variant-numeric:tabular-nums; letter-spacing:.02em; }
+
+  .case-tag{
+    font-size:11.5px; color:var(--text-muted); margin:4px 2px 8px; display:flex; align-items:center; gap:6px;
+  }
+  .case-tag .dot{ width:5px; height:5px; border-radius:50%; background:var(--border-strong); }
+
+  .msg-row{ display:flex; margin:3px 0; opacity:0; transform:translateY(6px); animation:msgIn 320ms ease-out forwards; }
+  @keyframes msgIn{ to{ opacity:1; transform:translateY(0); } }
+  .msg-row.agent{ justify-content:flex-start; }
+  .msg-row.user{ justify-content:flex-end; }
+  .bubble{
+    max-width:78%; padding:10px 14px; border-radius:var(--radius); font-size:14.5px; line-height:1.45;
+  }
+  .msg-row.agent .bubble{ background:var(--bg-panel); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; }
+  .msg-row.user .bubble{ background:var(--accent); color:#fff; border-bottom-right-radius:4px; }
+
+  .typing-row{ display:flex; justify-content:flex-start; margin:3px 0; }
+  .typing-dots{ background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius); border-bottom-left-radius:4px; padding:11px 16px; display:flex; gap:4px; }
+  .typing-dots span{ width:6px; height:6px; border-radius:50%; background:var(--border-strong); animation:typingBounce 1.1s infinite ease-in-out; }
+  .typing-dots span:nth-child(2){ animation-delay:.15s; }
+  .typing-dots span:nth-child(3){ animation-delay:.3s; }
+  @keyframes typingBounce{ 0%,60%,100%{ transform:translateY(0); opacity:.5; } 30%{ transform:translateY(-3px); opacity:1; } }
+
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 2px 18px; }
+  .chip{
+    background:var(--bg); border:1px solid var(--border-strong); color:var(--text-secondary);
+    border-radius:999px; padding:7px 14px; font-size:13px; transition:border-color .15s, background .15s;
+  }
+  .chip:hover{ border-color:var(--border-interactive); background:var(--bg-panel); }
+
+  .decision-row{ display:flex; flex-wrap:wrap; gap:10px; margin:12px 2px 22px; }
+  .btn{ border-radius:var(--radius-sm); padding:10px 16px; font-size:14px; font-weight:600; border:1px solid transparent; }
+  .btn-primary{ background:var(--accent); color:#fff; }
+  .btn-primary:hover{ background:var(--accent-text); }
+  .btn-secondary{ background:var(--bg); color:var(--text-secondary); border-color:var(--border-strong); }
+  .btn-secondary:hover{ border-color:var(--border-interactive); background:var(--bg-panel); }
+
+  .continue-wrap{ display:flex; justify-content:center; margin:18px 0 26px; }
+  .continue-btn{
+    background:var(--bg); border:1px solid var(--border-strong); color:var(--text-muted);
+    border-radius:999px; padding:8px 16px; font-size:12.5px; display:flex; align-items:center; gap:6px;
+  }
+  .continue-btn:hover{ border-color:var(--border-interactive); color:var(--text-secondary); }
+  .continue-btn .arrow{ transition:transform .15s; }
+  .continue-btn:hover .arrow{ transform:translateX(2px); }
+
+  .restart-wrap{ display:flex; justify-content:center; margin:8px 0 26px; }
+  .restart-btn{ background:none; border:none; color:var(--text-muted); font-size:12.5px; text-decoration:underline; padding:4px; }
+  .restart-btn:hover{ color:var(--text-secondary); }
+
+  /* ---------- Composer ---------- */
+  .composer-wrap{ border-top:1px solid var(--border); background:var(--bg); flex-shrink:0; display:flex; justify-content:center; }
+  .composer{ width:100%; max-width:600px; padding:12px 20px; display:flex; gap:10px; align-items:center; }
+  .composer input{
+    flex:1; border:1px solid var(--border-strong); border-radius:999px; padding:10px 16px; font-size:14.5px;
+    color:var(--text); background:var(--bg-panel);
+  }
+  .composer input::placeholder{ color:var(--text-muted); }
+  .composer input:focus{ outline:none; border-color:var(--accent); background:var(--bg); }
+  .send-btn{
+    width:38px; height:38px; border-radius:50%; background:var(--accent); border:none; color:#fff;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .15s;
+  }
+  .send-btn:hover{ background:var(--accent-text); }
+  .send-btn svg{ width:16px; height:16px; }
+
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="name">Sentinel</span>
+    <span class="sub">The Quiet Channel</span>
+  </div>
+  <div class="header-right">
+    <span class="clock" id="clock">07:50</span>
+    <button class="ambient-btn" id="ambientBtn" aria-expanded="false" aria-controls="quietLog" aria-label="Ambient status: all quiet. Open quiet log.">
+      <span class="ambient-dot" id="ambientDot"></span>
+      <span class="ambient-label" id="ambientLabel">All quiet</span>
+    </button>
+  </div>
+  <div class="quiet-log" id="quietLog" role="region" aria-label="Quiet log — everything Sentinel has noticed, shown or not">
+    <h3>Quiet log</h3>
+    <p class="lede">Everything noticed today on FI-7733, whether or not it was worth telling you.</p>
+    <div id="quietRows"></div>
+  </div>
+</header>
+
+<main>
+  <div class="chat-col" id="chatCol">
+    <div class="empty-note" id="emptyNote">Nothing yet today.</div>
+  </div>
+</main>
+
+<div class="composer-wrap">
+  <div class="composer">
+    <label for="msgInput" class="sr-only">Message Sentinel</label>
+    <input type="text" id="msgInput" placeholder="Ask Sentinel anything…" autocomplete="off">
+    <button class="send-btn" id="sendBtn" aria-label="Send message">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    </button>
+  </div>
+</div>
+
+<div aria-live="polite" class="sr-only" id="liveRegion"></div>
+
+<script>
+(function(){
+
+  var scenario = {
+    caseId: "FI-7733",
+    person: "R. Voss",
+    desk: "Fixed Income",
+    threshold: 80,
+    events: [
+      {
+        time: "07:50", conf: 28, ambient: "neutral", push: false,
+        label: "Desk-scan anomaly",
+        detail: "Built an unusually large short position in Meridian Power's 6.25% '31 bonds, against the desk's own published view."
+      },
+      {
+        time: "11:15", conf: 61, ambient: "watching", push: false,
+        label: "Personal-account reconciliation",
+        detail: "Personal brokerage account sold Meridian Power equity two days before the bond position was built."
+      },
+      {
+        time: "14:40", conf: 78, ambient: "watching", push: true,
+        label: "Comms scan",
+        detail: "Found a calendar entry: a call with an outside credit analyst, the same week as both trades.",
+        messages: [
+          "Heads up on FI-7733 — Voss, Fixed Income. Started as a desk-positioning anomaly this morning, but it's changed shape.",
+          "His personal account sold the same issuer's equity two days before this position, and he had a call with an outside credit analyst the same week."
+        ]
+      },
+      {
+        time: "16:05", conf: 86, ambient: "needs-response", push: true, decision: true,
+        label: "Checkpoint threshold crossed",
+        detail: "Confidence crossed the 80% checkpoint threshold set for this case.",
+        messages: [
+          "This has crossed the threshold you set for FI-7733. I can draft it for compliance review now, or hold and keep watching if you'd rather see what the desk does tomorrow."
+        ]
+      }
+    ]
+  };
+
+  var narrate = {
+    why: "Three separate checks fed this: a desk-scan flagged the position against house view, a personal-account reconciliation found the equity sale, and a comms scan found the calendar entry. None of them alone would be worth flagging — together, the pattern matches conflicts we've seen before.",
+    uncertain: "I haven't confirmed what was discussed on that call — only that it happened the same week as both trades. That's the piece I'd want before treating this as fully settled.",
+    who: "FI-7733 — R. Voss, Fixed Income desk. One case, building since this morning.",
+    fallback: "I can tell you why I flagged this, what's still uncertain, or show you everything I've noticed today — just ask, or use a button below.",
+    nothingYet: "Nothing's crossed the threshold yet on FI-7733. I'll message you the moment it does — no need to check."
+  };
+
+  var els = {
+    clock: document.getElementById('clock'),
+    ambientBtn: document.getElementById('ambientBtn'),
+    ambientDot: document.getElementById('ambientDot'),
+    ambientLabel: document.getElementById('ambientLabel'),
+    quietLog: document.getElementById('quietLog'),
+    quietRows: document.getElementById('quietRows'),
+    chatCol: document.getElementById('chatCol'),
+    emptyNote: document.getElementById('emptyNote'),
+    input: document.getElementById('msgInput'),
+    sendBtn: document.getElementById('sendBtn'),
+    liveRegion: document.getElementById('liveRegion')
+  };
+
+  var state = {
+    eventIndex: -1,
+    awaitingContinue: false,
+    resolved: false,
+    quietLogOpen: false,
+    lastChipRow: null,
+    lastDecisionRow: null
+  };
+
+  function setClock(t){ els.clock.textContent = t; }
+
+  function setAmbient(mode, pulse){
+    els.ambientDot.className = 'ambient-dot' + (mode !== 'neutral' ? ' ' + mode : '');
+    var labels = {
+      neutral: 'All quiet',
+      watching: 'Watching FI-7733',
+      'needs-response': 'Needs your call',
+      resolved: 'Resolved'
+    };
+    els.ambientLabel.textContent = labels[mode] || 'All quiet';
+    els.ambientBtn.setAttribute('aria-label', 'Ambient status: ' + (labels[mode] || 'All quiet') + '. Open quiet log.');
+    if (pulse){
+      els.ambientDot.classList.remove('pulse-once');
+      void els.ambientDot.offsetWidth;
+      els.ambientDot.classList.add('pulse-once');
+    }
+  }
+
+  function clearEmptyNote(){
+    if (els.emptyNote && els.emptyNote.parentNode){
+      els.emptyNote.parentNode.removeChild(els.emptyNote);
+      els.emptyNote = null;
+    }
+  }
+
+  function scrollToBottom(){
+    var main = document.querySelector('main');
+    main.scrollTop = main.scrollHeight;
+  }
+
+  function addDivider(time){
+    clearEmptyNote();
+    var d = document.createElement('div');
+    d.className = 'time-divider';
+    d.textContent = time;
+    els.chatCol.appendChild(d);
+  }
+
+  function addCaseTag(){
+    if (document.getElementById('caseTagOnce')) return;
+    var t = document.createElement('div');
+    t.id = 'caseTagOnce';
+    t.className = 'case-tag';
+    t.innerHTML = '<span class="dot"></span> ' + scenario.caseId + ' · ' + scenario.person + ', ' + scenario.desk;
+    els.chatCol.appendChild(t);
+  }
+
+  function addBubble(text, who){
+    clearEmptyNote();
+    var row = document.createElement('div');
+    row.className = 'msg-row ' + who;
+    var b = document.createElement('div');
+    b.className = 'bubble';
+    b.textContent = text;
+    row.appendChild(b);
+    els.chatCol.appendChild(row);
+    scrollToBottom();
+    if (who === 'agent'){ els.liveRegion.textContent = text; }
+    return row;
+  }
+
+  function showTyping(cb, delay){
+    var row = document.createElement('div');
+    row.className = 'typing-row';
+    row.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    els.chatCol.appendChild(row);
+    scrollToBottom();
+    setTimeout(function(){
+      row.parentNode && row.parentNode.removeChild(row);
+      cb();
+    }, delay || 900);
+  }
+
+  function removeChips(){
+    if (state.lastChipRow && state.lastChipRow.parentNode){
+      state.lastChipRow.parentNode.removeChild(state.lastChipRow);
+    }
+    state.lastChipRow = null;
+  }
+
+  function addChips(){
+    removeChips();
+    var row = document.createElement('div');
+    row.className = 'chip-row';
+    var options = [
+      { label: 'Why do you think that?', key: 'why' },
+      { label: "What's still uncertain?", key: 'uncertain' },
+      { label: 'Show me everything', key: 'everything' }
+    ];
+    options.forEach(function(opt){
+      var c = document.createElement('button');
+      c.className = 'chip';
+      c.textContent = opt.label;
+      c.addEventListener('click', function(){ handleIntent(opt.key, opt.label); });
+      row.appendChild(c);
+    });
+    els.chatCol.appendChild(row);
+    state.lastChipRow = row;
+    scrollToBottom();
+  }
+
+  function addContinueControl(){
+    var wrap = document.createElement('div');
+    wrap.className = 'continue-wrap';
+    var btn = document.createElement('button');
+    btn.className = 'continue-btn';
+    btn.innerHTML = 'Continue the shift <span class="arrow">→</span>';
+    btn.addEventListener('click', function(){
+      wrap.parentNode && wrap.parentNode.removeChild(wrap);
+      removeChips();
+      advance();
+    });
+    wrap.appendChild(btn);
+    els.chatCol.appendChild(wrap);
+    scrollToBottom();
+  }
+
+  function addDecisionButtons(){
+    var row = document.createElement('div');
+    row.className = 'decision-row';
+    var primary = document.createElement('button');
+    primary.className = 'btn btn-primary';
+    primary.textContent = 'Draft for compliance review';
+    primary.addEventListener('click', function(){ resolveCase('draft'); });
+    var secondary = document.createElement('button');
+    secondary.className = 'btn btn-secondary';
+    secondary.textContent = 'Hold and keep watching';
+    secondary.addEventListener('click', function(){ resolveCase('hold'); });
+    row.appendChild(primary);
+    row.appendChild(secondary);
+    els.chatCol.appendChild(row);
+    state.lastDecisionRow = row;
+    scrollToBottom();
+  }
+
+  function removeDecisionButtons(){
+    if (state.lastDecisionRow && state.lastDecisionRow.parentNode){
+      state.lastDecisionRow.parentNode.removeChild(state.lastDecisionRow);
+    }
+    state.lastDecisionRow = null;
+  }
+
+  function renderQuietLog(){
+    els.quietRows.innerHTML = '';
+    scenario.events.forEach(function(ev, i){
+      var row = document.createElement('div');
+      row.className = 'quiet-row' + (i > state.eventIndex ? ' pending' : '');
+      var revealed = i <= state.eventIndex;
+      row.innerHTML =
+        '<div class="quiet-time">' + ev.time + '</div>' +
+        '<div class="quiet-body">' +
+          '<div class="quiet-detail">' + (revealed ? ev.detail : 'Not yet reached') + '</div>' +
+          '<div class="quiet-meta">' +
+            '<span class="quiet-conf">' + (revealed ? ev.conf + '% confidence' : '—') + '</span>' +
+            (revealed ? '<span class="quiet-tag ' + (ev.push ? 'pushed' : 'logged') + '">' + (ev.push ? 'Messaged you' : 'Logged only') + '</span>' : '') +
+          '</div>' +
+        '</div>';
+      els.quietRows.appendChild(row);
+    });
+  }
+
+  function toggleQuietLog(forceOpen){
+    state.quietLogOpen = (typeof forceOpen === 'boolean') ? forceOpen : !state.quietLogOpen;
+    els.quietLog.classList.toggle('open', state.quietLogOpen);
+    els.ambientBtn.setAttribute('aria-expanded', state.quietLogOpen ? 'true' : 'false');
+    if (state.quietLogOpen) renderQuietLog();
+  }
+
+  els.ambientBtn.addEventListener('click', function(){ toggleQuietLog(); });
+  document.addEventListener('click', function(e){
+    if (state.quietLogOpen && !els.quietLog.contains(e.target) && !els.ambientBtn.contains(e.target)){
+      toggleQuietLog(false);
+    }
+  });
+
+  function advance(){
+    state.eventIndex++;
+    var ev = scenario.events[state.eventIndex];
+    if (!ev) return;
+
+    setClock(ev.time);
+    setAmbient(ev.ambient, true);
+
+    if (!ev.push){
+      // Logged only — no message, ambient already updated above.
+      setTimeout(advance, 1600);
+      return;
+    }
+
+    addDivider(ev.time);
+    addCaseTag();
+
+    var msgs = ev.messages.slice();
+    function sendNext(){
+      if (msgs.length === 0){
+        if (ev.decision){
+          addDecisionButtons();
+        } else {
+          addChips();
+          state.awaitingContinue = true;
+          addContinueControl();
+        }
+        return;
+      }
+      var next = msgs.shift();
+      showTyping(function(){
+        addBubble(next, 'agent');
+        setTimeout(sendNext, 500);
+      }, 900);
+    }
+    sendNext();
+  }
+
+  function resolveCase(choice){
+    removeDecisionButtons();
+    if (choice === 'draft'){
+      addBubble('Draft for compliance review', 'user');
+      showTyping(function(){
+        addBubble("Drafting now — I'll have it ready for the compliance queue in a few minutes.", 'agent');
+        setAmbient('resolved', true);
+        setTimeout(function(){ setAmbient('neutral', true); }, 2600);
+        state.resolved = true;
+        addRestartControl();
+      }, 800);
+    } else {
+      addBubble('Hold and keep watching for now', 'user');
+      showTyping(function(){
+        addBubble("Understood — I'll keep watching and only come back if something changes the picture again.", 'agent');
+        setAmbient('watching', true);
+        state.resolved = true;
+        addRestartControl();
+      }, 800);
+    }
+  }
+
+  function addRestartControl(){
+    var wrap = document.createElement('div');
+    wrap.className = 'restart-wrap';
+    var btn = document.createElement('button');
+    btn.className = 'restart-btn';
+    btn.textContent = 'Restart the shift';
+    btn.addEventListener('click', restart);
+    wrap.appendChild(btn);
+    els.chatCol.appendChild(wrap);
+    scrollToBottom();
+  }
+
+  function restart(){
+    state.eventIndex = -1;
+    state.awaitingContinue = false;
+    state.resolved = false;
+    removeChips();
+    removeDecisionButtons();
+    toggleQuietLog(false);
+    els.chatCol.innerHTML = '<div class="empty-note" id="emptyNote">Nothing yet today.</div>';
+    els.emptyNote = document.getElementById('emptyNote');
+    setClock('07:50');
+    setAmbient('neutral', false);
+    setTimeout(advance, 900);
+  }
+
+  function handleIntent(key, userText){
+    if (userText){ addBubble(userText, 'user'); }
+    if (key === 'everything'){
+      showTyping(function(){
+        addBubble("Here's everything I've noticed on FI-7733 today, shown or not.", 'agent');
+        toggleQuietLog(true);
+      }, 700);
+      return;
+    }
+    var reply = narrate[key];
+    if (!reply) return;
+    showTyping(function(){ addBubble(reply, 'agent'); }, 700);
+  }
+
+  function matchIntent(text){
+    var t = text.toLowerCase();
+    if (state.eventIndex < 2){ return 'nothingYet'; }
+    if (/why|reason|how do you know/.test(t)) return 'why';
+    if (/uncertain|sure|confirm|certain|know for sure/.test(t)) return 'uncertain';
+    if (/everything|timeline|log|show me|history|what happened/.test(t)) return 'everything';
+    if (/who|case|voss|desk/.test(t)) return 'who';
+    return 'fallback';
+  }
+
+  function handleSend(){
+    var text = els.input.value.trim();
+    if (!text) return;
+    els.input.value = '';
+    addBubble(text, 'user');
+    var key = matchIntent(text);
+    if (key === 'everything'){
+      showTyping(function(){
+        addBubble("Here's everything I've noticed on FI-7733 today, shown or not.", 'agent');
+        toggleQuietLog(true);
+      }, 700);
+      return;
+    }
+    var reply = narrate[key] || narrate.fallback;
+    showTyping(function(){ addBubble(reply, 'agent'); }, 700);
+  }
+
+  els.sendBtn.addEventListener('click', handleSend);
+  els.input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); handleSend(); }
+  });
+
+  setAmbient('neutral', false);
+  setTimeout(advance, 1100);
+
+})();
+</script>
+</body>
+</html>
