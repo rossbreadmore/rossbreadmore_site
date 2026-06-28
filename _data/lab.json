@@ -12,6 +12,12 @@
     "slug": "/standalone/ambient-intelligence.html"
   },
   {
+    "title": "The Relay",
+    "status": "active",
+    "description": "A third concept in the same world — multi-agent orchestration made visible as a baton handed across agents and across the human's devices. Another working prototype.",
+    "slug": "/standalone/the-relay.html"
+  },
+  {
     "title": "Storytelling at work",
     "status": "active",
     "description": "A piece on what narrative in corporate settings actually requires — and why most attempts fail. Draft exists, needs a better opening.",

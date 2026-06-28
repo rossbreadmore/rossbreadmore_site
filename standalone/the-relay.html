@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Relay — Sentinel Surveillance Platform</title>
+<meta name="description" content="Interactive prototype: The Relay for Sentinel compliance surveillance. Multi-agent orchestration made visible as a baton handed across agents and across the human's surfaces. Light, accessible, trade-data-first layout.">
+<meta property="og:title" content="Sentinel — Concept 4: The Relay">
+<meta property="og:description" content="Multi-agent orchestration visibility + cross-device continuity + HUD-style glanceable feedback, applied to compliance surveillance.">
+<meta property="og:type" content="website">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  /*
+    LIGHT / ACCESSIBLE PALETTE — verified against WCAG 2.1 AA.
+    Text colors below carry their measured contrast ratio against
+    white (#ffffff) inline. Anything used as small text or an icon
+    clears 4.5:1; anything used only as a required component border
+    clears 3:1. Tint+700-text pairs replace solid-600 fills for status
+    colors, because amber-600/green-600 fail 4.5:1 as text on white.
+  */
+  :root {
+    --bg: #ffffff;
+    --bg-panel: #f8fafc;          /* side-panel ground (relay + chat) */
+    --bg-muted: #f1f5f9;          /* control track fill */
+    --bg-card: #ffffff;           /* card fill sitting on --bg-panel */
+    --border: #e2e8f0;            /* decorative hairlines only — not a required boundary */
+    --border-strong: #cbd5e1;     /* card / tile boundaries */
+    --border-interactive: #64748b;/* interactive control borders — 4.76:1, clears 3:1 */
+    --border-line: #94a3b8;       /* chain/timeline connective lines — visible, not a component boundary */
+    --text: #0f172a;              /* primary text & numbers — 17.85:1 */
+    --text-secondary: #334155;    /* body text — 10.35:1 */
+    --text-muted: #475569;        /* captions / labels — 7.58:1 */
+    --accent: #2563eb;            /* interactive fill (+white text) — 5.17:1 */
+    --accent-text: #1d4ed8;       /* accent as text on white — 6.70:1 */
+    --accent-soft: #eff6ff;
+    --green: #15803d;             /* status text/icon — 5.02:1 */
+    --green-soft: #f0fdf4;
+    --amber: #b45309;             /* status text/icon — 5.02:1 (amber-600 fails AA, not used for text) */
+    --amber-soft: #fffbeb;
+    --red: #b91c1c;               /* status text/icon, also solid-fill-safe — 6.47:1 */
+    --red-soft: #fef2f2;
+    --cyan: #0e7490;              /* route-label accent — 5.36:1 */
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOP BAR — left/status = info, center = interaction, right = info */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 56px;
+    border-bottom: 1px solid var(--border-strong);
+    flex-shrink: 0; background: var(--bg); z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 18px; }
+  .topbar-logo {
+    font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .topbar-status { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-muted); }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+    animation: breathe 3s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100%{opacity:.6} 50%{opacity:1} }
+  .topbar-center { display: flex; align-items: center; gap: 10px; }
+  .filter-toggle { display: flex; border-radius: var(--radius-sm); border: 1px solid var(--border-interactive); overflow: hidden; }
+  .filter-tab {
+    font-size: 11.5px; padding: 6px 14px; background: var(--bg); color: var(--text-muted);
+    border: none; cursor: pointer; transition: background .15s, color .15s; font-family: var(--font); white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .filter-tab:not(:last-child) { border-right: 1px solid var(--border-interactive); }
+  .filter-tab.active { background: var(--accent); color: #fff; font-weight: 600; }
+  .filter-tab:hover:not(.active) { color: var(--text); background: var(--bg-muted); }
+  .filter-tab .needs-you-count {
+    background: var(--red); color: #fff; border-radius: 8px; font-size: 9.5px; font-weight: 700;
+    padding: 1px 6px; font-family: var(--mono);
+  }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .topbar-metric { text-align: right; }
+  .topbar-metric .value { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); font-family: var(--mono); }
+  .topbar-metric .value.red { color: var(--red); }
+  .topbar-metric .label { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .topbar-divider { width: 1px; height: 28px; background: var(--border); }
+
+  /* MAIN */
+  .main { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+  /* RELAY PANEL (left edge — agent orchestration) */
+  .relay-panel {
+    width: 372px; border-right: 1px solid var(--border-strong);
+    display: flex; flex-direction: column; background: var(--bg-panel);
+    flex-shrink: 0; position: relative; overflow: hidden;
+  }
+  .relay-panel-header {
+    padding: 14px 18px; border-bottom: 1px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .relay-panel-header h2 {
+    font-size: 10.5px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .relay-count-badge {
+    font-size: 10.5px; padding: 2px 8px; border-radius: 10px;
+    background: var(--accent-soft); color: var(--accent-text); font-weight: 700; font-family: var(--mono);
+  }
+  .relay-list { flex: 1; overflow-y: auto; padding: 10px; }
+  .relay-list::-webkit-scrollbar { width: 5px; }
+  .relay-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+  .relay-card {
+    border-radius: var(--radius); border: 1px solid var(--border-strong); border-left: 4px solid var(--border-strong);
+    background: var(--bg-card);
+    margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s;
+    animation: fadeInUp 0.4s ease-out;
+  }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .relay-card.severity-critical { border-left-color: var(--red); }
+  .relay-card.severity-elevated { border-left-color: var(--amber); }
+  .relay-card.needs-you { background: var(--red-soft); border-left-color: var(--red); border-color: var(--red); }
+
+  .relay-card-header { padding: 12px 14px 10px; cursor: pointer; }
+  .relay-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .relay-card-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .relay-card-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .relay-badges { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+  .topology-badge {
+    font-size: 9px; font-family: var(--mono); padding: 2px 7px; border-radius: 6px;
+    background: var(--bg-muted); color: var(--text-muted); border: 1px solid var(--border); white-space: nowrap;
+  }
+  .needs-you-tag {
+    font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+    background: var(--red); color: #fff; text-transform: uppercase; letter-spacing: 0.4px;
+    animation: needsYouPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes needsYouPulse { 0%,100%{opacity:1} 50%{opacity:.72} }
+
+  .relay-chain-row { margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+  .relay-chain-svg-wrap { flex-shrink: 0; }
+  .relay-narrative { font-size: 11px; color: var(--text-secondary); line-height: 1.45; }
+  .relay-narrative b { color: var(--text); font-weight: 600; }
+  .relay-narrative .confidence { font-family: var(--mono); color: var(--accent-text); font-weight: 600; }
+
+  .chain-node-done { fill: var(--green); }
+  .chain-node-active { fill: var(--accent); animation: chainNodePulse 1.6s ease-in-out infinite; }
+  .chain-node-active.escalated { fill: var(--red); }
+  .chain-node-pending { fill: var(--bg); stroke: var(--border-line); stroke-width: 1.6; }
+  @keyframes chainNodePulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+  .chain-edge-solid { stroke: var(--border-line); stroke-width: 1.3; opacity: 0.8; }
+  .chain-edge-dashed { stroke: var(--border-line); stroke-width: 1.3; opacity: 0.5; stroke-dasharray: 2.5 2.5; }
+  .chain-label { fill: var(--text-muted); font-family: var(--mono); font-size: 6.5px; }
+
+  /* EXPANDED DETAIL */
+  .relay-detail { display: none; border-top: 1px solid var(--border-strong); padding: 12px 14px 14px; }
+  .relay-card.expanded .relay-detail { display: block; animation: detailOpen 0.3s cubic-bezier(0.16,1,0.3,1); }
+  @keyframes detailOpen { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+  .relay-card.expanded .relay-chain-row.collapsed-only { display: none; }
+
+  .checkpoint-banner {
+    background: var(--red-soft); border: 1px solid var(--red); border-radius: var(--radius-sm);
+    padding: 10px 12px; margin-bottom: 12px;
+  }
+  .checkpoint-banner .cb-text { font-size: 11.5px; color: var(--text); line-height: 1.5; margin-bottom: 8px; }
+  .checkpoint-banner .cb-text b { color: var(--red); }
+  .checkpoint-actions { display: flex; gap: 6px; }
+  .cb-btn {
+    font-size: 11px; padding: 7px 13px; border-radius: 6px; cursor: pointer;
+    font-family: var(--font); font-weight: 600; transition: background .15s, border-color .15s;
+  }
+  .cb-btn.approve { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  .cb-btn.approve:hover { background: var(--accent-text); border-color: var(--accent-text); }
+  .cb-btn.hold { background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-interactive); }
+  .cb-btn.hold:hover { background: var(--bg-muted); }
+  .cb-resolved { font-size: 11px; color: var(--text-secondary); padding: 8px 0; display: flex; align-items: center; gap: 6px; }
+  .cb-resolved .ck { color: var(--green); font-weight: 700; }
+
+  .detail-section-label {
+    font-size: 9.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.8px; margin: 14px 0 8px;
+  }
+  .detail-section-label:first-child { margin-top: 0; }
+
+  .handoff-stack { display: flex; flex-direction: column; gap: 6px; }
+  .handoff-card {
+    background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+    padding: 9px 11px; font-size: 11px; line-height: 1.55;
+  }
+  .handoff-card .ho-route {
+    font-family: var(--mono); font-size: 9.5px; color: var(--cyan); margin-bottom: 5px; font-weight: 600;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .handoff-card .ho-row { display: flex; gap: 6px; margin-top: 3px; }
+  .handoff-card .ho-key { color: var(--text-muted); flex-shrink: 0; width: 60px; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.3px; padding-top: 1px; }
+  .handoff-card .ho-val { color: var(--text-secondary); flex: 1; }
+
+  /* AUTONOMY — the clearest interactive control in the panel */
+  .autonomy-control { margin-top: 4px; }
+  .autonomy-segments {
+    position: relative; display: grid; grid-template-columns: repeat(4,1fr);
+    background: var(--bg-muted); border: 1px solid var(--border-interactive); border-radius: var(--radius-sm);
+    padding: 3px; gap: 2px;
+  }
+  .autonomy-highlight {
+    position: absolute; top: 3px; left: 3px; height: calc(100% - 6px); width: calc(25% - 2.5px);
+    background: var(--bg-card); border-radius: 6px; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 1px 3px rgba(15,23,42,0.18); z-index: 0;
+  }
+  .autonomy-seg {
+    position: relative; z-index: 1; background: none; border: none; cursor: pointer;
+    font-family: var(--font); font-size: 9px; line-height: 1.3; color: var(--text-muted);
+    padding: 7px 3px; text-align: center; transition: color 0.2s; border-radius: 6px;
+  }
+  .autonomy-seg.active { color: var(--text); font-weight: 700; }
+  .autonomy-caption { font-size: 10px; color: var(--text-muted); margin-top: 7px; line-height: 1.5; }
+
+  /* TIMELINE — remove control stays at least partly visible (not hover-only) for keyboard/touch access */
+  .timeline { margin-top: 2px; }
+  .timeline-step { display: flex; gap: 9px; position: relative; padding-bottom: 14px; }
+  .timeline-step:last-child { padding-bottom: 0; }
+  .timeline-step::before {
+    content: ''; position: absolute; left: 6.5px; top: 16px; bottom: -2px; width: 1px; background: var(--border-line);
+  }
+  .timeline-step:last-child::before { display: none; }
+  .timeline-dot {
+    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center; font-size: 8.5px; z-index: 1; font-weight: 700;
+  }
+  .timeline-step.done .timeline-dot { background: var(--green); color: #fff; }
+  .timeline-step.active .timeline-dot { background: var(--accent); animation: chainNodePulse 1.4s ease-in-out infinite; }
+  .timeline-step.upcoming .timeline-dot { border: 1.5px solid var(--border-interactive); background: var(--bg-card); }
+  .timeline-step.removed .timeline-dot { border: 1.5px solid var(--border-strong); background: var(--bg-card); opacity: 0.5; }
+  .timeline-text { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; padding-top: 0px; flex: 1; }
+  .timeline-step.done .timeline-text { color: var(--text); }
+  .timeline-step.active .timeline-text { color: var(--text); font-weight: 600; }
+  .timeline-step.removed .timeline-text { color: var(--text-muted); text-decoration: line-through; }
+  .timeline-remove {
+    font-size: 13px; color: var(--text-muted); cursor: pointer; background: none; border: none;
+    padding: 0 2px; opacity: 0.5; transition: opacity 0.15s, color 0.15s; flex-shrink: 0;
+  }
+  .timeline-remove:hover, .timeline-remove:focus-visible { opacity: 1; color: var(--red); }
+  .timeline-undo { font-size: 10.5px; color: var(--accent-text); font-weight: 600; cursor: pointer; background: none; border: none; flex-shrink: 0; }
+  button:focus-visible, .filter-tab:focus-visible, .autonomy-seg:focus-visible, .suggestion-chip:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 1px;
+  }
+
+  .device-toggle {
+    margin-top: 14px; font-size: 11px; color: var(--accent-text); background: var(--accent-soft); font-weight: 600;
+    border: 1px solid var(--accent); border-radius: var(--radius-sm); padding: 8px 11px;
+    cursor: pointer; display: flex; align-items: center; gap: 7px; width: 100%; font-family: var(--font);
+    transition: background .15s;
+  }
+  .device-toggle:hover { background: #dbeafe; }
+  .device-panel { display: none; margin-top: 10px; gap: 12px; align-items: center; padding: 10px; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-strong); }
+  .device-panel.open { display: flex; animation: detailOpen 0.3s ease-out; }
+  .qr-grid { display: grid; grid-template-columns: repeat(7,1fr); width: 56px; height: 56px; flex-shrink: 0; background: white; padding: 4px; border-radius: 3px; border: 1px solid var(--border-strong); }
+  .qr-cell { background: transparent; }
+  .qr-cell.on { background: var(--text); }
+  .device-caption { font-size: 10px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+  .phone-mock {
+    width: 46px; height: 84px; border: 2px solid var(--border-strong); border-radius: 9px; background: var(--bg-card);
+    flex-shrink: 0; padding: 5px 4px; display: flex; flex-direction: column; gap: 3px; align-items: center;
+  }
+  .phone-mock .pm-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--accent); animation: breathe 3s ease-in-out infinite; }
+  .phone-mock .pm-bar { width: 100%; height: 3px; border-radius: 2px; background: var(--bg-muted); }
+  .phone-mock .pm-bar.fill { background: var(--green); width: 70%; }
+
+  .relay-stats {
+    padding: 10px 18px; border-top: 1px solid var(--border-strong);
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    flex-shrink: 0; background: var(--bg-panel);
+  }
+  .relay-stat { text-align: center; }
+  .relay-stat .num { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+  .relay-stat .num.green { color: var(--green); }
+  .relay-stat .num.amber { color: var(--amber); }
+  .relay-stat .num.red { color: var(--red); }
+  .relay-stat .desc { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* CENTER DASHBOARD — trade data: volumes, geography, category. Pure information: no borders, no hover. */
+  .dashboard { flex: 1; overflow-y: auto; background: var(--bg); padding: 26px 32px 40px; }
+  .dashboard::-webkit-scrollbar { width: 8px; }
+  .dashboard::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+  .dashboard-heading { font-size: 15px; font-weight: 700; color: var(--text); }
+  .dashboard-subheading { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    margin-top: 20px; padding-bottom: 22px; border-bottom: 1px solid var(--border);
+  }
+  .kpi-tile { padding-left: 22px; }
+  .kpi-tile:first-child { padding-left: 0; }
+  .kpi-tile:not(:first-child) { border-left: 1px solid var(--border); }
+  .kpi-value { font-family: var(--mono); font-size: 28px; font-weight: 700; color: var(--text); line-height: 1.1; }
+  .kpi-value.red { color: var(--red); }
+  .kpi-label { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  .section-heading {
+    font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.8px; margin: 28px 0 14px;
+  }
+
+  .trade-tile-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .trade-tile {
+    background: var(--bg-card); border: 1px solid var(--border-strong); border-left: 4px solid var(--border-strong);
+    border-radius: var(--radius); padding: 14px 16px; position: relative;
+    transition: border-color .15s, transform .15s;
+  }
+  .trade-tile.elevated { border-left-color: var(--amber); }
+  .trade-tile.critical { border-left-color: var(--red); }
+  .trade-tile.linked { cursor: pointer; }
+  .trade-tile.linked:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .trade-tile.linked:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .trade-tile .tt-badge {
+    position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 700; padding: 2px 7px;
+    border-radius: 6px; background: var(--red-soft); color: var(--red); text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .trade-tile .tt-name { font-size: 13.5px; font-weight: 600; color: var(--text); padding-right: 50px; }
+  .trade-tile .tt-tags { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+  .trade-tile .tt-volume { font-family: var(--mono); font-size: 21px; font-weight: 700; color: var(--text); margin-top: 12px; }
+  .trade-tile .tt-volume-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+  .trade-tile .tt-spark { display: flex; gap: 2px; align-items: flex-end; margin-top: 9px; height: 20px; }
+  .trade-tile .tt-spark .bar { width: 4px; border-radius: 1px; background: var(--border-line); }
+  .trade-tile.elevated .tt-spark .bar { background: var(--amber); opacity: .75; }
+  .trade-tile.critical .tt-spark .bar { background: var(--red); opacity: .85; }
+  .trade-tile.flash { animation: tileFlash 1s ease-out; }
+  @keyframes tileFlash { 0%{box-shadow:0 0 0 2px var(--accent)} 100%{box-shadow:0 0 0 0 rgba(37,99,235,0)} }
+
+  .breakdown-row { display: flex; align-items: center; gap: 14px; padding: 7px 0; }
+  .breakdown-label { width: 130px; font-size: 12.5px; color: var(--text-secondary); flex-shrink: 0; }
+  .breakdown-track { flex: 1; height: 10px; background: var(--bg-muted); border-radius: 6px; overflow: hidden; }
+  .breakdown-fill { height: 100%; background: var(--accent); border-radius: 6px; }
+  .breakdown-value { width: 130px; text-align: right; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); flex-shrink: 0; }
+
+  /* CHAT PANEL (right edge) */
+  .chat-panel {
+    width: 360px; border-left: 1px solid var(--border-strong);
+    display: flex; flex-direction: column; background: var(--bg-panel);
+    flex-shrink: 0; z-index: 20;
+  }
+  .chat-header { padding: 14px 18px; border-bottom: 1px solid var(--border-strong); display: flex; align-items: center; gap: 10px; }
+  .chat-header .ai-avatar {
+    width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--cyan));
+    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .chat-header-text h2 { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .chat-header-text .sub { font-size: 10.5px; color: var(--text-muted); }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+  .chat-messages::-webkit-scrollbar { width: 5px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+  .chat-msg { max-width: 95%; animation: msgAppear 0.3s ease-out; }
+  @keyframes msgAppear { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .chat-msg.user { align-self: flex-end; }
+  .chat-msg.user .msg-bubble { background: var(--accent); color: white; border-radius: var(--radius) var(--radius) 4px var(--radius); padding: 10px 14px; font-size: 12.5px; line-height: 1.5; }
+  .chat-msg.ai .msg-bubble { background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: var(--radius) var(--radius) var(--radius) 4px; padding: 12px 16px; font-size: 12.5px; line-height: 1.6; color: var(--text); }
+  .chat-msg .msg-time { font-size: 9.5px; color: var(--text-muted); margin-top: 3px; font-family: var(--mono); }
+  .chat-msg.user .msg-time { text-align: right; }
+  .chat-card { background: var(--bg-panel); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 12px; margin-top: 8px; }
+  .chat-card .card-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 11.5px; }
+  .chat-card .card-row .k { color: var(--text-muted); }
+  .chat-card .card-row .v { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .chat-card .card-row .v.red { color: var(--red); }
+  .chat-card .card-row .v.amber { color: var(--amber); }
+  .chat-card .card-row .v.green { color: var(--green); }
+  .chat-card-title { font-size: 11.5px; font-weight: 700; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .typing-indicator { display: flex; gap: 4px; padding: 10px 14px; align-items: center; }
+  .typing-indicator .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-interactive); animation: typingBounce 1.4s ease-in-out infinite; }
+  .typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%,60%,100%{transform:translateY(0);opacity:.3} 30%{transform:translateY(-5px);opacity:1} }
+  .suggestions { padding: 6px 18px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .suggestion-chip { font-size: 10.5px; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border-interactive); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; transition: all 0.15s; font-family: var(--font); }
+  .suggestion-chip:hover { border-color: var(--accent); color: var(--accent-text); background: var(--accent-soft); }
+  .chat-input-area { padding: 14px 18px; border-top: 1px solid var(--border-strong); }
+  .chat-input-wrapper { display: flex; align-items: center; gap: 8px; background: var(--bg-card); border: 1px solid var(--border-interactive); border-radius: var(--radius); padding: 4px 4px 4px 14px; transition: border-color 0.15s; }
+  .chat-input-wrapper:focus-within { border-color: var(--accent); }
+  .chat-input { flex: 1; background: none; border: none; color: var(--text); font-size: 12.5px; font-family: var(--font); outline: none; padding: 8px 0; }
+  .chat-input::placeholder { color: var(--text-muted); }
+  .chat-send { width: 34px; height: 34px; border-radius: var(--radius-sm); background: var(--accent); border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; flex-shrink: 0; }
+  .chat-send:hover { background: var(--accent-text); }
+  .chat-send svg { width: 15px; height: 15px; }
+
+  .concept-label {
+    position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+    font-size: 10.5px; color: var(--text-muted); background: var(--bg-card);
+    padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border-strong); z-index: 50; pointer-events: none;
+    box-shadow: 0 2px 8px rgba(15,23,42,0.08);
+  }
+  .toast {
+    position: fixed; top: 66px; left: 50%; transform: translateX(-50%) translateY(-20px);
+    background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: var(--radius);
+    padding: 10px 18px; font-size: 12.5px; color: var(--text); z-index: 200;
+    opacity: 0; transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 8px 24px rgba(15,23,42,0.12);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast .toast-icon { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; font-weight: 700; }
+  .toast .toast-icon.red { background: var(--red-soft); color: var(--red); }
+  .toast .toast-icon.amber { background: var(--amber-soft); color: var(--amber); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-logo">Sentinel</span>
+    <div class="topbar-status"><span class="status-dot"></span><span id="relayStatusText">3 relays in flight</span></div>
+  </div>
+  <div class="topbar-center">
+    <div class="filter-toggle">
+      <button class="filter-tab active" data-filter="all">All Relays</button>
+      <button class="filter-tab" data-filter="needsyou">Needs You <span class="needs-you-count" id="needsYouCount">0</span></button>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-metric"><div class="value red" id="metricNeedsYou">0</div><div class="label">Needs you</div></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-metric"><div class="value" id="metricInFlight">3</div><div class="label">In flight</div></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-metric"><div class="value" id="metricCleared">1,247</div><div class="label">Auto-cleared today</div></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="relay-panel">
+    <div class="relay-panel-header">
+      <h2>The Relay <span class="relay-count-badge" id="relayCountBadge">3</span></h2>
+    </div>
+    <div class="relay-list" id="relayList"></div>
+    <div class="relay-stats">
+      <div class="relay-stat"><div class="num green" id="statCleared">1,247</div><div class="desc">Cleared</div></div>
+      <div class="relay-stat"><div class="num amber" id="statInFlight">3</div><div class="desc">In flight</div></div>
+      <div class="relay-stat"><div class="num red" id="statNeedsYou">0</div><div class="desc">Needs you</div></div>
+    </div>
+  </div>
+
+  <div class="dashboard" id="dashboard">
+    <div class="dashboard-heading">Trade Activity — Today</div>
+    <div class="dashboard-subheading">Volumes, geographies, and categories across all desks. Tiles bordered in red or amber are linked to an active relay — click to open it.</div>
+
+    <div class="kpi-strip">
+      <div class="kpi-tile"><div class="kpi-value" id="kpiVolume">—</div><div class="kpi-label">Volume today</div></div>
+      <div class="kpi-tile"><div class="kpi-value" id="kpiRelays">—</div><div class="kpi-label">Relays in flight</div></div>
+      <div class="kpi-tile"><div class="kpi-value" id="kpiNeedsYou">—</div><div class="kpi-label">Needs your review</div></div>
+      <div class="kpi-tile"><div class="kpi-value" id="kpiCleared">—</div><div class="kpi-label">Auto-cleared today</div></div>
+    </div>
+
+    <div class="section-heading">Volume by desk</div>
+    <div class="trade-tile-grid" id="tradeTileGrid"></div>
+
+    <div class="section-heading">Volume by geography</div>
+    <div id="geoBreakdown"></div>
+
+    <div class="section-heading">Volume by category</div>
+    <div id="categoryBreakdown"></div>
+  </div>
+
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="ai-avatar">S</div>
+      <div class="chat-header-text"><h2>Sentinel</h2><div class="sub">Compliance Intelligence</div></div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="suggestions" id="suggestions"></div>
+    <div class="chat-input-area">
+      <div class="chat-input-wrapper">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about any relay, desk, or person..." />
+        <button class="chat-send" onclick="handleSend()" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><div class="toast-icon amber" id="toastIcon">!</div><span id="toastText"></span></div>
+<div class="concept-label">Concept 4 — The Relay</div>
+
+<script>
+// ============================================
+// SCOPE NOTE
+// Concepts 1-3 each ran two full scenario datasets via a toggle.
+// This prototype focuses on the relay mechanics themselves (orchestration
+// topology, structured handoffs, per-case autonomy, action timeline,
+// graceful escalation, cross-device hint) demonstrated across three
+// concurrent cases rather than duplicating that into two scenarios.
+//
+// VISUAL NOTE (this revision)
+// Re-themed light/accessible: white ground, verified WCAG AA text and
+// border colors, and a deliberate split between bordered/filled
+// interactive controls (buttons, sliders, filter tabs, chips) and flat,
+// borderless informational elements (KPIs, narrative text, badges,
+// chart bars). The center surface is now a trade-data dashboard
+// (volume, geography, category) instead of an ambient desk map.
+// ============================================
+
+// Node layout templates for the relay-chain mini diagrams. All cases
+// currently use 4 hops, mapped 1:1 onto these coordinate slots.
+const TOPOLOGY_LAYOUTS = {
+  pipeline: { nodes: [{x:12,y:27},{x:54,y:27},{x:96,y:27},{x:138,y:27}], edges: [[0,1],[1,2],[2,3]], label: 'Pipeline' },
+  fanout:   { nodes: [{x:14,y:9},{x:14,y:27},{x:14,y:45},{x:138,y:27}],  edges: [[0,3],[1,3],[2,3]], label: 'Fan-out' },
+  swarm:    { nodes: [{x:26,y:12},{x:124,y:10},{x:22,y:44},{x:128,y:46}], edges: [[0,1],[0,2],[1,3],[2,3],[0,3]], label: 'Swarm' },
+};
+
+const AUTONOMY_LABELS = ['Suggest only', 'Act, notify', 'Act, escalate if unsure', 'Full autonomy'];
+const AUTONOMY_CAPTIONS = [
+  'Agents may investigate and propose, but take no action — every step waits for your go-ahead.',
+  'Agents act on routine steps and tell you as they go. Anything outside the plan stops for review.',
+  'Agents act and only stop for you when their own confidence is too low to proceed safely.',
+  'Agents run the case to closure end-to-end. You can still open it at any time.',
+];
+
+let cases = [
+  {
+    id: 'tce-2891',
+    title: 'TCE-2891 — J. Marcus / ARC',
+    sub: 'Equities · Pre-announcement pattern',
+    deskId: 'eq',
+    severity: 'critical',
+    topology: 'pipeline',
+    autonomyIndex: 1,
+    confidence: 84,
+    escalateAt: 91,
+    needsYou: false,
+    resolved: null,
+    hops: [
+      { agent: 'pattern-detector-01', status: 'done' },
+      { agent: 'comms-correlator-07', status: 'done' },
+      { agent: 'confidence-scorer-12', status: 'active' },
+      { agent: 'case-file-drafter', status: 'pending' },
+    ],
+    handoffs: [
+      { route: 'pattern-detector-01 → comms-correlator-07', found: '120k share accumulation matches pre-announcement template (84%)', uncertain: 'Whether external contact content is itself privileged', asked: 'Correlate contact timing against order flow' },
+      { route: 'comms-correlator-07 → confidence-scorer-12', found: '3 external calls to HedgeCo (D. Chen) within the accumulation window', uncertain: 'Call content not yet transcribed', asked: 'Produce a combined confidence score' },
+    ],
+    timeline: [
+      { label: 'Scan Equities desk comms', status: 'done' },
+      { label: 'Correlate external contacts with ARC order flow', status: 'done' },
+      { label: 'Score combined confidence', status: 'active' },
+      { label: 'Draft case file for CCO review', status: 'upcoming' },
+      { label: 'Auto-escalate to CCO if confidence exceeds 90%', status: 'upcoming', removable: true },
+    ],
+    deviceHint: false,
+  },
+  {
+    id: 'ib-4417',
+    title: 'IB-4417 — Nakamura → Fontaine',
+    sub: 'Research ↔ Sales · Barrier breach',
+    deskId: 'rs',
+    severity: 'elevated',
+    topology: 'fanout',
+    autonomyIndex: 0,
+    confidence: 91,
+    escalateAt: null,
+    needsYou: false,
+    resolved: null,
+    hops: [
+      { agent: 'barrier-monitor-03', status: 'done' },
+      { agent: 'nlp-codedlang-02', status: 'done' },
+      { agent: 'graph-analyzer-06', status: 'done' },
+      { agent: 'fan-in-synthesizer', status: 'active' },
+    ],
+    handoffs: [
+      { route: '3 agents → fan-in-synthesizer', found: 'Coded language match (91%) + cross-barrier contact + anomalous comms-graph edge weight, all converging on the same pair', uncertain: 'Whether the denied wall-cross was ever communicated to Fontaine directly', asked: 'Synthesize into one recommendation — no further action without sign-off' },
+    ],
+    timeline: [
+      { label: 'Scan Research ↔ Sales comms', status: 'done' },
+      { label: 'Run coded-language NLP pass', status: 'done' },
+      { label: 'Check communication-graph anomaly', status: 'done' },
+      { label: 'Synthesize the three findings into one recommendation', status: 'active' },
+      { label: 'Recommend next step (no autonomous action permitted)', status: 'upcoming' },
+    ],
+    deviceHint: false,
+  },
+  {
+    id: 'pm-1056',
+    title: 'PM-1056 — L. Wong / HSI Futures',
+    sub: 'APAC · Position concentration',
+    deskId: 'ap',
+    severity: 'normal',
+    topology: 'swarm',
+    autonomyIndex: 3,
+    confidence: 22,
+    escalateAt: null,
+    needsYou: false,
+    resolved: null,
+    hops: [
+      { agent: 'position-monitor-02', status: 'done' },
+      { agent: 'comms-scanner-ap-08', status: 'done' },
+      { agent: 'network-mapper-04', status: 'done' },
+      { agent: 'sentiment-nlp-09', status: 'done' },
+    ],
+    handoffs: [
+      { route: 'swarm consensus', found: 'Concentration is 2.4x normal but matches Wong’s historical directional style; no barrier or comms concern found by any peer agent', uncertain: 'Nothing outstanding — all four agents agree', asked: 'No handoff needed — case is below review threshold' },
+    ],
+    timeline: [
+      { label: 'Check position concentration against historical norms', status: 'done' },
+      { label: 'Scan overnight WeChat session', status: 'done' },
+      { label: 'Check communication-graph for new contacts', status: 'done' },
+      { label: 'Cross-check sentiment for tipping language', status: 'done' },
+      { label: 'Auto-clear if no further signal within 24h', status: 'upcoming' },
+    ],
+    deviceHint: false,
+  },
+];
+
+let expandedId = null;
+let currentFilter = 'all';
+
+function getCase(id) { return cases.find(c => c.id === id); }
+
+// ============================================
+// RELAY CHAIN SVG
+// ============================================
+
+function renderChainSVG(c, opts) {
+  const labeled = !!opts.labeled;
+  const scale = labeled ? 2 : 1;
+  const r = labeled ? 7 : 4;
+  const layout = TOPOLOGY_LAYOUTS[c.topology];
+  const w = 150 * scale, h = 54 * scale;
+  let svg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">`;
+  layout.edges.forEach(([a, b]) => {
+    const na = layout.nodes[a], nb = layout.nodes[b];
+    const toPending = c.hops[b].status === 'pending';
+    svg += `<line x1="${na.x*scale}" y1="${na.y*scale}" x2="${nb.x*scale}" y2="${nb.y*scale}" class="${toPending ? 'chain-edge-dashed' : 'chain-edge-solid'}"/>`;
+  });
+  layout.nodes.forEach((n, i) => {
+    const hop = c.hops[i];
+    let cls = 'chain-node-pending';
+    if (hop.status === 'done') cls = 'chain-node-done';
+    if (hop.status === 'active') cls = c.needsYou ? 'chain-node-active escalated' : 'chain-node-active';
+    svg += `<circle cx="${n.x*scale}" cy="${n.y*scale}" r="${r}" class="${cls}"/>`;
+    if (labeled) {
+      const short = hop.agent.split('-').slice(0,2).join('-');
+      svg += `<text x="${n.x*scale}" y="${n.y*scale + r + 11}" text-anchor="middle" class="chain-label">${short}</text>`;
+    }
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+// ============================================
+// QR HINT (decorative — hints at the pattern, not a real payload)
+// ============================================
+
+function renderQR(seed) {
+  let cells = '';
+  let s = seed;
+  function rand() { s = (s * 9301 + 49297) % 233280; return s / 233280; }
+  for (let i = 0; i < 49; i++) {
+    const row = Math.floor(i / 7), col = i % 7;
+    const isFinder = (row < 2 && col < 2) || (row < 2 && col > 4) || (row > 4 && col < 2);
+    const on = isFinder || rand() > 0.55;
+    cells += `<div class="qr-cell ${on ? 'on' : ''}"></div>`;
+  }
+  return cells;
+}
+
+// ============================================
+// RENDER RELAY LIST
+// ============================================
+
+function renderRelayList() {
+  const list = document.getElementById('relayList');
+  list.innerHTML = '';
+  const visible = currentFilter === 'needsyou' ? cases.filter(c => c.needsYou) : cases;
+
+  visible.forEach(c => {
+    const card = document.createElement('div');
+    card.className = `relay-card severity-${c.severity} ${c.needsYou ? 'needs-you' : ''} ${expandedId === c.id ? 'expanded' : ''}`;
+    card.dataset.id = c.id;
+
+    const narrativeText = buildNarrative(c);
+
+    card.innerHTML = `
+      <div class="relay-card-header" data-toggle="${c.id}">
+        <div class="relay-card-top">
+          <div>
+            <div class="relay-card-title">${c.title}</div>
+            <div class="relay-card-sub">${c.sub}</div>
+          </div>
+          <div class="relay-badges">
+            ${c.needsYou ? '<span class="needs-you-tag">Needs you</span>' : ''}
+            <span class="topology-badge">${TOPOLOGY_LAYOUTS[c.topology].label}</span>
+          </div>
+        </div>
+        <div class="relay-chain-row collapsed-only">
+          <div class="relay-chain-svg-wrap">${renderChainSVG(c, { labeled: false })}</div>
+          <div class="relay-narrative">${narrativeText}</div>
+        </div>
+      </div>
+      <div class="relay-detail">${renderDetail(c)}</div>
+    `;
+    list.appendChild(card);
+  });
+
+  list.querySelectorAll('[data-toggle]').forEach(el => {
+    el.addEventListener('click', () => toggleExpand(el.dataset.toggle));
+  });
+  wireDetailHandlers();
+  updateCounts();
+}
+
+function buildNarrative(c) {
+  if (c.id === 'tce-2891') return `Believes: pre-announcement trading pattern, J. Marcus / ARC. <span class="confidence">${c.confidence}% confidence</span> — building case file.`;
+  if (c.id === 'ib-4417') return `Believes: coded-language barrier breach, Nakamura → Fontaine. <span class="confidence">${c.confidence}% confidence</span> — recommendation pending.`;
+  return `Believes: explainable directional position, L. Wong. <span class="confidence">${c.confidence}% concern score</span> — below review threshold.`;
+}
+
+function renderDetail(c) {
+  let html = '';
+
+  if (c.needsYou) {
+    html += `
+      <div class="checkpoint-banner" data-checkpoint="${c.id}">
+        <div class="cb-text"><b>${c.hops.find(h=>h.status==='active').agent}</b> wants to advance this case to formal escalation. Confidence now <b>${c.confidence}%</b> — above the threshold you set.</div>
+        <div class="checkpoint-actions">
+          <button class="cb-btn approve" data-approve="${c.id}">Approve escalation</button>
+          <button class="cb-btn hold" data-hold="${c.id}">Hold for now</button>
+        </div>
+      </div>`;
+  } else if (c.resolved) {
+    html += `<div class="cb-resolved"><span class="ck">✓</span> ${c.resolved}</div>`;
+  }
+
+  html += `<div class="detail-section-label">Relay so far</div>
+    <div class="relay-chain-svg-wrap">${renderChainSVG(c, { labeled: true })}</div>`;
+
+  html += `<div class="detail-section-label">Structured handoffs</div><div class="handoff-stack">`;
+  c.handoffs.forEach(h => {
+    html += `<div class="handoff-card">
+      <div class="ho-route">→ ${h.route}</div>
+      <div class="ho-row"><span class="ho-key">Found</span><span class="ho-val">${h.found}</span></div>
+      <div class="ho-row"><span class="ho-key">Uncertain</span><span class="ho-val">${h.uncertain}</span></div>
+      <div class="ho-row"><span class="ho-key">Asking next</span><span class="ho-val">${h.asked}</span></div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  html += `<div class="detail-section-label">Autonomy for this case</div>
+    <div class="autonomy-control" data-autonomy="${c.id}">
+      <div class="autonomy-segments">
+        <div class="autonomy-highlight" style="transform: translateX(${c.autonomyIndex * 100}%)"></div>
+        ${AUTONOMY_LABELS.map((l, i) => `<button class="autonomy-seg ${i === c.autonomyIndex ? 'active' : ''}" data-seg="${i}">${l}</button>`).join('')}
+      </div>
+      <div class="autonomy-caption">${AUTONOMY_CAPTIONS[c.autonomyIndex]}</div>
+    </div>`;
+
+  html += `<div class="detail-section-label">Action timeline</div><div class="timeline">`;
+  c.timeline.forEach((t, i) => {
+    html += `<div class="timeline-step ${t.status}">
+      <div class="timeline-dot">${t.status === 'done' ? '✓' : ''}</div>
+      <div class="timeline-text">${t.label}</div>
+      ${t.status === 'upcoming' && t.removable ? `<button class="timeline-remove" data-remove="${c.id}:${i}" aria-label="Remove step">✕</button>` : ''}
+      ${t.status === 'removed' ? `<button class="timeline-undo" data-undo="${c.id}:${i}">undo</button>` : ''}
+    </div>`;
+  });
+  html += `</div>`;
+
+  html += `<button class="device-toggle" data-device="${c.id}">📱 Continue on another device</button>
+    <div class="device-panel ${c.deviceHint ? 'open' : ''}" id="device-${c.id}">
+      <div class="qr-grid">${renderQR(c.id.length * 17 + c.confidence)}</div>
+      <div class="phone-mock">
+        <div class="pm-dot"></div>
+        <div class="pm-bar"></div>
+        <div class="pm-bar fill"></div>
+        <div class="pm-bar"></div>
+      </div>
+      <div class="device-caption">Scan to open ${c.id.toUpperCase()} on your phone — same relay, same point. Not yet wired to a real handset; this is a hint at the pattern.</div>
+    </div>`;
+
+  return html;
+}
+
+function toggleExpand(id) {
+  expandedId = expandedId === id ? null : id;
+  renderRelayList();
+}
+
+function wireDetailHandlers() {
+  document.querySelectorAll('[data-approve]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); resolveCheckpoint(b.dataset.approve, true); }));
+  document.querySelectorAll('[data-hold]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); resolveCheckpoint(b.dataset.hold, false); }));
+  document.querySelectorAll('[data-seg]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const control = b.closest('[data-autonomy]');
+    setAutonomy(control.dataset.autonomy, parseInt(b.dataset.seg));
+  }));
+  document.querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const [id, idx] = b.dataset.remove.split(':');
+    setTimelineRemoved(id, parseInt(idx), true);
+  }));
+  document.querySelectorAll('[data-undo]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const [id, idx] = b.dataset.undo.split(':');
+    setTimelineRemoved(id, parseInt(idx), false);
+  }));
+  document.querySelectorAll('[data-device]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const c = getCase(b.dataset.device);
+    c.deviceHint = !c.deviceHint;
+    renderRelayList();
+  }));
+}
+
+function setAutonomy(id, index) {
+  const c = getCase(id);
+  c.autonomyIndex = index;
+  renderRelayList();
+}
+
+function setTimelineRemoved(id, idx, removed) {
+  const c = getCase(id);
+  const step = c.timeline[idx];
+  if (removed) { step._prevStatus = step.status; step.status = 'removed'; }
+  else { step.status = step._prevStatus || 'upcoming'; }
+  renderRelayList();
+}
+
+function resolveCheckpoint(id, approved) {
+  const c = getCase(id);
+  c.needsYou = false;
+  c.resolved = approved
+    ? `Escalation approved. Case file sent to CCO at ${nowTime()}.`
+    : `Held by analyst at ${nowTime()}. Confidence-scorer paused — will re-check in 1 hour.`;
+  if (approved) {
+    const draftStep = c.timeline.find(t => t.label.startsWith('Draft case file'));
+    if (draftStep) draftStep.status = 'done';
+    const escStep = c.timeline.find(t => t.label.startsWith('Auto-escalate'));
+    if (escStep) escStep.status = 'done';
+    c.hops.forEach(h => { if (h.status === 'pending') h.status = 'done'; if (h.status === 'active') h.status = 'done'; });
+  }
+  renderRelayList();
+}
+
+function nowTime() {
+  const n = new Date();
+  return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+}
+
+function updateCounts() {
+  const needsYou = cases.filter(c => c.needsYou).length;
+  document.getElementById('relayCountBadge').textContent = cases.length;
+  document.getElementById('needsYouCount').textContent = needsYou;
+  document.getElementById('metricNeedsYou').textContent = needsYou;
+  document.getElementById('metricInFlight').textContent = cases.length;
+  document.getElementById('statInFlight').textContent = cases.length;
+  document.getElementById('statNeedsYou').textContent = needsYou;
+  document.getElementById('relayStatusText').textContent = `${cases.length} relays in flight`;
+  renderKPIs();
+}
+
+// ============================================
+// TRADE DASHBOARD (center — volumes, geography, category)
+// Replaces the ambient ghost-surface/desk-map with the actual trade
+// data the request asked for. Desk tiles keep their click-through link
+// to the matching relay case (eq → tce-2891, rs → ib-4417, ap → pm-1056).
+// ============================================
+
+const desks = [
+  { id:'eq', name:'Equities',        region:'US',   category:'Equities',      status:'critical', alerts:1, volume:612, bars:[3,5,8,6,9,7,4] },
+  { id:'fi', name:'Fixed Income',    region:'US',   category:'Fixed Income',  status:'normal',   alerts:0, volume:284, bars:[2,3,2,3,2,2,3] },
+  { id:'rs', name:'Research',       region:'US',   category:'Equities',      status:'elevated', alerts:1, volume:52,  bars:[4,6,5,7,5,6,4] },
+  { id:'sl', name:'Sales',           region:'US',   category:'Multi-Asset',   status:'elevated', alerts:0, volume:167, bars:[3,5,4,5,4,4,3] },
+  { id:'ap', name:'APAC Desk',       region:'APAC', category:'Multi-Asset',   status:'normal',   alerts:0, volume:238, bars:[3,4,3,4,3,4,3] },
+  { id:'em', name:'EMEA Desk',       region:'EMEA', category:'Multi-Asset',   status:'normal',   alerts:0, volume:176, bars:[2,2,3,2,3,2,2] },
+  { id:'pa', name:'Prime & Agency',  region:'US',   category:'Agency',        status:'normal',   alerts:0, volume:94,  bars:[3,2,2,3,2,2,3] },
+  { id:'qr', name:'Quant Research',  region:'US',   category:'Systematic',    status:'normal',   alerts:0, volume:71,  bars:[2,3,2,2,3,2,2] },
+];
+
+function renderKPIs() {
+  const totalVolume = desks.reduce((s,d) => s + d.volume, 0);
+  const needsYou = cases.filter(c => c.needsYou).length;
+  document.getElementById('kpiVolume').textContent = `$${(totalVolume/1000).toFixed(2)}B`;
+  document.getElementById('kpiRelays').textContent = cases.length;
+  const kEl = document.getElementById('kpiNeedsYou');
+  kEl.textContent = needsYou;
+  kEl.classList.toggle('red', needsYou > 0);
+  document.getElementById('kpiCleared').textContent = '1,247';
+}
+
+function renderTradeTiles() {
+  const grid = document.getElementById('tradeTileGrid');
+  grid.innerHTML = '';
+  desks.forEach(d => {
+    const linkedCase = cases.find(c => c.deskId === d.id);
+    const tile = document.createElement('div');
+    tile.className = `trade-tile ${d.status} ${linkedCase ? 'linked' : ''}`;
+    tile.dataset.id = d.id;
+    if (linkedCase) tile.tabIndex = 0;
+    tile.innerHTML = `
+      ${linkedCase ? `<span class="tt-badge">Review</span>` : ''}
+      <div class="tt-name">${d.name}</div>
+      <div class="tt-tags">${d.region} · ${d.category}</div>
+      <div class="tt-volume">$${d.volume}M</div>
+      <div class="tt-volume-label">Notional today</div>
+      <div class="tt-spark">${d.bars.map(h=>`<div class="bar" style="height:${h*2+4}px"></div>`).join('')}</div>
+    `;
+    if (linkedCase) {
+      const open = () => openCaseFromDesk(linkedCase.id, d.id);
+      tile.addEventListener('click', open);
+      tile.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    }
+    grid.appendChild(tile);
+  });
+}
+
+function openCaseFromDesk(caseId, deskId) {
+  expandedId = caseId;
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.toggle('active', t.dataset.filter === 'all'));
+  renderRelayList();
+  const card = document.querySelector(`.relay-card[data-id="${caseId}"]`);
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  pulseTile(deskId);
+}
+
+function pulseTile(id) {
+  const tile = document.querySelector(`.trade-tile[data-id="${id}"]`);
+  if (!tile) return;
+  tile.classList.remove('flash');
+  void tile.offsetWidth;
+  tile.classList.add('flash');
+}
+
+function aggregateBy(field) {
+  const totals = {};
+  let grand = 0;
+  desks.forEach(d => { totals[d[field]] = (totals[d[field]] || 0) + d.volume; grand += d.volume; });
+  return Object.entries(totals)
+    .map(([label, value]) => ({ label, value, pct: Math.round((value / grand) * 100) }))
+    .sort((a, b) => b.value - a.value);
+}
+
+function renderBreakdown(containerId, field) {
+  const rows = aggregateBy(field);
+  const el = document.getElementById(containerId);
+  el.innerHTML = rows.map(r => `
+    <div class="breakdown-row">
+      <div class="breakdown-label">${r.label}</div>
+      <div class="breakdown-track"><div class="breakdown-fill" style="width:${r.pct}%"></div></div>
+      <div class="breakdown-value">$${r.value}M · ${r.pct}%</div>
+    </div>
+  `).join('');
+}
+
+// ============================================
+// CHAT (right panel — pointed at relay state)
+// ============================================
+
+function addUserMsg(text) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg user';
+  const now = new Date();
+  div.innerHTML = `<div class="msg-bubble">${text}</div><div class="msg-time">${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+function addAIMsg(html, timeOverride) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ai';
+  const now = new Date();
+  const t = timeOverride || `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  div.innerHTML = `<div class="msg-bubble">${html}</div><div class="msg-time">${t}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+function addTyping() {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ai'; div.id = 'typingInd';
+  div.innerHTML = '<div class="msg-bubble"><div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+function removeTyping() { const el = document.getElementById('typingInd'); if(el) el.remove(); }
+function updateSuggestions(items) {
+  const container = document.getElementById('suggestions');
+  container.innerHTML = '';
+  items.forEach(s => {
+    const chip = document.createElement('button');
+    chip.className = 'suggestion-chip'; chip.textContent = s;
+    chip.onclick = () => processMessage(s);
+    container.appendChild(chip);
+  });
+}
+
+const chatResponses = {
+  "What's the status of the Marcus investigation?": {
+    text: 'TCE-2891 is mid-relay — three agents in, one to go:',
+    card: { title: 'TCE-2891 — Relay Status', rows: [
+      {k:'Stage', v:'Confidence scoring (3 of 4)', c:''},
+      {k:'Confidence', v:'84% → climbing', c:'amber'},
+      {k:'Autonomy set', v:'Act, notify', c:''},
+      {k:'Will escalate at', v:'90% confidence', c:'red'},
+    ]},
+    followUp: 'It will stop and ask you before escalating — that’s the autonomy level you set for this case. Open the relay panel for the full handoff trail.',
+    suggestions: ['Why is the barrier case suggest-only?', 'Show me what Wong’s case agreed on'],
+  },
+  "Why is the barrier case suggest-only?": {
+    text: 'IB-4417 is set to <strong>Suggest only</strong> — the most conservative autonomy level:',
+    card: { title: 'IB-4417 — Why Suggest Only', rows: [
+      {k:'Case type', v:'Information barrier breach', c:''},
+      {k:'Stakes', v:'Potential client front-running', c:'red'},
+      {k:'Default for category', v:'Suggest only', c:''},
+    ]},
+    followUp: 'Barrier breaches with a client P&L angle default to the most conservative slider position firm-wide. An analyst can raise it per case, but never the reverse automatically.',
+    suggestions: ['Show me what Wong’s case agreed on', 'What is the relay for TCE-2891?'],
+  },
+  "Show me what Wong’s case agreed on": {
+    text: 'PM-1056 is a swarm of four peer agents that converged independently — no single agent had to hand off to "close" it:',
+    card: { title: 'PM-1056 — Swarm Consensus', rows: [
+      {k:'Agents', v:'4 of 4 agree', c:'green'},
+      {k:'Concern score', v:'22%', c:'green'},
+      {k:'Autonomy', v:'Full autonomy', c:''},
+      {k:'Next step', v:'Auto-clear in 24h if quiet', c:''},
+    ]},
+    followUp: 'This is the calm end of the spectrum: routine, low-stakes, full autonomy, and the swarm shape reflects that no agent is "in charge" — they just all checked and agreed.',
+    suggestions: ['What is the relay for TCE-2891?', 'Why is the barrier case suggest-only?'],
+  },
+};
+const defaultResp = {
+  text: 'Searching the active relays for that:',
+  card: { title: 'Search', rows: [{k:'Relays checked', v:'3', c:''}, {k:'Status', v:'No direct match', c:'amber'}] },
+  followUp: 'Try asking about a specific case, or open it directly in the relay panel on the left.',
+  suggestions: ["What's the status of the Marcus investigation?", 'Why is the barrier case suggest-only?'],
+};
+
+function buildResponseHTML(resp) {
+  let html = `<p>${resp.text}</p>`;
+  if (resp.card) {
+    html += `<div class="chat-card"><div class="chat-card-title">${resp.card.title}</div>`;
+    resp.card.rows.forEach(r => { html += `<div class="card-row"><span class="k">${r.k}</span><span class="v ${r.c||''}">${r.v}</span></div>`; });
+    html += `</div>`;
+  }
+  if (resp.followUp) html += `<p style="margin-top:10px">${resp.followUp}</p>`;
+  return html;
+}
+
+function processMessage(text) {
+  addUserMsg(text);
+  addTyping();
+  const resp = chatResponses[text] || defaultResp;
+  setTimeout(() => {
+    removeTyping();
+    addAIMsg(buildResponseHTML(resp));
+    updateSuggestions(resp.suggestions || defaultResp.suggestions);
+  }, 900 + Math.random() * 700);
+}
+
+function handleSend() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  processMessage(text);
+}
+
+function renderInitialChat() {
+  addAIMsg(`Three relays in flight right now. One — TCE-2891 — is approaching the confidence threshold where it will stop and ask you before going further.`, '08:42');
+  updateSuggestions(["What's the status of the Marcus investigation?", 'Why is the barrier case suggest-only?', 'Show me what Wong’s case agreed on']);
+}
+
+// ============================================
+// LIVE CONFIDENCE CLIMB → ESCALATION CHOREOGRAPHY
+// ============================================
+
+let climbInterval = null;
+function startConfidenceClimb() {
+  climbInterval = setInterval(() => {
+    const c = getCase('tce-2891');
+    if (!c || c.needsYou || c.confidence >= c.escalateAt || c.resolved) return;
+    c.confidence += 1;
+    if (c.confidence >= c.escalateAt) {
+      triggerEscalation(c);
+    } else if (expandedId === null || expandedId === c.id) {
+      renderRelayList();
+    }
+  }, 2200);
+}
+
+function triggerEscalation(c) {
+  c.needsYou = true;
+  const toast = document.getElementById('toast');
+  document.getElementById('toastText').textContent = `${c.title.split(' — ')[0]} — confidence threshold reached (${c.confidence}%)`;
+  document.getElementById('toastIcon').className = 'toast-icon red';
+  toast.classList.add('visible');
+  setTimeout(() => toast.classList.remove('visible'), 5000);
+  pulseTile(c.deskId);
+  expandedId = c.id;
+  renderRelayList();
+  const card = document.querySelector(`.relay-card[data-id="${c.id}"]`);
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ============================================
+// FILTER TABS
+// ============================================
+
+document.querySelectorAll('.filter-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentFilter = tab.dataset.filter;
+    renderRelayList();
+  });
+});
+
+// Keyboard
+document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key==='Enter') handleSend(); });
+document.addEventListener('keydown', e => { if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('chatInput').focus();} });
+
+// ============================================
+// INIT
+// ============================================
+renderRelayList();
+renderTradeTiles();
+renderBreakdown('geoBreakdown', 'region');
+renderBreakdown('categoryBreakdown', 'category');
+renderInitialChat();
+startConfidenceClimb();
+</script>
+</body>
+</html>
