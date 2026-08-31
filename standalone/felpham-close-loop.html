@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Felpham Close Loop</title>
+<meta name="description" content="A tight 2–3 mile bike loop around Felpham and Bognor Regis for drawing and photographing architecture and coastline, with food nearby.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #eef0e9;
+    --bg-raised: #f7f8f3;
+    --ink: #1c2b2a;
+    --ink-soft: #4a5957;
+    --line: #c9d0c3;
+    --line-strong: #a9b3a0;
+    --teal: #2c6e68;
+    --teal-ink: #1f4d49;
+    --rust: #ad5a30;
+    --rust-bg: #f4e2d3;
+    --teal-bg: #dfe9e4;
+    --focus: #1f4d49;
+    --shadow: rgba(28,43,42,0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131d1c;
+      --bg-raised: #1a2726;
+      --ink: #e9ede7;
+      --ink-soft: #aab8b2;
+      --line: #2e3d3a;
+      --line-strong: #445450;
+      --teal: #6fbdb2;
+      --teal-ink: #8fd0c6;
+      --rust: #e2946a;
+      --rust-bg: #3a2a20;
+      --teal-bg: #1e3230;
+      --focus: #6fbdb2;
+      --shadow: rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #131d1c;
+    --bg-raised: #1a2726;
+    --ink: #e9ede7;
+    --ink-soft: #aab8b2;
+    --line: #2e3d3a;
+    --line-strong: #445450;
+    --teal: #6fbdb2;
+    --teal-ink: #8fd0c6;
+    --rust: #e2946a;
+    --rust-bg: #3a2a20;
+    --teal-bg: #1e3230;
+    --focus: #6fbdb2;
+    --shadow: rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{ background:var(--bg); }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Public Sans', -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  a{color:var(--teal-ink);}
+  a:focus-visible, button:focus-visible, .navlink:focus-visible{
+    outline:2px solid var(--focus);
+    outline-offset:2px;
+  }
+  ::selection{ background:var(--teal-bg); }
+
+  h1,h2,h3{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+  }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:0 20px 80px; }
+
+  /* ---------- header ---------- */
+  header.hero{
+    padding:44px 20px 28px;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(circle at 88% -10%, var(--teal-bg) 0%, transparent 55%),
+      var(--bg);
+  }
+  .hero-inner{ max-width:760px; margin:0 auto; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--teal-ink);
+    margin:0 0 10px;
+  }
+  h1.title{ font-size:clamp(30px,5.5vw,44px); line-height:1.08; letter-spacing:-0.01em; }
+  .hero-sub{
+    margin:14px 0 0;
+    max-width:52ch;
+    color:var(--ink-soft);
+    font-size:16px;
+  }
+  .base-card{
+    margin-top:24px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 26px;
+    align-items:baseline;
+    padding:14px 16px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-size:14px;
+  }
+  .base-card dt{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .base-card dd{ margin:2px 0 0; font-weight:600; }
+
+  /* ---------- quick nav ---------- */
+  nav.quicknav{
+    position:sticky; top:0; z-index:5;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  nav.quicknav::-webkit-scrollbar{ display:none; }
+  .quicknav-inner{
+    max-width:760px; margin:0 auto;
+    display:flex; gap:4px; padding:10px 20px;
+    white-space:nowrap;
+  }
+  .navlink{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-decoration:none;
+    color:var(--ink-soft);
+    padding:6px 10px;
+    border-radius:20px;
+    border:1px solid transparent;
+  }
+  .navlink:hover{ border-color:var(--line-strong); color:var(--ink); }
+
+  /* ---------- sections ---------- */
+  section.cluster{ padding-top:40px; }
+  .cluster-head{
+    display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding-bottom:12px; margin-bottom:20px;
+  }
+  .compass{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--bg);
+    background:var(--teal);
+    padding:3px 8px;
+    border-radius:3px;
+    flex-shrink:0;
+  }
+  .cluster-head h2{ font-size:22px; flex:1 1 auto; min-width:180px; }
+  .cluster-dist{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .cluster-note{ margin:0 0 20px; color:var(--ink-soft); font-size:14.5px; max-width:60ch; }
+
+  .spot{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    padding:18px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .spot:last-child{ border-bottom:none; }
+  .spot-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .spot-name{ font-family:'Fraunces', serif; font-weight:600; font-size:19px; }
+  .spot-dist{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .spot p{ margin:0; font-size:15px; color:var(--ink); }
+  .spot .why{ color:var(--ink-soft); }
+  .spot .why strong{ color:var(--ink); font-weight:600; }
+
+  .food{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    padding:10px 12px;
+    background:var(--rust-bg);
+    border-radius:4px;
+    font-size:13.5px;
+  }
+  .food-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--rust);
+    font-weight:600;
+    flex-shrink:0;
+    padding-top:1px;
+  }
+  .food span.name{ font-weight:600; }
+
+  /* ---------- practical / footer ---------- */
+  .practical{
+    margin-top:48px;
+    padding:20px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+  }
+  .practical h2{ font-size:18px; margin-bottom:12px; }
+  .practical ul{ margin:0; padding-left:20px; }
+  .practical li{ margin-bottom:8px; font-size:14.5px; color:var(--ink-soft); }
+  .practical li strong{ color:var(--ink); }
+
+  footer.page-foot{
+    max-width:760px; margin:36px auto 0; padding:0 20px;
+    font-size:12.5px; color:var(--ink-soft);
+  }
+
+  @media (max-width:520px){
+    header.hero{ padding:32px 16px 22px; }
+    .wrap{ padding:0 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Weekend route notes — Felpham &amp; Bognor Regis</p>
+    <h1 class="title">The Felpham Close Loop</h1>
+    <p class="hero-sub">A tight circuit around Felpham and Bognor Regis for drawing and photographing architecture and coastline — nothing further than a 2–3 mile ride, grouped by direction from base, with somewhere to eat nearby.</p>
+    <dl class="base-card">
+      <div><dt>Base</dt><dd>6 Havelock Close, Felpham, PO22 7AX</dd></div>
+      <div><dt>Terrain</dt><dd>Flat — seafront prom &amp; town streets</dd></div>
+      <div><dt>Range</dt><dd>Doorstep to ~3 mi</dd></div>
+    </dl>
+  </div>
+</header>
+
+<nav class="quicknav" aria-label="Jump to area">
+  <div class="quicknav-inner">
+    <a class="navlink" href="#doorstep">Felpham</a>
+    <a class="navlink" href="#seafront">Bognor seafront</a>
+    <a class="navlink" href="#town">Bognor town</a>
+    <a class="navlink" href="#west">Aldwick</a>
+    <a class="navlink" href="#east">Middleton &amp; Elmer</a>
+    <a class="navlink" href="#practical">Notes</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="cluster" id="doorstep">
+    <div class="cluster-head">
+      <span class="compass">ON FOOT</span>
+      <h2>Felpham village</h2>
+      <span class="cluster-dist">under 1 mi</span>
+    </div>
+    <p class="cluster-note">Worth doing first, in low morning or evening light, before the seafront gets busy.</p>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">Blake's Cottage</span><span class="spot-dist">0.5 mi</span></div>
+      <p class="why">Thatched, flint-and-brick 18th-century cottage where William Blake lived 1800–1803 — the archetypal English cottage silhouette (steep thatch, small-paned windows), quiet lane, good for a slow architectural study.</p>
+      <div class="food"><span class="food-tag">Food</span><span>The Southdowns, a short walk away on Limmer Lane — or save eating for the seafront, ten minutes further on.</span></div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">St Mary's Church, Felpham</span><span class="spot-dist">0.4 mi</span></div>
+      <p class="why">The old parish church at the heart of the village — flint walls, a modest tower, and a churchyard worth a slower pencil study before the ride properly starts.</p>
+      <div class="food"><span class="food-tag">Food</span><span>Same as Blake's Cottage above — they're a minute apart.</span></div>
+    </div>
+  </section>
+
+  <section class="cluster" id="seafront">
+    <div class="cluster-head">
+      <span class="compass">SW</span>
+      <h2>Bognor Regis seafront</h2>
+      <span class="cluster-dist">1.5–2 mi</span>
+    </div>
+    <p class="cluster-note">Flat, traffic-free promenade the whole way from Felpham.</p>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">The Pier &amp; Esplanade</span><span class="spot-dist">1.7 mi</span></div>
+      <p class="why">What remains of the Victorian pier against open sea, plus the sweep of the Esplanade itself — good subject range from a wide seascape down to individual railings and beach-hut colour.</p>
+      <div class="food"><span class="food-tag">Food</span><span>The Lobster Pot or The Boat House, both on the prom near the pier.</span></div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">Royal Norfolk Hotel &amp; Waterloo Square</span><span class="spot-dist">1.8 mi</span></div>
+      <p class="why">The Royal Norfolk's Regency front faces the sea from the Esplanade, and the terraces stepping back from Waterloo Square behind it are the best run of period seafront architecture in Bognor — worth a study of the ironwork balconies and bay windows.</p>
+      <div class="food"><span class="food-tag">Food</span><span>The Royal Norfolk's own bar, or the cafés dotted along the square.</span></div>
+    </div>
+  </section>
+
+  <section class="cluster" id="town">
+    <div class="cluster-head">
+      <span class="compass">W</span>
+      <h2>Bognor town &amp; Hotham Park</h2>
+      <span class="cluster-dist">2–2.5 mi</span>
+    </div>
+    <p class="cluster-note">A short ride inland from the seafront, through the town centre.</p>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">Hotham Park &amp; Hotham Park House</span><span class="spot-dist">2.3 mi</span></div>
+      <p class="why">A white Regency mansion (1792) set in its own parkland, with a walled garden, miniature railway and mature trees around it — a change of pace from seafront and cottage subjects, with a proper set-back facade to draw.</p>
+      <div class="food"><span class="food-tag">Food</span><span>Hotham Park Café, inside the park itself.</span></div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">Picturedrome &amp; the town centre streets</span><span class="spot-dist">2 mi</span></div>
+      <p class="why">The Picturedrome is a listed early-1900s cinema front, and London Road and the streets around it carry a mix of Victorian and Edwardian shopfronts — good for quick urban sketching between errands, less polished than the seafront.</p>
+      <div class="food"><span class="food-tag">Food</span><span>Plenty of cafés and bakeries along London Road and the pedestrianised centre.</span></div>
+    </div>
+  </section>
+
+  <section class="cluster" id="west">
+    <div class="cluster-head">
+      <span class="compass">W</span>
+      <h2>Aldwick</h2>
+      <span class="cluster-dist">~2.7 mi</span>
+    </div>
+    <p class="cluster-note">Continue straight along the promenade past the pier.</p>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">Aldwick Beach &amp; the beach huts</span><span class="spot-dist">2.7 mi</span></div>
+      <p class="why">Rows of painted beach huts along the prom, quieter and less built-up than central Bognor — good repeating-colour subject matter, and a contrast to the grander Waterloo Square terraces closer to home.</p>
+      <div class="food"><span class="food-tag">Food</span><span>Aldwick Beach Café or West Park Café, both right on the front.</span></div>
+    </div>
+  </section>
+
+  <section class="cluster" id="east">
+    <div class="cluster-head">
+      <span class="compass">E</span>
+      <h2>Middleton-on-Sea &amp; Elmer</h2>
+      <span class="cluster-dist">2–3 mi</span>
+    </div>
+    <p class="cluster-note">The other direction along the coast from Felpham — quieter lanes than the Bognor side.</p>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">St Nicholas Church, Middleton-on-Sea</span><span class="spot-dist">2 mi</span></div>
+      <p class="why">A small flint parish church a short way inland from the current shoreline (the medieval village and its original church were lost to coastal erosion) — modest, quiet, and a good contrast to Felpham's church closer to home.</p>
+      <div class="food"><span class="food-tag">Food</span><span>The Beresford on Elmer Road, or The Elmer, both dining pubs nearby.</span></div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-head"><span class="spot-name">Elmer Sands rock groynes</span><span class="spot-dist">3 mi</span></div>
+      <p class="why">Rows of large sculptural rock groynes sunk into the beach as sea defences — strong graphic shapes at low tide, especially side-lit, and a change of pace from building studies. This is the far edge of the loop.</p>
+      <div class="food"><span class="food-tag">Food</span><span>The Beresford and The Elmer (above) are the nearest options, a short ride back toward Middleton.</span></div>
+    </div>
+  </section>
+
+  <div class="practical" id="practical">
+    <h2>Notes before you set off</h2>
+    <ul>
+      <li><strong>Distances</strong> are approximate one-way road distances from Havelock Close — the whole loop above, doorstep to doorstep, is comfortably under 10 miles for the day if you string several clusters together.</li>
+      <li><strong>Quick day plan:</strong> Felpham village on foot first thing, then seafront and town by bike, saving Aldwick or Middleton/Elmer for whichever has the better light that afternoon.</li>
+      <li><strong>Pace it for drawing, not distance</strong> — at this range you can easily reach every spot on this list in a weekend, so the limiting factor is time spent actually sitting and drawing at each one, not the cycling between them.</li>
+      <li><strong>Best light:</strong> the seafront and Aldwick/Elmer beach huts favour low, raking morning or evening light; Hotham Park and the town streets work fine at any time of day.</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer class="page-foot">
+  Compiled for a weekend trip from 6 Havelock Close, Felpham, PO22 7AX.
+</footer>
+</body>
+</html>
