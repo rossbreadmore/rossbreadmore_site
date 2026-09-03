@@ -4,13 +4,13 @@
    ============================================= */
 
 :root {
-  --bg: #111111;
-  --text: #ede8df;
-  --text-dim: rgba(237, 232, 223, 0.72);
-  --text-muted: rgba(237, 232, 223, 0.38);
+  --bg: #ffffff;
+  --text: #0a0a0a;
+  --text-dim: rgba(10, 10, 10, 0.72);
+  --text-muted: rgba(10, 10, 10, 0.45);
   --accent: #F0FF00;
-  --border: rgba(237, 232, 223, 0.08);
-  --border-mid: rgba(237, 232, 223, 0.16);
+  --border: rgba(10, 10, 10, 0.08);
+  --border-mid: rgba(10, 10, 10, 0.16);
 }
 
 /* --- Reset & Base --- */
@@ -102,7 +102,7 @@ nav a:hover {
 .hero-illustration {
   flex-shrink: 0;
   width: 240px;
-  color: rgba(237, 232, 223, 0.75);
+  color: rgba(10, 10, 10, 0.75);
   padding-bottom: 0.5rem;
 }
 
@@ -749,7 +749,7 @@ figcaption {
   position: relative;
   cursor: pointer;
   aspect-ratio: 16 / 9;
-  background: #222;
+  background: var(--border-mid);
   overflow: hidden;
 }
 

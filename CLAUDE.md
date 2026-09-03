@@ -7,7 +7,7 @@ Personal creative showcase for Ross Breadmore — design and product leader. Fea
 - **Generator:** Eleventy 2.x (`npm run build` to build, output goes to `_site/`)
 - **Templates:** Nunjucks (`.njk`) in `_includes/` for layouts, content pages at root or in subdirectories
 - **Styles:** Single file — `styles.css` at root, copied to `_site/` on build
-- **Fonts:** Inter (body) + Space Grotesk (headings/labels) via Google Fonts
+- **Fonts:** DM Sans, throughout — headings/labels and body copy both. (Not Space Grotesk/Inter, despite older notes.)
 - **Posts:** Markdown files in `posts/`, collected as `collections.posts`
 - **No JS frameworks.** Keep it that way.
 - **No decorative background imagery.** The old `illustrations/wallpaper.js` animated-canvas background (drifting robot/pin-face/round-head shapes on every page) has been removed. Don't reintroduce ambient background animation or imagery — the homepage hero robot SVG (`illustrations/robot.svg`, included directly in `index.njk`) is the one deliberate illustration on the site.
@@ -15,8 +15,8 @@ Personal creative showcase for Ross Breadmore — design and product leader. Fea
 ## Design system
 The site uses a bold brutalist aesthetic. Respect these rules in every change:
 
-- **Colours:** `--black: #0a0a0a`, `--white: #ffffff`, `--accent: #F0FF00` (acid yellow). Use accent sparingly — hover states and index chips only.
-- **Type:** Space Grotesk for all headings and labels — always uppercase with tight negative letter-spacing. Inter for body copy.
+- **Colours:** white background (`--bg: #ffffff`), near-black copy (`--text: #0a0a0a`), acid yellow accent (`--accent: #F0FF00`). Use accent sparingly — hover states and index chips only. `--text-dim`/`--text-muted`/`--border`/`--border-mid` are all rgba() built from the same near-black — if you ever change `--text`, update those literal rgb triples too, they don't derive automatically.
+- **Type:** DM Sans for everything. Headings and labels are uppercase with tight negative letter-spacing.
 - **Borders:** Heavy rules (`3px solid`) to frame sections. Hairlines (`1px solid`) between list items. No decorative borders.
 - **No:** rounded corners, box shadows, gradients, transitions longer than 0.1s, or any visual decoration that isn't structural.
 - **Spacing:** Generous — let the type breathe. Don't crowd elements.
