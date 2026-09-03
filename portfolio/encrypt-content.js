@@ -31,7 +31,37 @@ if (!password) {
 const contentPath = path.join(__dirname, 'content.html');
 const outPath = path.join(__dirname, '..', '_data', 'portfolio.json');
 
-const plaintext = fs.readFileSync(contentPath, 'utf8');
+const MIME_TYPES = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+};
+
+// Inline any local <img src="..."> as a base64 data URI, so images ship inside
+// the same encrypted blob as the text -- nothing (image included) is ever
+// published as a plain, guessable-URL file. Remote (http/https) and existing
+// data: URIs are left alone.
+function inlineImages(html, baseDir) {
+  return html.replace(/(<img\b[^>]*\bsrc=")([^"]+)(")/g, (match, pre, src, post) => {
+    if (/^(https?:)?\/\//.test(src) || src.startsWith('data:')) return match;
+    const filePath = path.join(baseDir, src);
+    if (!fs.existsSync(filePath)) {
+      throw new Error('Portfolio image referenced in content.html not found: ' + filePath);
+    }
+    const ext = path.extname(filePath).toLowerCase();
+    const mime = MIME_TYPES[ext];
+    if (!mime) {
+      throw new Error('Unsupported image type for ' + filePath + ' -- add it to MIME_TYPES in encrypt-content.js');
+    }
+    const b64 = fs.readFileSync(filePath).toString('base64');
+    return pre + 'data:' + mime + ';base64,' + b64 + post;
+  });
+}
+
+let plaintext = fs.readFileSync(contentPath, 'utf8');
+plaintext = inlineImages(plaintext, __dirname);
 
 const ITERATIONS = 250000;
 const salt = crypto.randomBytes(16);

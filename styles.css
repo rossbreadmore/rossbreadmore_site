@@ -550,6 +550,30 @@ figcaption {
   color: var(--text);
 }
 
+/* --- Portfolio screenshot grid --- */
+.portfolio-shots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 1.75rem 0;
+}
+
+.portfolio-shots figure {
+  margin: 0;
+}
+
+.portfolio-shots img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+  border: 1px solid var(--border-mid);
+}
+
+.portfolio-shots figcaption {
+  margin-top: 0.6rem;
+}
+
 /* --- Lab list --- */
 .lab-list {
   list-style: none;
@@ -949,5 +973,9 @@ footer p {
 
   .portfolio-submit {
     padding: 0.85rem 1.5rem;
+  }
+
+  .portfolio-shots {
+    grid-template-columns: 1fr;
   }
 }

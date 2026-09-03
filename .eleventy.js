@@ -15,6 +15,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("illustrations");
   eleventyConfig.addPassthroughCopy("robots.txt");
   eleventyConfig.ignores.add("portfolio/content.html"); // source is encrypted into _data/portfolio.json — never publish it raw
+  eleventyConfig.ignores.add("portfolio/assets/**"); // source images, baked into the encrypted blob at lock time — never publish raw
   eleventyConfig.addPassthroughCopy("standalone");
   eleventyConfig.ignores.add("standalone/**");
   eleventyConfig.addPassthroughCopy("acupuncture");
