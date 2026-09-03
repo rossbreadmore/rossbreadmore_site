@@ -502,6 +502,54 @@ figcaption {
   margin-top: 1rem;
 }
 
+.work-description a,
+.portfolio-projects a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.work-description a:hover,
+.portfolio-projects a:hover {
+  background: var(--accent);
+  color: #000;
+  text-decoration: none;
+}
+
+.portfolio-projects {
+  list-style: none;
+  margin: 1.25rem 0;
+  padding: 0;
+  max-width: 640px;
+}
+
+.portfolio-projects li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-dim);
+}
+
+.portfolio-projects li:last-child {
+  margin-bottom: 0;
+}
+
+.portfolio-projects li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+}
+
+.portfolio-projects li strong {
+  color: var(--text);
+}
+
 /* --- Lab list --- */
 .lab-list {
   list-style: none;
