@@ -10,6 +10,7 @@ Personal creative showcase for Ross Breadmore — design and product leader. Fea
 - **Fonts:** Inter (body) + Space Grotesk (headings/labels) via Google Fonts
 - **Posts:** Markdown files in `posts/`, collected as `collections.posts`
 - **No JS frameworks.** Keep it that way.
+- **No decorative background imagery.** The old `illustrations/wallpaper.js` animated-canvas background (drifting robot/pin-face/round-head shapes on every page) has been removed. Don't reintroduce ambient background animation or imagery — the homepage hero robot SVG (`illustrations/robot.svg`, included directly in `index.njk`) is the one deliberate illustration on the site.
 
 ## Design system
 The site uses a bold brutalist aesthetic. Respect these rules in every change:
@@ -34,10 +35,15 @@ lab/
   index.njk       # /lab page — renders from _data/lab.json
 videos/
   index.njk       # /videos page
+portfolio/
+  index.njk         # /portfolio page — password gate + decrypt (see below)
+  content.html       # real portfolio content, EDIT THIS, never published raw
+  encrypt-content.js # locks content.html into _data/portfolio.json
 FAQ/
   index.md        # /faq page
 index.njk         # homepage
 styles.css        # all styles — single file, no preprocessor
+robots.txt        # disallows /portfolio/ from crawlers
 ```
 
 ## Lab data structure
@@ -51,6 +57,28 @@ Each entry in `_data/lab.json` takes this shape:
 }
 ```
 Status chips are colour-coded: active = acid yellow, exploring = black, stalled = grey outline, shipped = black outline.
+
+## Portfolio password gate
+`/portfolio/` is a client-side password-gated page — there's no backend, so this is a
+deterrent (keeps casual visitors and search engines out), not real security. Anyone who
+opens browser dev tools and brute-forces the encryption could still get in. Don't put
+anything here you'd be genuinely harmed by leaking.
+
+How it works:
+- The real content lives in `portfolio/content.html` (plain HTML, edit it freely).
+- `npm run portfolio:lock -- "your password"` encrypts that file (AES-256-GCM, key
+  derived from the password via PBKDF2) into `_data/portfolio.json` — salt, iv, and
+  ciphertext only. The password itself is never stored anywhere.
+- `portfolio/index.njk` ships that encrypted blob to the browser. When someone types a
+  password, the page tries to derive the same key and decrypt in-browser (Web Crypto
+  API). Right password -> content renders. Wrong password -> decryption fails silently
+  and the form shows an error. Nothing is sent to a server either way.
+- `portfolio/content.html` is excluded from the Eleventy build (`eleventyConfig.ignores`
+  in `.eleventy.js`) so the plaintext is never accidentally published at its own URL.
+
+**To change the password or update the content:** edit `portfolio/content.html`, then
+run `npm run portfolio:lock -- "new password"` again — this fully regenerates
+`_data/portfolio.json`. Commit that file; it's ciphertext, safe to commit.
 
 ## Development rules
 1. **Always run `npm run build` and confirm zero errors before committing.**

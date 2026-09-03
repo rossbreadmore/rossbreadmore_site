@@ -1,0 +1,108 @@
+---
+title: Portfolio — Ross Breadmore
+layout: home.njk
+noindex: true
+---
+
+<div class="page-intro">
+  <h2 class="page-intro-title">Portfolio</h2>
+  <p class="page-intro-sub">Selected work, kept off the public site for now. Enter the password to view.</p>
+</div>
+
+<div class="portfolio-lock" id="portfolio-lock">
+  <form class="portfolio-form" id="portfolio-form">
+    <label class="portfolio-label" for="portfolio-password">Password</label>
+    <div class="portfolio-form-row">
+      <input type="password" id="portfolio-password" class="portfolio-input" autocomplete="current-password" required>
+      <button type="submit" class="portfolio-submit">Unlock</button>
+    </div>
+    <p class="portfolio-error" id="portfolio-error" hidden>That password didn't work — try again.</p>
+  </form>
+</div>
+
+<div class="portfolio-content" id="portfolio-content" hidden></div>
+
+<script>
+(function () {
+  var LOCK = {{ portfolio | dump | safe }};
+  var SESSION_KEY = 'portfolio-unlocked-content';
+
+  var lockEl = document.getElementById('portfolio-lock');
+  var contentEl = document.getElementById('portfolio-content');
+  var formEl = document.getElementById('portfolio-form');
+  var inputEl = document.getElementById('portfolio-password');
+  var errorEl = document.getElementById('portfolio-error');
+  var submitBtn = formEl.querySelector('.portfolio-submit');
+
+  function b64ToBytes(b64) {
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes;
+  }
+
+  function reveal(html) {
+    lockEl.hidden = true;
+    contentEl.hidden = false;
+    contentEl.innerHTML = html;
+  }
+
+  function deriveKey(password) {
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']).then(function (keyMaterial) {
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: b64ToBytes(LOCK.salt), iterations: LOCK.iterations, hash: 'SHA-256' },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
+    });
+  }
+
+  function attemptUnlock(password) {
+    return deriveKey(password).then(function (key) {
+      var iv = b64ToBytes(LOCK.iv);
+      var ciphertext = b64ToBytes(LOCK.ciphertext);
+      return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, ciphertext);
+    }).then(function (decrypted) {
+      return new TextDecoder().decode(decrypted);
+    }).catch(function () {
+      return null;
+    });
+  }
+
+  if (!window.crypto || !window.crypto.subtle) {
+    errorEl.textContent = "Your browser doesn't support the crypto this page needs — try a modern browser.";
+    errorEl.hidden = false;
+    submitBtn.disabled = true;
+    return;
+  }
+
+  // Restore an already-unlocked session — cleared automatically when the tab closes.
+  var cached = sessionStorage.getItem(SESSION_KEY);
+  if (cached) reveal(cached);
+
+  formEl.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorEl.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Checking…';
+
+    attemptUnlock(inputEl.value).then(function (html) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Unlock';
+
+      if (html === null) {
+        errorEl.hidden = false;
+        inputEl.value = '';
+        inputEl.focus();
+        return;
+      }
+
+      sessionStorage.setItem(SESSION_KEY, html);
+      reveal(html);
+    });
+  });
+})();
+</script>

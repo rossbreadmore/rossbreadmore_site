@@ -13,6 +13,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("img");
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy("illustrations");
+  eleventyConfig.addPassthroughCopy("robots.txt");
+  eleventyConfig.ignores.add("portfolio/content.html"); // source is encrypted into _data/portfolio.json — never publish it raw
   eleventyConfig.addPassthroughCopy("standalone");
   eleventyConfig.ignores.add("standalone/**");
   eleventyConfig.addPassthroughCopy("acupuncture");

@@ -4,7 +4,8 @@
   "scripts": {
     "build": "eleventy",
     "start": "eleventy --serve",
-    "new-post": "node new-post.js"
+    "new-post": "node new-post.js",
+    "portfolio:lock": "node portfolio/encrypt-content.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.0"

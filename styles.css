@@ -32,9 +32,6 @@ body {
   max-width: 840px;
   margin: 0 auto;
   padding: 0 2rem;
-  position: relative;
-  z-index: 1;
-  background: rgba(17, 17, 17, 0.88);
 }
 
 main {
@@ -767,6 +764,80 @@ footer p {
   color: var(--text);
 }
 
+/* --- Portfolio lock --- */
+.portfolio-lock {
+  padding: 3rem 0 1rem;
+  max-width: 420px;
+}
+
+.portfolio-label {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.portfolio-form-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.portfolio-input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 1px solid var(--border-mid);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+.portfolio-input:focus {
+  outline: none;
+  border-color: var(--text);
+}
+
+.portfolio-submit {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 0 1.5rem;
+  cursor: pointer;
+  transition: opacity 0.08s ease;
+  white-space: nowrap;
+}
+
+.portfolio-submit:hover {
+  opacity: 0.85;
+}
+
+.portfolio-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.portfolio-error {
+  margin-top: 1.25rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.portfolio-content {
+  padding-top: 1rem;
+}
+
 /* --- Responsive --- */
 @media (max-width: 600px) {
   .homepage-hero {
@@ -818,5 +889,13 @@ footer p {
   .post-list li a {
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .portfolio-form-row {
+    flex-direction: column;
+  }
+
+  .portfolio-submit {
+    padding: 0.85rem 1.5rem;
   }
 }
