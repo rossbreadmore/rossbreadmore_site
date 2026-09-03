@@ -498,6 +498,10 @@ figcaption {
   margin: 0;
 }
 
+.work-description + .work-description {
+  margin-top: 1rem;
+}
+
 /* --- Lab list --- */
 .lab-list {
   list-style: none;
