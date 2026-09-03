@@ -22,6 +22,11 @@ noindex: true
 
 <div class="portfolio-content" id="portfolio-content" hidden></div>
 
+<div class="lightbox-overlay" id="lightbox-overlay" hidden>
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <img class="lightbox-image" id="lightbox-image" src="" alt="">
+</div>
+
 <script>
 (function () {
   var LOCK = {{ portfolio | dump | safe }};
@@ -103,6 +108,56 @@ noindex: true
       sessionStorage.setItem(SESSION_KEY, html);
       reveal(html);
     });
+  });
+
+  // --- Lightbox: click a portfolio photo to view it full size as an overlay ---
+  var lightboxEl = document.getElementById('lightbox-overlay');
+  var lightboxImgEl = document.getElementById('lightbox-image');
+  var lightboxCloseEl = document.getElementById('lightbox-close');
+  var lastTrigger = null;
+
+  function openLightbox(imgEl) {
+    lastTrigger = imgEl;
+    lightboxImgEl.src = imgEl.src;
+    lightboxImgEl.alt = imgEl.alt || '';
+    lightboxEl.hidden = false;
+    lightboxCloseEl.focus();
+  }
+
+  function closeLightbox() {
+    lightboxEl.hidden = true;
+    lightboxImgEl.src = '';
+    if (lastTrigger) {
+      lastTrigger.focus();
+      lastTrigger = null;
+    }
+  }
+
+  contentEl.addEventListener('click', function (e) {
+    var target = e.target;
+    if (target.tagName === 'IMG' && target.closest('.portfolio-shots')) {
+      openLightbox(target);
+    }
+  });
+
+  lightboxEl.addEventListener('click', function () {
+    closeLightbox();
+  });
+
+  lightboxImgEl.addEventListener('click', function (e) {
+    e.stopPropagation();
+    closeLightbox();
+  });
+
+  lightboxCloseEl.addEventListener('click', function (e) {
+    e.stopPropagation();
+    closeLightbox();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !lightboxEl.hidden) {
+      closeLightbox();
+    }
   });
 })();
 </script>
