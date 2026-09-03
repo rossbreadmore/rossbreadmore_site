@@ -491,8 +491,8 @@ figcaption {
 }
 
 .work-description {
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: 1.1rem;
+  line-height: 1.85;
   color: var(--text-dim);
   max-width: 600px;
   margin: 0;
@@ -553,9 +553,13 @@ figcaption {
 /* --- Portfolio screenshot grid --- */
 .portfolio-shots {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 260px));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   margin: 1.75rem 0;
+}
+
+.portfolio-shots--single {
+  grid-template-columns: minmax(200px, 320px);
 }
 
 .portfolio-shots figure {
