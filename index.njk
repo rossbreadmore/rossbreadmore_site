@@ -6,35 +6,12 @@ layout: home.njk
 <div class="homepage-hero">
   <div class="hero-text">
     <h1 class="hero-name">Ross<br>Breadmore</h1>
-    <p class="hero-meta">London, UK — Executive Director of UX, JPMorgan Chase</p>
     <p class="hero-bio">Design leadership for complex organisations. Twenty years building good teams who design good things.</p>
   </div>
   <div class="hero-illustration">
     {% include "illustrations/robot.svg" %}
   </div>
 </div>
-
-<section class="skills-section">
-  <nav class="skills-nav" aria-label="Skills">
-    {% for item in timeline %}
-    <button class="skill-pip{% if loop.first %} is-active{% endif %}" data-index="{{ loop.index0 }}">
-      {% if loop.index < 10 %}0{{ loop.index }}{% else %}{{ loop.index }}{% endif %}
-    </button>
-    {% endfor %}
-  </nav>
-
-  <div class="skills-panel">
-    {% for item in timeline %}
-    <div class="skill-card{% if loop.first %} is-active{% endif %}" data-index="{{ loop.index0 }}">
-      <div class="skill-card-header">
-        <span class="skill-card-name">{{ item.skill }}</span>
-        <span class="skill-card-company">{{ item.company }}</span>
-      </div>
-      <p class="skill-card-detail">{{ item.detail }}</p>
-    </div>
-    {% endfor %}
-  </div>
-</section>
 
 <section class="writing-section">
   <h2 class="section-label">Writing</h2>
@@ -49,17 +26,3 @@ layout: home.njk
     {% endfor %}
   </ul>
 </section>
-
-<script>
-  var pips = document.querySelectorAll('.skill-pip');
-  var cards = document.querySelectorAll('.skill-card');
-
-  pips.forEach(function(pip, i) {
-    pip.addEventListener('click', function() {
-      pips.forEach(function(p) { p.classList.remove('is-active'); });
-      cards.forEach(function(c) { c.classList.remove('is-active'); });
-      pip.classList.add('is-active');
-      cards[i].classList.add('is-active');
-    });
-  });
-</script>
