@@ -2,13 +2,13 @@
   {
     "title": "The Quiet Channel",
     "status": "active",
-    "description": "A fourth concept in the same world — a chat-only interface, with an ambient status indicator and a quiet log of everything noticed, shown or not. Another working prototype.",
+    "description": "A fourth concept in the same world \u2014 a chat-only interface, with an ambient status indicator and a quiet log of everything noticed, shown or not. Another working prototype.",
     "slug": "/standalone/the-quiet-channel.html"
   },
   {
     "title": "The Relay",
     "status": "active",
-    "description": "A third concept in the same world — multi-agent orchestration made visible as a baton handed across agents and across the human's devices. Another working prototype.",
+    "description": "A third concept in the same world \u2014 multi-agent orchestration made visible as a baton handed across agents and across the human's devices. Another working prototype.",
     "slug": "/standalone/the-relay.html"
   },
   {
@@ -20,43 +20,7 @@
   {
     "title": "More surveillance tool exploration",
     "status": "active",
-    "description": "A second concept in the same world — ambient intelligence surfacing. Another working prototype.",
+    "description": "A second concept in the same world \u2014 ambient intelligence surfacing. Another working prototype.",
     "slug": "/standalone/ambient-intelligence.html"
-  },
-  {
-    "title": "Storytelling at work",
-    "status": "active",
-    "description": "A piece on what narrative in corporate settings actually requires — and why most attempts fail. Draft exists, needs a better opening.",
-    "slug": ""
-  },
-  {
-    "title": "Artwork page",
-    "status": "active",
-    "description": "Bringing illustration work from @artbreadmore onto the site. Figuring out how existing work sits alongside the writing.",
-    "slug": ""
-  },
-    {
-    "title": "Illustrations",
-    "status": "active",
-    "description": "Working out a style to illustrate the posts on this site",
-    "slug": ""
-  },
-  {
-    "title": "Video essay",
-    "status": "exploring",
-    "description": "Longer-form video with a proper argument, not just documentation. Format and topic still fuzzy.",
-    "slug": ""
-  },
-  {
-    "title": "Building in Africa vs building in London",
-    "status": "exploring",
-    "description": "The product design differences between 4G Capital and JPMorgan are significant and underwritten about. Not sure if this is a post or a talk.",
-    "slug": ""
-  },
-  {
-    "title": "I've never had a plan. That's the plan.",
-    "status": "shipped",
-    "description": "On the unconventional career path — from illustration at Falmouth to executive director at a global investment bank.",
-    "slug": "/posts/ive-never-had-a-plan/"
   }
 ]
