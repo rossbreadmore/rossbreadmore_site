@@ -562,10 +562,6 @@ figcaption {
   grid-template-columns: minmax(200px, 320px);
 }
 
-.portfolio-shots--pair {
-  grid-template-columns: repeat(2, minmax(200px, 300px));
-}
-
 .portfolio-shots figure {
   margin: 0;
 }
