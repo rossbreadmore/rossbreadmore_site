@@ -510,6 +510,17 @@ figcaption {
   margin-bottom: 1.1rem;
 }
 
+.work-stat {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+  color: var(--text);
+  max-width: 600px;
+  margin: 0 0 1rem;
+}
+
 .work-description {
   font-size: 1.1rem;
   line-height: 1.85;
@@ -568,6 +579,25 @@ figcaption {
 
 .portfolio-projects li strong {
   color: var(--text);
+}
+
+.work-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+  margin: 1.25rem 0;
+  padding: 0;
+  max-width: 640px;
+}
+
+.work-tags li {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border-mid);
+  border-radius: 999px;
 }
 
 /* --- Portfolio screenshot grid --- */
