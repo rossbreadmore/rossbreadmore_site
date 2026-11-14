@@ -599,6 +599,96 @@ figcaption {
   margin-top: 0.6rem;
 }
 
+/* --- Portfolio case studies (expandable) --- */
+.case-study {
+  margin-top: 2rem;
+  max-width: 900px;
+  border-top: 3px solid var(--text);
+  border-bottom: 3px solid var(--text);
+}
+
+.case-study summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0.5rem 1rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  cursor: pointer;
+  list-style: none;
+}
+
+.case-study summary::-webkit-details-marker {
+  display: none;
+}
+
+.case-study summary::after {
+  content: "+";
+}
+
+.case-study[open] summary::after {
+  content: "\2212";
+}
+
+.case-study summary:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+.case-body {
+  padding: 0.5rem 0 2.5rem;
+}
+
+.case-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+  border-top: 1px solid var(--border-mid);
+  border-bottom: 1px solid var(--border-mid);
+}
+
+.case-stats div {
+  padding: 1.1rem 1rem 1.1rem 0;
+}
+
+.case-stats dt {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.case-stats dd {
+  margin: 0.3rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+
+.case-label {
+  margin: 2.25rem 0 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.portfolio-shots--wide {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 600px) {
+  .case-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* --- Lightbox --- */
 .lightbox-overlay {
   position: fixed;
